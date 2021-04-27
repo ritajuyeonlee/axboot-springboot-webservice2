@@ -51,18 +51,16 @@ public class JYGridController extends BaseController {
         jyGridService.saveByQueryDsl(request);
         return ok();
     }
-    @RequestMapping(value = "/queryDsl/one", method = RequestMethod.GET, produces = APPLICATION_JSON)
+
+    @RequestMapping(value = "/myBatis", method = RequestMethod.GET, produces = APPLICATION_JSON)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "ID", dataType = "Long", paramType = "query")
+            @ApiImplicitParam(name = "company", value = "회사명", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "ceo", value = "대표자", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "bizno", value = "사업자번호", dataType = "String", paramType = "query")
     })
-    public JYGrid viewOne(RequestParams<JYGrid> requestParams) {
-        JYGrid jyGrid = jyGridService.getOneByQueryDsl(requestParams.getLong("id"));
-        return jyGrid;
+    public Responses.ListResponse list3(RequestParams<JYGrid> requestParams) {
+        List<JYGrid> list = jyGridService.getByMyBatis(requestParams);
+        return Responses.ListResponse.of(list);
     }
 
-    @RequestMapping(value = "/queryDsl/one", method = {RequestMethod.PUT}, produces = APPLICATION_JSON)
-    public ApiResponse saveOne(@RequestBody JYGrid request) {
-        jyGridService.saveOneByQueryDsl(request);
-        return ok();
-    }
 }

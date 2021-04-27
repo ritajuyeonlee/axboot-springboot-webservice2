@@ -30,6 +30,16 @@
                         <ax:td label='ax.base.company.bizno' width="300px">
                             <input type="text" name="bizno" id="bizno" class="form-control" />
                         </ax:td>
+
+                        <ax:td label='ax.base.use.or.not' width="300px">
+                            <select name="useYn" class="js-useYn"> 
+                                <option value="">전체</option>
+                                <option value="Y">사용</option>
+                                <option value="N">미사용</option>
+
+                            </select>
+
+                         </ax:td>
                        </ax:tr>
                 </ax:tbl>
             </ax:form>
