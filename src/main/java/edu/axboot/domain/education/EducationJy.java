@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "EDUCATION_JY")
 
-public class JYGrid extends SimpleJpaModel<Long> {
+public class EducationJy extends SimpleJpaModel<Long> {
 
 	@Id
 	@Column(name = "ID", precision = 19, nullable = false)

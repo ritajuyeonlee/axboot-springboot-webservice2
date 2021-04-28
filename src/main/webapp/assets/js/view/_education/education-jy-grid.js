@@ -3,7 +3,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
         var paramObj = caller.searchView.getData();
 
-        //paramObj.type = 'myBatis';
+        //fnObj.type = 'myBatis';
         paramObj.type = fnObj.type || '';
 
         axboot.ajax({
@@ -88,7 +88,7 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
         this.target = $(document['searchView0']);
         this.target.attr('onsubmit', 'return ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);');
-        this.company = $('#company');
+        this.companyNm = $('#companyNm');
         this.ceo = $('#ceo');
         this.bizno = $('#bizno');
         this.useYn = $('.js-useYn');
@@ -98,7 +98,7 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
         return {
             pageNumber: this.pageNumber,
             pageSize: this.pageSize,
-            company: this.company.val(),
+            companyNm: this.companyNm.val(),
             ceo: this.ceo.val(),
             bizno: this.bizno.val(),
             useYn: this.useYn.val(),
@@ -114,6 +114,7 @@ fnObj.selectItems = [
 /**
  * gridView
  */
+
 fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
     initView: function () {
         var _this = this;
@@ -123,6 +124,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             frozenColumnIndex: 0,
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
+
             columns: [
                 { key: 'id', label: COL('company.id'), width: 50, align: 'left', editor: 'text' },
                 { key: 'companyNm', label: COL('company.name'), width: 200, align: 'center', editor: 'text' },

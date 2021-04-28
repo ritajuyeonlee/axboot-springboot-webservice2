@@ -1,7 +1,7 @@
 package edu.axboot.domain;
 
 import edu.axboot.domain.code.QCommonCode;
-import edu.axboot.domain.education.QJYGrid;
+import edu.axboot.domain.education.QEducationJy;
 import edu.axboot.domain.file.QCommonFile;
 import edu.axboot.domain.program.QProgram;
 import edu.axboot.domain.program.menu.QMenu;
@@ -25,7 +25,7 @@ public class BaseService<T, ID extends Serializable> extends AXBootBaseService<T
     protected QUserAuth qUserAuth = QUserAuth.userAuth;
     protected QMenu qMenu = QMenu.menu;
     protected QCommonFile qCommonFile = QCommonFile.commonFile;
-    protected QJYGrid qjyGrid = QJYGrid.jYGrid;
+    protected QEducationJy qEducationJy = QEducationJy.educationJy;
     protected AXBootJPAQueryDSLRepository<T, ID> repository;
 
     public BaseService() {

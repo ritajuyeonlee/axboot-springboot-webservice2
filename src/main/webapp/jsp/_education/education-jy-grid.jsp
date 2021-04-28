@@ -22,7 +22,7 @@
                 <ax:tbl clazz="ax-search-tbl" minWidth="500px">
                     <ax:tr>
                         <ax:td label='ax.base.company.name' width="300px">
-                            <input type="text" name="company" id="company" class="form-control" />
+                            <input type="text" name="companyNm" id="companyNm" class="form-control" />
                         </ax:td>
                         <ax:td label='ax.base.company.ceo' width="300px">
                             <input type="text" name="ceo" id="ceo" class="form-control" />
@@ -32,7 +32,7 @@
                         </ax:td>
 
                         <ax:td label='ax.base.use.or.not' width="300px">
-                            <select name="useYn" class="js-useYn"> 
+                            <select name="useYn"  class="js-useYn"> 
                                 <option value="">전체</option>
                                 <option value="Y">사용</option>
                                 <option value="N">미사용</option>
