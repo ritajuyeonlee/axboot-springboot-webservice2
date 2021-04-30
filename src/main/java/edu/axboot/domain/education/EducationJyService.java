@@ -1,6 +1,7 @@
 package edu.axboot.domain.education;
 
 import com.querydsl.core.BooleanBuilder;
+import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import com.chequer.axboot.core.parameter.RequestParams;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -221,6 +223,10 @@ public class EducationJyService extends BaseService<EducationJy, Long> {
     }
 
     public List<EducationJy> select(String companyNm, String ceo, String bizno, String useYn) {
+
+        if(StringUtils.isEmpty(useYn)&& !"".equals(useYn)&&!"Y".equals(useYn)&&!"N".equals(useYn)){
+            throw new RuntimeException("Y or N 입력해!!");
+        }
 
         HashMap<String, String> params = new HashMap<String,String>();
 

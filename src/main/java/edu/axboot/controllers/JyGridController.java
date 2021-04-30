@@ -3,8 +3,11 @@ package edu.axboot.controllers;
 import com.chequer.axboot.core.api.response.Responses;
 import com.chequer.axboot.core.controllers.BaseController;
 import com.chequer.axboot.core.parameter.RequestParams;
+import com.chequer.axboot.core.utils.DateUtils;
+import com.chequer.axboot.core.utils.ExcelUtils;
 import com.wordnik.swagger.annotations.ApiImplicitParam;
 import com.wordnik.swagger.annotations.ApiImplicitParams;
+import com.wordnik.swagger.annotations.ApiOperation;
 import edu.axboot.domain.education.EducationJy;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import edu.axboot.domain.education.EducationJyService;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -71,6 +77,10 @@ public class JyGridController extends BaseController {
         List<EducationJy> list = educationJyService.getByMyBatis(requestParams);
         return Responses.ListResponse.of(list);
     }
+
+
+
+
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNumber", value = "페이지번호(0부터시작)", required = true, dataType = "integer", paramType = "query", defaultValue = "0"),
             @ApiImplicitParam(name = "pageSize", value = "페이지크기", required = true, dataType = "integer", paramType = "query", defaultValue = "50"),
@@ -84,5 +94,8 @@ public class JyGridController extends BaseController {
         Page<EducationJy> pages = educationJyService.getPage(requestParams);
         return Responses.PageResponse.of(pages);
     }
+
+
+
 
 }
