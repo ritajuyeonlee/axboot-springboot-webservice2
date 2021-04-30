@@ -1,6 +1,11 @@
 package edu.axboot.domain.education;
 
 import com.querydsl.core.BooleanBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import edu.axboot.domain.BaseService;
 import javax.inject.Inject;
@@ -14,6 +19,9 @@ import java.util.List;
 
 @Service
 public class EducationJyService extends BaseService<EducationJy, Long> {
+    private static final Logger logger = LoggerFactory.getLogger(EducationJyService.class);
+
+
     private EducationJyRepository educationJyRepository;
 
     @Inject
@@ -119,6 +127,12 @@ public class EducationJyService extends BaseService<EducationJy, Long> {
         String ceo = requestParams.getString("ceo", "");
         String bizno = requestParams.getString("bizno", "");
         String useYn = requestParams.getString("useYn", "");
+
+        logger.info("회사명 : "+companyNm);
+        logger.info("대표자 : "+ceo);
+        logger.info("사업자번호 : "+bizno );
+        logger.info("사용여부 : "+useYn);
+
 
         BooleanBuilder builder = new BooleanBuilder();
         if (isNotEmpty(companyNm)) {
@@ -237,5 +251,20 @@ public class EducationJyService extends BaseService<EducationJy, Long> {
     @Transactional
     public void del(Long id) {
         educationJyMapper.delete(id);
+    }
+
+
+    //Paging
+    public Page<EducationJy> getPage(RequestParams<EducationJy> requestParams) {
+        List<EducationJy> list = this.getList(requestParams);
+        Pageable pageable = requestParams.getPageable();
+        int start = (int)pageable.getOffset();
+        int end = (start + pageable.getPageSize() > list.size() ? list.size() : (start + pageable.getPageSize()));
+        Page<EducationJy> pages = new PageImpl<>(list.subList(start, end), pageable, list.size());
+        return pages;
+    }
+
+    public List<EducationJy> getList(RequestParams<EducationJy> requestParams) {
+        return getByQueryDsl(requestParams);
     }
 }
