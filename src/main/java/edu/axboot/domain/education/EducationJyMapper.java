@@ -5,7 +5,7 @@ import com.chequer.axboot.core.mybatis.MyBatisMapper;
 import java.util.HashMap;
 import java.util.List;
 
-//public interface EducationJyMapper {extends MyBatisMapper
+//public interface EducationJyMapper extends MyBatisMapper
 public interface EducationJyMapper {
 
     List<EducationJy> getByMyBatis(EducationJy educationJy);
