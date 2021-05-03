@@ -26,7 +26,7 @@ public class EducationJyService extends BaseService<EducationJy, Long> {
 
     private EducationJyRepository educationJyRepository;
 
-    @Inject
+//    @Inject
     private EducationJyMapper educationJyMapper;
 
     @Inject
