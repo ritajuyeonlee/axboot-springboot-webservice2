@@ -22,12 +22,7 @@
                         <ax:td label='검색조건' width="300px">
                             <input type="text" class="form-control" />
                         </ax:td>
-                        <ax:td label='검색조건 1' width="300px">
-                            <input type="text" class="form-control" />
-                        </ax:td>
-                        <ax:td label='검색조건 2' width="300px">
-                            <input type="text" class="form-control" />
-                        </ax:td>
+                        
                     </ax:tr>
                 </ax:tbl>
             </ax:form>
