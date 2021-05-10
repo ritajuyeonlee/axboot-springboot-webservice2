@@ -1,21 +1,11 @@
 var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
-        var paramObj = $.extend(caller.searchView.getData(), data, { pageSize: 2 });
-
-        var url;
-        if (caller.searchView.isPage.is(':checked')) {
-            url = '/api/v1/education/jyGrid/pages';
-        } else {
-            url = '/api/v1/education/jyGrid';
-        }
-
-        //fnObj.type = 'myBatis';
-        // paramObj.type = fnObj.type || '';
+        var paramObj = $.extend(caller.searchView.getData(), data, { pageSize: 10 });
 
         axboot.ajax({
             type: 'GET',
-            url: url,
+            url: '/api/v1/education/jyGrid/pages',
             data: paramObj,
             callback: function (res) {
                 caller.gridView01.setData(res);
@@ -27,8 +17,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                 },
             },
         });
-
-        return false;
     },
     PAGE_SAVE: function (caller, act, data) {
         var saveList = [].concat(caller.gridView01.getData());
@@ -76,16 +64,12 @@ fnObj.pageResize = function () {};
 fnObj.pageButtonView = axboot.viewExtend({
     initView: function () {
         axboot.buttonClick(this, 'data-page-btn', {
-            searchPage: function () {
-                ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
-            },
             search: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
             },
             save: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
             },
-            excel: function () {},
         });
     },
 });
@@ -97,26 +81,24 @@ fnObj.pageButtonView = axboot.viewExtend({
 fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
         this.target = $(document['searchView0']);
-        this.target.attr('onsubmit', 'return ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);');
+        this.target.attr('onsubmit', 'return false;');
         this.target.on('keydown.search', 'input, .form-control', function (e) {
             if (e.keyCode === 13) {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
             }
         });
-        this.isPage = $('.js-isPage');
 
-        this.companyNm = $('#companyNm');
-        this.ceo = $('#ceo');
-        this.bizno = $('#bizno');
-        this.useYn = $('.js-useYn');
-        //this.filter = $("#filter");
+        this.companyNm = $('.js-companyNm');
+        this.ceo = $('.js-ceo');
+        this.bizno = $('.js-bizno');
+        this.useYn = $('.js-useYn').on('change', function () {
+            ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
+        });
     },
     getData: function () {
         return {
-            pageType: this.pageType,
             pageNumber: this.pageNumber || 0,
-            pageSize: this.pageSize || 0,
-
+            pageSize: this.pageSize || 50,
             companyNm: this.companyNm.val(),
             ceo: this.ceo.val(),
             bizno: this.bizno.val(),
@@ -124,16 +106,10 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
         };
     },
 });
-fnObj.selectItems = [
-    { value: 'Y', text: '사용' },
-    { value: 'N', text: '미사용' },
-    { value: '', text: '' },
-];
 
 /**
  * gridView
  */
-
 fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
     initView: function () {
         var _this = this;
@@ -146,56 +122,14 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             frozenColumnIndex: 0,
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
-
             columns: [
-                { key: 'id', label: COL('company.id'), width: 50, align: 'left', editor: 'text' },
-                { key: 'companyNm', label: COL('company.name'), width: 200, align: 'center', editor: 'text' },
-                { key: 'ceo', label: COL('company.ceo'), width: 100, align: 'center', editor: 'text' },
-                { key: 'bizno', label: COL('company.bizno'), width: 100, align: 'center', editor: 'text' },
-                { key: 'tel', label: COL('company.tel'), width: 100, align: 'center', editor: 'text' },
-                { key: 'email', label: COL('company.email'), width: 100, align: 'center', editor: 'text' },
-                {
-                    key: 'useYn',
-                    label: COL('use.or.not'),
-                    align: 'center',
-                    formatter: function () {
-                        var i = 0,
-                            len = fnObj.selectItems.length,
-                            value;
-                        for (; i < len; i++) {
-                            if (this.item.useYn === (value = fnObj.selectItems[i].value)) {
-                                break;
-                            }
-                        }
-                        if (value === 'Y') {
-                            return '사용';
-                        } else if (value === 'N') {
-                            return '미사용';
-                        } else {
-                            return '';
-                        }
-                    },
-                    editor: {
-                        type: 'select',
-                        config: {
-                            columnKeys: {
-                                optionValue: 'value',
-                                optionText: 'text',
-                            },
-                            options: fnObj.selectItems,
-                        },
-                    },
-                },
-                {
-                    key: 'useYn',
-                    label: 'checkbox',
-                    width: 100,
-                    align: 'center',
-                    editor: {
-                        type: 'checkbox',
-                        config: { trueValue: 'Y', falseValue: 'N' },
-                    },
-                },
+                { key: 'companyNm', label: COL('company.name'), width: 250, align: 'left', editor: { type: 'text' } },
+                { key: 'ceo', label: COL('company.ceo'), width: 100, align: 'center', editor: { type: 'text' } },
+                { key: 'bizno', label: COL('company.bizno'), width: 100, align: 'center', formatter: 'bizno', editor: { type: 'text' } },
+                { key: 'tel', label: COL('company.tel'), width: 100, align: 'center', editor: { type: 'text' } },
+                { key: 'email', label: COL('company.email'), width: 100, align: 'center', editor: { type: 'text' } },
+                { key: 'useYn', label: COL('use.or.not'), width: 100, align: 'center', editor: 'useYn' },
+                { key: 'remark', label: '비고', width: 300, align: 'left', editor: { type: 'textarea' } },
             ],
             body: {
                 onClick: function () {
@@ -229,6 +163,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
         return list;
     },
     addRow: function () {
-        this.target.addRow({ __created__: true }, 'last');
+        this.target.addRow({ __created__: true, useYn: 'Y' }, 'last');
     },
 });

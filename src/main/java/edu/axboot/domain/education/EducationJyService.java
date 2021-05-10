@@ -1,32 +1,54 @@
 package edu.axboot.domain.education;
 
+import com.chequer.axboot.core.api.ApiException;
+import com.chequer.axboot.core.utils.CoreUtils;
 import com.querydsl.core.BooleanBuilder;
-import org.apache.poi.util.StringUtil;
+import edu.axboot.domain.file.CommonFile;
+import edu.axboot.domain.file.CommonFileService;
+import edu.axboot.domain.file.UploadParameters;
+import edu.axboot.fileupload.FileUploadService;
+import edu.axboot.fileupload.UploadFile;
+import org.apache.commons.io.FileUtils;
+import org.jxls.reader.ReaderBuilder;
+import org.jxls.reader.ReaderConfig;
+import org.jxls.reader.XLSReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import edu.axboot.domain.BaseService;
+
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import com.chequer.axboot.core.parameter.RequestParams;
 import org.springframework.util.StringUtils;
-
+import org.springframework.web.multipart.MultipartFile;
+import edu.axboot.domain.BaseService;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 @Service
 public class EducationJyService extends BaseService<EducationJy, Long> {
     private static final Logger logger = LoggerFactory.getLogger(EducationJyService.class);
 
+    @Autowired
+    private CommonFileService commonFileService;
 
+    @Autowired
+    private FileUploadService fileUploadService;
+
+    @Autowired
     private EducationJyRepository educationJyRepository;
 
-//    @Inject
+   /* @Inject*/
     private EducationJyMapper educationJyMapper;
 
     @Inject
@@ -34,6 +56,8 @@ public class EducationJyService extends BaseService<EducationJy, Long> {
         super(educationJyRepository);
         this.educationJyRepository = educationJyRepository;
     }
+
+
 
     //Jpa
     public List<EducationJy> gets(RequestParams<EducationJy> requestParams) {
@@ -184,6 +208,37 @@ public class EducationJyService extends BaseService<EducationJy, Long> {
     }
 
     @Transactional
+    public void saveUsingQueryDsl(EducationJy entity) {
+        if (entity.getId() == null || entity.getId() == 0) {
+            if (entity.getFileIdList().size() > 0) {
+                entity.setAttachId(CoreUtils.getUUID().replaceAll("-",""));
+                List<CommonFile> commonFileList = new ArrayList<>();
+                for(Long fileId: entity.getFileIdList()){
+                    CommonFile commonFile = commonFileService.findOne(fileId);
+                    commonFile.setTargetId(entity.getAttachId());
+                    commonFileList.add(commonFile);
+                }
+                entity.setFileList(commonFileList);
+            }
+            this.educationJyRepository.save(entity);
+        } else {
+            update(qEducationJy)
+                    .set(qEducationJy.companyNm, entity.getCompanyNm())
+                    .set(qEducationJy.ceo, entity.getCeo())
+                    .set(qEducationJy.bizno, entity.getBizno())
+                    .set(qEducationJy.tel, entity.getTel())
+                    .set(qEducationJy.zip, entity.getZip())
+                    .set(qEducationJy.address, entity.getAddress())
+                    .set(qEducationJy.addressDetail, entity.getAddressDetail())
+                    .set(qEducationJy.email, entity.getEmail())
+                    .set(qEducationJy.remark, entity.getRemark())
+                    .set(qEducationJy.useYn, entity.getUseYn())
+                    .where(qEducationJy.id.eq(entity.getId()))
+                    .execute();
+        }
+    }
+
+    @Transactional
     public void persist(EducationJy request) {
         if (request.getId() == null || request.getId() == 0) {
             save(request);
@@ -273,4 +328,74 @@ public class EducationJyService extends BaseService<EducationJy, Long> {
     public List<EducationJy> getList(RequestParams<EducationJy> requestParams) {
         return getByQueryDsl(requestParams);
     }
+
+
+
+
+
+    //Excel
+    @Transactional
+    public String saveDataByExcel(UploadFile uploadFile) throws Exception {
+        String resultMsg = "";
+
+        ReaderConfig.getInstance().setSkipErrors(true);
+
+        XLSReader mainReader = ReaderBuilder.buildFromXML(new ClassPathResource("/excel/education_upload.xml").getInputStream());
+        List<EducationJy> entities = new ArrayList();
+
+        Map beans = new HashMap();
+        beans.put("educationList", entities);
+
+        String excelFile = uploadFile.getSavePath();
+        File file = new File(excelFile);
+        mainReader.read(FileUtils.openInputStream(file), beans);
+
+        int rowIndex = 1;
+
+        for (EducationJy entity : entities) {
+            if (StringUtils.isEmpty(entity.getCompanyNm())) {
+                resultMsg = String.format("%d 번째 줄의 회사명이 비어있습니다.", rowIndex);
+                throw new ApiException(String.format("%d 번째 줄의 회사명이 비어있습니다.", rowIndex));
+            }
+
+            if (StringUtils.isEmpty(entity.getCeo())) {
+                resultMsg = String.format("%d 번째 줄의 대표자가 비어있습니다.", rowIndex);
+                throw new ApiException(String.format("%d 번째 줄의 대표자가 비어있습니다.", rowIndex));
+            }
+
+            if (StringUtils.isEmpty(entity.getUseYn())) {
+                resultMsg = String.format("%d 번째 줄의 사용여부가 비어있습니다.", rowIndex);
+                throw new ApiException(String.format("%d 번째 줄의 사용여부가 비어있습니다.", rowIndex));
+            }
+
+            save(entity);
+
+            rowIndex++;
+        }
+
+        return resultMsg;
+    }
+
+
+
+    @Transactional
+    public String uploadFileByExcel(MultipartFile multipartFile) throws Exception {
+        UploadParameters uploadParameters = new UploadParameters();
+        uploadParameters.setMultipartFile(multipartFile);
+
+        UploadFile uploadFile = fileUploadService.addCommonFile(uploadParameters);
+        String result = this.saveDataByExcel(uploadFile);
+
+        fileUploadService.deleteFile(uploadFile.getSavePath());
+
+        return result;
+    }
+
+    /*public List<EducationExcelResponseDto> getListExcel(RequestParams<EducationJy> requestParams) {
+        List<EducationJy> list = this.getByQueryDsl(requestParams);
+
+        return list.stream()
+                .map(EducationExcelResponseDto::new)
+                .collect(Collectors.toList());
+    }*/
 }

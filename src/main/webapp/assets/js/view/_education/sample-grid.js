@@ -1,9 +1,10 @@
 var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
+        var paramObj = $.extend(caller.searchView.getData(), data, { pageSize: 3 });
         axboot.ajax({
             type: 'GET',
-            url: ['samples', 'parent'],
+            url: '/api/v1/education/jyGrid/pages',
             data: caller.searchView.getData(),
             callback: function (res) {
                 caller.gridView01.setData(res);

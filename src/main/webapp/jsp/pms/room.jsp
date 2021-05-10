@@ -8,7 +8,7 @@
 
 <ax:layout name="base">
     <jsp:attribute name="script">
-        <script type="text/javascript" src="<c:url value='/assets/js/view/_education/sample-grid.js' />"></script>
+        <script type="text/javascript" src="<c:url value='/assets/js/view/pms/room.js' />"></script>
     </jsp:attribute>
     <jsp:body>
 

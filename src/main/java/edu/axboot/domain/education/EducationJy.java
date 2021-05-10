@@ -1,14 +1,19 @@
 package edu.axboot.domain.education;
 
 
+import com.chequer.axboot.core.annotations.ColumnPosition;
 import edu.axboot.domain.SimpleJpaModel;
+import edu.axboot.domain.file.CommonFile;
 import lombok.*;
-import org.apache.ibatis.type.Alias;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import com.chequer.axboot.core.annotations.Comment;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Setter
@@ -64,6 +69,19 @@ public class EducationJy extends SimpleJpaModel<Long> {
 	@Column(name = "USE_YN", length = 1)
 	@Comment(value = "")
 	private String useYn;
+
+	@Column(name = "ATTACH_ID", length = 100)
+	@ColumnPosition(12)
+	private String attachId;
+
+	@Transient
+	private List<Long> fileIdList = new ArrayList<>();
+
+	//1대N의 부모자식관계
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@NotFound(action = NotFoundAction.IGNORE)
+	@JoinColumn(name = "TARGET_ID", referencedColumnName = "ATTACH_ID", insertable = false, updatable = false)
+	private List<CommonFile> fileList;
 
 
 @Override

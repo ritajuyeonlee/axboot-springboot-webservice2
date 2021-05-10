@@ -46,7 +46,7 @@ public class JyGridFormController extends BaseController {
 
     @RequestMapping(method = {RequestMethod.POST}, produces = APPLICATION_JSON)
     public ApiResponse save(@RequestBody EducationJy request) {
-        educationJyService.persist(request);
+        educationJyService.saveUsingQueryDsl(request);
         return ok();
     }
 

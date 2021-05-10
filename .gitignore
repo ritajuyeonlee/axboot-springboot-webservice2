@@ -1,4 +1,4 @@
-﻿# current project exclude files or directories
+# current project exclude files or directories
 # maven build folder
 /target
 
@@ -28,3 +28,4 @@ project.lock.json
 
 # NuGet Packages Directory
 packages
+logs/

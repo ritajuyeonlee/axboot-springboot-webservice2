@@ -7,11 +7,34 @@
 <ax:set key="page_auto_height" value="true"/>
 
 <ax:layout name="base">
+    <jsp:attribute name="css">
+        <link rel="stylesheet" type="text/css"
+            href="https://cdn.rawgit.com/ax5ui/ax5ui-uploader/master/dist/ax5uploader.css" />
+    </jsp:attribute>
     <jsp:attribute name="script">
-                <ax:script-lang key="ax.script" var="LANG" />
-                <ax:script-lang key="ax.base" var="COL" />
+        <ax:script-lang key="ax.script" var="LANG" />
+        <ax:script-lang key="ax.base" var="COL" />
+        <script type="text/javascript"
+            src="https://cdn.rawgit.com/ax5ui/ax5ui-uploader/master/dist/ax5uploader.js"></script>
+        <script type="text/javascript" src="<c:url value='/assets/plugins-fix/ckeditor/ckeditor.js' />"></script>
         <script type="text/javascript" src="<c:url value='/assets/js/view/_education/jy-grid-form.js' />"></script>
     </jsp:attribute>
+    
+    <jsp:attribute name="js">
+        <script type="text/javascript">
+            var UUID = "${UUID}";
+        </script>
+    </jsp:attribute>
+    <jsp:attribute name="css">
+    
+        <style type="text/css">
+            /*.editor1{width:100%; border:1px solid #D7D7D7; border-radius: 3px; overflow: hidden; background: white;}*/
+        </style>
+    </jsp:attribute>
+
+
+
+
     <jsp:body>
 
         <ax:page-buttons></ax:page-buttons>
@@ -79,7 +102,7 @@
                                     <div data-ax-td-label="" class=""style="width:150px;">사용여부</div>
                                     <div data-ax-td-wrap="">
                         
-                                        <input type="text" data-ax-path="useYn" class="form-control" value="" readonly="readonly">
+                                        <input type="text" data-ax-path="useYn" class="form-control" value="" >
                         
                                     </div>
                                 </div>
@@ -90,7 +113,7 @@
                                     <div data-ax-td-label="" class="" style="width:150px;">회사명</div>
                                     <div data-ax-td-wrap="">
                             
-                                        <input type="text" data-ax-path="companyNm" class="form-control" value="" readonly="readonly">
+                                        <input type="text" data-ax-path="companyNm" class="form-control" value="" >
                             
                                     </div>
                                 </div>
@@ -98,7 +121,7 @@
                                     <div data-ax-td-label="" class="" style="width:150px;">대표</div>
                                     <div data-ax-td-wrap="">
                             
-                                        <input type="text" data-ax-path="ceo" class="form-control" value="" readonly="readonly">
+                                        <input type="text" data-ax-path="ceo" class="form-control" value="" >
                             
                                     </div>
                                 </div>
@@ -109,7 +132,7 @@
                                     <div data-ax-td-label="" class=""style="width:150px;">사업자번호</div>
                                     <div data-ax-td-wrap="">
                             
-                                        <input type="text" data-ax-path="bizno" class="form-control" value="" readonly="readonly">
+                                        <input type="text" data-ax-path="bizno" class="form-control" value="" >
                             
                                     </div>
                                 </div>
@@ -117,7 +140,7 @@
                                     <div data-ax-td-label="" class="" style="width:150px;">전화번호</div>
                                     <div data-ax-td-wrap="">
                             
-                                        <input type="text" data-ax-path="tel" class="form-control" value="" readonly="readonly">
+                                        <input type="text" data-ax-path="tel" class="form-control" value="" >
                             
                                     </div>
                                 </div>
@@ -128,7 +151,7 @@
                                     <div data-ax-td-label="" class="" style="width:150px;">우편번호</div>
                                     <div data-ax-td-wrap="">
                             
-                                        <input type="text" data-ax-path="id" class="form-control" value="" readonly="readonly">
+                                        <input type="text" data-ax-path="id" class="form-control" value="" >
                             
                                     </div>
                                 </div>
@@ -136,7 +159,7 @@
                                     <div data-ax-td-label="" class="" style="width:150px;">주소</div>
                                     <div data-ax-td-wrap="">
                             
-                                        <input type="text" data-ax-path="address" class="form-control" value="" readonly="readonly">
+                                        <input type="text" data-ax-path="address" class="form-control" value="" >
                             
                                     </div>
                                 </div>
@@ -147,7 +170,7 @@
                                     <div data-ax-td-label="" class="" style="width:150px;">주소 상세</div>
                                     <div data-ax-td-wrap="">
                             
-                                        <input type="text" data-ax-path="addressDetail" class="form-control" value="" readonly="readonly">
+                                        <input type="text" data-ax-path="addressDetail" class="form-control" value="" >
                             
                                     </div>
                                 </div>
@@ -155,35 +178,29 @@
                                     <div data-ax-td-label="" class="" style="width:150px;">비고</div>
                                     <div data-ax-td-wrap="">
                             
-                                        <input type="text" data-ax-path="useYn" class="form-control" value="" readonly="readonly">
+                                        <input type="text" data-ax-path="useYn" class="form-control" value="" >
                             
                                     </div>
-                                </div>
-                            
+                                </div>   
+                                <div data-ax-td="" id="" class="" style="width:50%;">
+                                    <div data-ax-td-label="첨부파일" class='icon-info-circled cp' style="width:150px;">비고</div>
+                                    <div data-ax-td-wrap="">
+                                
+                                        <div data-ax5uploader="upload1">
+                                            <input type="hidden" id="targetType" name="targetType" value="EDUCATION_TEACH" />
+                                            <button data-ax5uploader-button="selector" class="btn btn-primary">Select File (*/*)</button>
+                                            (Upload Max fileSize 100MB)
+                                            <div data-uploaded-box="upload1" data-ax5uploader-uploaded-box="inline"></div>
+                                        </div>
+                                
+                                    </div>
+                                </div>                               
                             </div>
-
-
-
-
-
-
                         </div>
-                       
-                        
-
-
-
                     </form>
-                    
-
-                   
-                </div>
-           
+               </div>          
             </div> 
-
         </div>
-
-
 
     </jsp:body>
 </ax:layout>

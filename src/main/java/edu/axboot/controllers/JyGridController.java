@@ -3,11 +3,8 @@ package edu.axboot.controllers;
 import com.chequer.axboot.core.api.response.Responses;
 import com.chequer.axboot.core.controllers.BaseController;
 import com.chequer.axboot.core.parameter.RequestParams;
-import com.chequer.axboot.core.utils.DateUtils;
-import com.chequer.axboot.core.utils.ExcelUtils;
 import com.wordnik.swagger.annotations.ApiImplicitParam;
 import com.wordnik.swagger.annotations.ApiImplicitParams;
-import com.wordnik.swagger.annotations.ApiOperation;
 import edu.axboot.domain.education.EducationJy;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import edu.axboot.domain.education.EducationJyService;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -45,7 +39,7 @@ public class JyGridController extends BaseController {
 
     @RequestMapping(method = {RequestMethod.PUT}, produces = APPLICATION_JSON)
     public ApiResponse save(@RequestBody List<EducationJy> request) {
-        educationJyService.save(request);
+        educationJyService.saveByQueryDsl(request);
         return ok();
     }
     @RequestMapping(value = "/queryDsl", method = RequestMethod.GET, produces = APPLICATION_JSON)
