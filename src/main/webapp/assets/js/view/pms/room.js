@@ -19,7 +19,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         return false;
     },
     PAGE_SAVE: function (caller, act, data) {
-        var saveList = [].concat(caller.gridView01.getData('modified'));
+        var saveList = [].concat(caller.gridView01.getData());
         saveList = saveList.concat(caller.gridView01.getData('deleted'));
 
         axboot.ajax({
@@ -83,30 +83,19 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
         this.target = $(document['searchView0']);
         this.target.attr('onsubmit', 'return ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);');
-        this.roomNum = $('#roomNum');
-        this.roomTypCd = $('#roomTypCd');
-        this.dndYn = $('#dndYn');
-        this.ebYn = $('#ebYn');
-        this.roomSttusCd = $('#roomSttusCd');
-        this.clnSttusCd = $('#clnSttusCd');
-        this.svcSttusCd = $('#svcSttusCd');
 
-        // this.filter = $('#filter');
+        this.roomTypCd = $('.js-roomTypCd');
+
+        this.filter = $('#filter');
     },
     getData: function () {
         return {
             pageNumber: this.pageNumber,
             pageSize: this.pageSize,
 
-            roomNum: this.roomNum.val(),
             roomTypCd: this.roomTypCd.val(),
-            dndYn: this.dndYn.val(),
-            ebYn: this.ebYn.val(),
-            roomSttusCd: this.roomSttusCd.val(),
-            clnSttusCd: this.clnSttusCd.val(),
-            svcSttusCd: this.svcSttusCd.val(),
 
-            // filter: this.filter.val(),
+            filter: this.filter.val(),
         };
     },
 });
@@ -124,13 +113,127 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
             columns: [
-                { key: 'roomNum', label: '객실번호', width: 100, align: 'left', editor: 'text' },
-                { key: 'roomTypCd', label: '객실타입', width: 150, align: 'left', editor: 'text' },
-                { key: 'dndYn', label: 'DND여부', width: 100, align: 'center', editor: 'text' },
-                { key: 'ebYn', label: 'EXBED여부', width: 100, align: 'center', editor: 'text' },
-                { key: 'roomSttusCd', label: '객실상태', width: 100, align: 'center', editor: 'text' },
-                { key: 'clnSttusCd', label: '청소상태', width: 100, align: 'center', editor: 'text' },
-                { key: 'svcSttusCd', label: '서비스상태', width: 100, align: 'center', editor: 'text' },
+                { key: 'roomNum', label: '객실번호', width: 100, align: 'center', editor: 'text' },
+                {
+                    key: 'roomTypCd',
+                    label: '객실타입',
+                    width: 150,
+                    align: 'center',
+                    editor: {
+                        type: 'select',
+                        config: {
+                            columnKeys: {
+                                optionValue: 'code',
+                                optionText: 'name',
+                            },
+                            options: parent.COMMON_CODE['ROOM_TYPE'],
+                        },
+                    },
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['ROOM_TYPE'].map[this.value];
+                    },
+                },
+                {
+                    key: 'dndYn',
+                    label: 'DND여부',
+                    width: 100,
+                    align: 'center',
+                    editor: {
+                        type: 'select',
+                        config: {
+                            columnKeys: {
+                                optionValue: 'code',
+                                optionText: 'name',
+                            },
+                            options: parent.COMMON_CODE['USE_YN'],
+                        },
+                    },
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['USE_YN'].map[this.value];
+                    },
+                },
+                {
+                    key: 'ebYn',
+                    label: 'EXBED여부',
+                    width: 100,
+                    align: 'center',
+                    editor: {
+                        type: 'select',
+                        config: {
+                            columnKeys: {
+                                optionValue: 'code',
+                                optionText: 'name',
+                            },
+                            options: parent.COMMON_CODE['USE_YN'],
+                        },
+                    },
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['USE_YN'].map[this.value];
+                    },
+                },
+                {
+                    key: 'roomSttusCd',
+                    label: '객실상태',
+                    width: 100,
+                    align: 'center',
+                    editor: {
+                        type: 'select',
+                        config: {
+                            columnKeys: {
+                                optionValue: 'code',
+                                optionText: 'name',
+                            },
+                            options: parent.COMMON_CODE['ROOM_STTUS'],
+                        },
+                    },
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['ROOM_STTUS'].map[this.value];
+                    },
+                },
+                {
+                    key: 'clnSttusCd',
+                    label: '청소상태',
+                    width: 100,
+                    align: 'center',
+                    editor: {
+                        type: 'select',
+                        config: {
+                            columnKeys: {
+                                optionValue: 'code',
+                                optionText: 'name',
+                            },
+                            options: parent.COMMON_CODE['CLN_STTUS'],
+                        },
+                    },
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['CLN_STTUS'].map[this.value];
+                    },
+                },
+                {
+                    key: 'svcSttusCd',
+                    label: '서비스상태',
+                    width: 100,
+                    align: 'center',
+                    editor: {
+                        type: 'select',
+                        config: {
+                            columnKeys: {
+                                optionValue: 'code',
+                                optionText: 'name',
+                            },
+                            options: parent.COMMON_CODE['SVC_STTUS'],
+                        },
+                    },
+                    formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['SVC_STTUS'].map[this.value];
+                    },
+                },
             ],
             body: {
                 onClick: function () {
@@ -154,8 +257,9 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
 
         if (_type == 'modified' || _type == 'deleted') {
             list = ax5.util.filter(_list, function () {
-                delete this.deleted;
-                return this.key;
+                //                delete this.deleted;
+                //                return this.key;
+                return this.id;
             });
         } else {
             list = _list;

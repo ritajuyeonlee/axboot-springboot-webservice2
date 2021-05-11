@@ -56,28 +56,7 @@ public class Room extends BaseJpaModel<Long> {
 	return id;
 	}
 
-	@Builder
-	public Room(String roomNum, String roomTypCd, String dndYn, String ebYn, String roomSttusCd, String clnSttusCd,
-						 String svcSttusCd) {
-		this.roomNum = roomNum;
-		this.roomTypCd = roomTypCd;
-		this.dndYn = dndYn;
-		this.ebYn = ebYn;
-		this.roomSttusCd = roomSttusCd;
-		this.clnSttusCd = clnSttusCd;
-		this.svcSttusCd = svcSttusCd;
 
-	}
-
-	public void update(String roomTypCd, String dndYn, String ebYn, String roomSttusCd, String clnSttusCd,
-					   String svcSttusCd) {
-		this.roomTypCd = roomTypCd;
-		this.dndYn = dndYn;
-		this.ebYn = ebYn;
-		this.roomSttusCd = roomSttusCd;
-		this.clnSttusCd = clnSttusCd;
-		this.svcSttusCd = svcSttusCd;
-	}
 
 
 }

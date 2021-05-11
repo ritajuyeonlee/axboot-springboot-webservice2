@@ -1,9 +1,9 @@
 package edu.axboot.domain.pms.room;
 
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.chequer.axboot.core.domain.base.AXBootJPAQueryDSLRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoomRepository extends JpaRepository<Room, Long> {
+public interface RoomRepository extends AXBootJPAQueryDSLRepository<Room, Long> {
 }

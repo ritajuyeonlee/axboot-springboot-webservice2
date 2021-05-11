@@ -326,6 +326,7 @@ public class EducationJyService extends BaseService<EducationJy, Long> {
     }
 
     public List<EducationJy> getList(RequestParams<EducationJy> requestParams) {
+
         return getByQueryDsl(requestParams);
     }
 

@@ -44,6 +44,8 @@ public class EducationBookService extends BaseService<EducationBook, Long>{
 
         return new EducationResponseDto(entity);
     }
+
+
     @Transactional(readOnly = true)
     public List<EducationListResponseDto> findBy(String companyNm, String ceo, String bizno, String useYn) {
         BooleanBuilder builder = new BooleanBuilder();

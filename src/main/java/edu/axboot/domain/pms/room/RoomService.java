@@ -2,22 +2,29 @@ package edu.axboot.domain.pms.room;
 
 import com.querydsl.core.BooleanBuilder;
 import edu.axboot.controllers.dto.pms.RoomListResponseDto;
-import edu.axboot.controllers.dto.pms.RoomSaveRequestDto;
-import edu.axboot.controllers.dto.pms.RoomUpdateRequestDto;
 import edu.axboot.domain.BaseService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Service
 public class RoomService extends BaseService<Room, Long> {
-    private final RoomRepository roomRepository;
 
-    @Transactional
+    @Autowired
+    private RoomRepository roomRepository;
+
+    @Inject
+    public RoomService(RoomRepository roomRepository) {
+        super(roomRepository);
+        this.roomRepository = roomRepository;
+    }
+
+    /*@Transactional
     public Long save(RoomSaveRequestDto requestDto) {
         return roomRepository.save(requestDto.toEntity()).getId();
     }
@@ -38,7 +45,7 @@ public class RoomService extends BaseService<Room, Long> {
                 requestDto.getSvcSttusCd()
         );
         return id;
-    }
+    }*/
 
     @Transactional(readOnly = true)
     public List<RoomListResponseDto> findByRoomTypCd(String roomTypCd) {
@@ -46,7 +53,7 @@ public class RoomService extends BaseService<Room, Long> {
         BooleanBuilder builder = new BooleanBuilder();
 
         if (isNotEmpty(roomTypCd)) {
-            builder.and(qRoom.roomTypCd.contains(roomTypCd));
+            builder.and(qRoom.roomTypCd.eq(roomTypCd));
         }
 
         List<Room> entitis = select()
@@ -60,6 +67,9 @@ public class RoomService extends BaseService<Room, Long> {
                 .collect(Collectors.toList());
 
     }
+
+
+
 
 
 }

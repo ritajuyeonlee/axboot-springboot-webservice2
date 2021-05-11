@@ -19,8 +19,13 @@
             <ax:form name="searchView0">
                 <ax:tbl clazz="ax-search-tbl" minWidth="500px">
                     <ax:tr>
-                        <ax:td label='검색조건' width="300px">
-                            <input type="text" class="form-control" />
+                        <ax:td label='객실타입' width="300px">
+                            <select name="roomTypCd" class="js-roomTypCd">
+                                <option value="">전체</option>
+                                <option value="SB">SB</option>
+                                <option value="DB">DB</option>
+                                <option value="DT">DT</option>
+                            </select>
                         </ax:td>
                         
                     </ax:tr>

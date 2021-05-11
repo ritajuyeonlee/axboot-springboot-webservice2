@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class RoomListResponseDto {
+    private Long id;
     private String roomNum;
     private String roomTypCd;
     private String dndYn;
@@ -15,6 +16,7 @@ public class RoomListResponseDto {
 
 
     public RoomListResponseDto(Room entity) {
+        this.id = entity.getId();
         this.roomTypCd = entity.getRoomTypCd();
         this.roomNum = entity.getRoomNum();
         this.dndYn = entity.getDndYn();

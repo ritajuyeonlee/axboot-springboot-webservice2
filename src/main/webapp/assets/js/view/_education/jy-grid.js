@@ -117,11 +117,6 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
         };
     },
 });
-fnObj.selectItems = [
-    { value: 'Y', text: '사용' },
-    { value: 'N', text: '미사용' },
-    { value: '', text: '' },
-];
 
 /**
  * gridView
@@ -152,6 +147,10 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                     label: COL('use.or.not'),
                     align: 'center',
                     formatter: function () {
+                        if (!this.value) return '';
+                        return parent.COMMON_CODE['USE_YN'].map[this.value];
+
+                        /*
                         var i = 0,
                             len = fnObj.selectItems.length,
                             value;
@@ -167,15 +166,16 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                         } else {
                             return '';
                         }
+                        */
                     },
                     editor: {
                         type: 'select',
                         config: {
                             columnKeys: {
-                                optionValue: 'value',
-                                optionText: 'text',
+                                optionValue: 'code',
+                                optionText: 'name',
                             },
-                            options: fnObj.selectItems,
+                            options: parent.COMMON_CODE['USE_YN'],
                         },
                     },
                 },
