@@ -126,12 +126,12 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                                 optionValue: 'code',
                                 optionText: 'name',
                             },
-                            options: parent.COMMON_CODE['ROOM_TYPE'],
+                            options: parent.COMMON_CODE['PMS_ROOM_TYPE'],
                         },
                     },
                     formatter: function () {
                         if (!this.value) return '';
-                        return parent.COMMON_CODE['ROOM_TYPE'].map[this.value];
+                        return parent.COMMON_CODE['PMS_ROOM_TYPE'].map[this.value];
                     },
                 },
                 {
@@ -186,12 +186,12 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                                 optionValue: 'code',
                                 optionText: 'name',
                             },
-                            options: parent.COMMON_CODE['ROOM_STTUS'],
+                            options: parent.COMMON_CODE['PMS_ROOM_STATUS'],
                         },
                     },
                     formatter: function () {
                         if (!this.value) return '';
-                        return parent.COMMON_CODE['ROOM_STTUS'].map[this.value];
+                        return parent.COMMON_CODE['PMS_ROOM_STATUS'].map[this.value];
                     },
                 },
                 {
@@ -206,12 +206,12 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                                 optionValue: 'code',
                                 optionText: 'name',
                             },
-                            options: parent.COMMON_CODE['CLN_STTUS'],
+                            options: parent.COMMON_CODE['PMS_CLEAN_STATUS'],
                         },
                     },
                     formatter: function () {
                         if (!this.value) return '';
-                        return parent.COMMON_CODE['CLN_STTUS'].map[this.value];
+                        return parent.COMMON_CODE['PMS_CLEAN_STATUS'].map[this.value];
                     },
                 },
                 {
@@ -226,12 +226,12 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                                 optionValue: 'code',
                                 optionText: 'name',
                             },
-                            options: parent.COMMON_CODE['SVC_STTUS'],
+                            options: parent.COMMON_CODE['PMS_SVC_STATUS'],
                         },
                     },
                     formatter: function () {
                         if (!this.value) return '';
-                        return parent.COMMON_CODE['SVC_STTUS'].map[this.value];
+                        return parent.COMMON_CODE['PMS_SVC_STATUS'].map[this.value];
                     },
                 },
             ],

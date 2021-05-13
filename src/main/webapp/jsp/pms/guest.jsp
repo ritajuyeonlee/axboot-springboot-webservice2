@@ -172,7 +172,7 @@
                     </div>
                 </form>
 
-                <div class="ax-button-group" data-fit-height-aside="grid-view-01">
+                <div class="ax-button-group" data-fit-height-aside="grid-view-02">
                     <div class="left">
                         <h2><i class="cqc-list"></i>
                             투숙 이력 </h2>

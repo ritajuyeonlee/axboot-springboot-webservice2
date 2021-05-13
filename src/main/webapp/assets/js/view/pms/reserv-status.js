@@ -39,25 +39,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     ITEM_DEL: function (caller, act, data) {
         caller.gridView01.delRow('selected');
     },
-    MODAL_OPEN: function (caller, act, data) {
-        if (!data) data = {};
-
-        axboot.modal.open({
-            width: 780,
-            height: 450,
-            iframe: {
-                param: 'id=' + (data.id || ''),
-                url: 'reservation-content.jsp',
-            },
-            header: { title: '모달등록' },
-            callback: function (data) {
-                if (data && data.dirty) {
-                    ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
-                }
-                this.close();
-            },
-        });
-    },
     dispatch: function (caller, act, data) {
         var result = ACTIONS.exec(caller, act, data);
         if (result != 'error') {
@@ -89,12 +70,33 @@ fnObj.pageButtonView = axboot.viewExtend({
             save: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
             },
-            fn1: function () {},
+            excel: function () {},
         });
-        $('[data-page-btn="fn1"]').text('신규등록');
     },
 });
 
+//== view 시작
+/**
+ * searchView
+ */
+fnObj.searchView = axboot.viewExtend(axboot.searchView, {
+    initView: function () {
+        this.target = $(document['searchView0']);
+        this.target.attr('onsubmit', 'return ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);');
+        this.filter = $('#filter');
+    },
+    getData: function () {
+        return {
+            pageNumber: this.pageNumber,
+            pageSize: this.pageSize,
+            filter: this.filter.val(),
+        };
+    },
+});
+
+/**
+ * gridView
+ */
 fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
     initView: function () {
         var _this = this;
@@ -234,9 +236,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             delete: function () {
                 ACTIONS.dispatch(ACTIONS.ITEM_DEL);
             },
-            guestsearch: function () {
-                ACTIONS.dispatch(ACTIONS.MODAL_OPEN);
-            },
         });
     },
     getData: function (_type) {
@@ -254,24 +253,5 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
     },
     addRow: function () {
         this.target.addRow({ __created__: true }, 'last');
-    },
-});
-
-//== view 시작
-/**
- * searchView
- */
-fnObj.searchView = axboot.viewExtend(axboot.searchView, {
-    initView: function () {
-        this.target = $(document['searchView0']);
-        this.target.attr('onsubmit', 'return ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);');
-        this.filter = $('#filter');
-    },
-    getData: function () {
-        return {
-            pageNumber: this.pageNumber,
-            pageSize: this.pageSize,
-            filter: this.filter.val(),
-        };
     },
 });

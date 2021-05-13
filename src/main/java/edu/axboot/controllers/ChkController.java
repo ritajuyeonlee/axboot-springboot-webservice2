@@ -13,9 +13,8 @@ import edu.axboot.domain.pms.chk.ChkService;
 import javax.inject.Inject;
 import java.util.List;
 
-
 @RequiredArgsConstructor
-@Controller
+@RestController
 
 public class ChkController extends BaseController {
 
