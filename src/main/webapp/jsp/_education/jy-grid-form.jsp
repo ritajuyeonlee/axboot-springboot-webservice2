@@ -178,7 +178,7 @@
                                     <div data-ax-td-label="" class="" style="width:150px;">비고</div>
                                     <div data-ax-td-wrap="">
                             
-                                        <input type="text" data-ax-path="useYn" class="form-control" value="" >
+                                        <textarea name="remark" data-ax-path="remark" rows="5" class="form-control"></textarea>
                             
                                     </div>
                                 </div>   

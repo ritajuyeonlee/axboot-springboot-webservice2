@@ -22,7 +22,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SAVE: function (caller, act, data) {
         if (caller.formView01.validate()) {
             var item = caller.formView01.getData();
-
             var fileIds = [];
             var files = ax5.util.deepCopy(caller.formView01.UPLOAD.uploadedFiles);
             $.each(files, function (idx, o) {
@@ -219,7 +218,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         if (item.bizno && !(pattern = /^([0-9]{3})\-?([0-9]{2})\-?([0-9]{5})$/).test(item.bizno)) {
             axDialog.alert('사업자번호 형식을 확인하세요.'),
                 function () {
-                    $('[data-ax-path="bizno"]').focus();
+                    $('[data-ax-path="tel"]').focus();
                 };
             return false;
         }

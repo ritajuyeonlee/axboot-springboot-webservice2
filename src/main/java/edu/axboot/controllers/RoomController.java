@@ -19,17 +19,6 @@ public class RoomController extends BaseController {
     @Inject
     private RoomService roomService;
 
-    /*@PostMapping("/api/v1/room")
-    public ApiResponse save(@RequestBody RoomSaveRequestDto requestDto) {
-        roomService.save(requestDto);
-        return ok();
-    }
-    @PutMapping("/api/v1/room/{id}")
-    public ApiResponse update(@PathVariable Long id, @RequestBody RoomUpdateRequestDto requestDto) {
-        roomService.update(id, requestDto);
-        return ok();
-    }*/
-
     @PostMapping("/api/v1/room")
     public ApiResponse save(@RequestBody List<Room> request) {
         roomService.save(request);
@@ -41,6 +30,15 @@ public class RoomController extends BaseController {
         List<RoomListResponseDto> list = roomService.findByRoomTypCd(roomTypCd);
         return Responses.ListResponse.of(list);
     }
-
+     /*@PostMapping("/api/v1/room")
+        public ApiResponse save(@RequestBody RoomSaveRequestDto requestDto) {
+            roomService.save(requestDto);
+            return ok();
+        }
+        @PutMapping("/api/v1/room/{id}")
+        public ApiResponse update(@PathVariable Long id, @RequestBody RoomUpdateRequestDto requestDto) {
+            roomService.update(id, requestDto);
+            return ok();
+        }*/
 
 }
