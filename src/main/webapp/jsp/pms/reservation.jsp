@@ -119,7 +119,9 @@
                                                 <div data-ax-td-label style="width:120px;">생년월일</div>
                                                 <div data-ax-td-wrap>
                                                 <input type="date" data-ax-path="brth" class="form-control W100" style="display:inline-block;" name="brth">
-                                                 <input type="radio" name="gender" data-ax-path="gender" value="male"> 남
+                                                &nbsp;
+                                                &nbsp;
+                                                <input type="radio" name="gender" data-ax-path="gender" value="male"> 남
                                                  <input type="radio" name="gender" data-ax-path="gender" value="femail"> 여
                                                 </div>
                                             </div>
@@ -192,8 +194,21 @@
                                 <div data-ax-td style="width:100%">
                                     <div data-ax-td-label style="width:150px;">
                                         <div tr>투숙메모</div>
-                                
                                     </div>
+
+                                    <!-- 목록 -->
+                                    <div class="ax-button-group" data-fit-height-aside="grid-view-01">
+                                        <div class="left">
+                                            <h2><i class=""></i> 투숙메모 </h2>
+                                        </div>
+                                        <div class="right">
+                                            <button type="button" class="btn btn-default" data-grid-view-01-btn="create">
+                                                <i class="cqc-erase"></i> 등록
+                                            </button>
+                                        </div>
+                                    </div>
+
+
                                     <div wrap>
 
                                         <div data-ax5grid="grid-view-01" data-fit-height-content="grid-view-01" style="height: 300px;"></div>

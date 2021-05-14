@@ -16,7 +16,7 @@
                                 var modalParams = { id: "${id}" };
                             </script>
                             <script type="text/javascript"
-                                src="<c:url value='/assets/js/view/_education/teach-grid-modal-content.js' />"></script>
+                                src="<c:url value='/assets/js/view/_education/reservation-content.js' />"></script>
                         </jsp:attribute>
                         <jsp:attribute name="header">
                             <h1 class="title">

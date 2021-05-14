@@ -275,3 +275,21 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
         };
     },
 });
+
+fnObj.formView01 = axboot.viewExtend(axboot.formView, {
+    initEvent: function () {
+        axboot.buttonClick(this, 'data-form-view-01-btn', {
+            guestsearch: function () {
+                ACTIONS.dispatch(ACTIONS.MODAL_OPEN);
+            },
+        });
+    },
+    validate: function () {},
+
+    initView: function () {
+        var _this = this;
+        _this.target = $('.js-form'); //폼 타겟팅
+
+        this.initEvent();
+    },
+});
