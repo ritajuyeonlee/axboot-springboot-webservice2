@@ -84,7 +84,9 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
         this.target = $(document['searchView0']);
         this.target.attr('onsubmit', 'return ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);');
 
-        this.roomTypCd = $('.js-roomTypCd');
+        this.roomTypCd = $('.js-roomTypCd').on('change', function () {
+            ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
+        });
 
         this.filter = $('#filter');
     },

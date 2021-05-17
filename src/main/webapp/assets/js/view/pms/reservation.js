@@ -4,7 +4,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         axboot.ajax({
             type: 'GET',
             url: '/api/v1/chk',
-            data: caller.searchView.getData(),
+            data: caller.formView.getData(),
             callback: function (res) {
                 caller.gridView01.setData(res);
             },
@@ -44,16 +44,14 @@ var ACTIONS = axboot.actionExtend(fnObj, {
 
         axboot.modal.open({
             width: 780,
-            height: 450,
+            height: 520,
             iframe: {
-                param: 'id=' + (data.id || ''),
+                param: 'guestNm=' + (data.guestNm || '') + '&guestTel=' + (data.guestTel || '') + '&email=' + (data.email || ''),
                 url: 'reservation-content.jsp',
             },
-            header: { title: '모달등록' },
+            header: { title: '투숙객 조회' },
             callback: function (data) {
-                if (data && data.dirty) {
-                    ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
-                }
+                caller.formView01.setGuestValue(data);
                 this.close();
             },
         });
@@ -72,7 +70,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
 // fnObj 기본 함수 스타트와 리사이즈
 fnObj.pageStart = function () {
     this.pageButtonView.initView();
-    this.searchView.initView();
+    this.formView01.initView();
     this.gridView01.initView();
 
     ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
@@ -234,9 +232,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             delete: function () {
                 ACTIONS.dispatch(ACTIONS.ITEM_DEL);
             },
-            guestsearch: function () {
-                ACTIONS.dispatch(ACTIONS.MODAL_OPEN);
-            },
         });
     },
     getData: function (_type) {
@@ -261,35 +256,52 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
 /**
  * searchView
  */
-fnObj.searchView = axboot.viewExtend(axboot.searchView, {
-    initView: function () {
-        this.target = $(document['searchView0']);
-        this.target.attr('onsubmit', 'return ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);');
-        this.filter = $('#filter');
+fnObj.formView01 = axboot.viewExtend(axboot.formView, {
+    getDefaultData: function () {
+        return {};
     },
     getData: function () {
-        return {
-            pageNumber: this.pageNumber,
-            pageSize: this.pageSize,
-            filter: this.filter.val(),
-        };
+        var data = this.modelFormatter.getClearData(this.model.get()); // 모델의 값을 포멧팅 전 값으로 치환.
+        return $.extend({}, data);
     },
-});
+    setData: function (data) {
+        if (typeof data === 'undefined') data = this.getDefaultData();
+        data = $.extend({}, data);
 
-fnObj.formView01 = axboot.viewExtend(axboot.formView, {
-    initEvent: function () {
+        this.model.setModel(data);
+        this.modelFormatter.formatting(); // 입력된 값을 포메팅 된 값으로 변경
+    },
+    initView: function () {
+        var _this = this;
+
+        _this.target = $('.js-form');
+
+        this.model = new ax5.ui.binder();
+        this.model.setModel(this.getDefaultData(), this.target);
+        this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
+
         axboot.buttonClick(this, 'data-form-view-01-btn', {
             guestsearch: function () {
-                ACTIONS.dispatch(ACTIONS.MODAL_OPEN);
+                ACTIONS.dispatch(ACTIONS.MODAL_OPEN, _this.getModalParams());
             },
         });
     },
-    validate: function () {},
-
-    initView: function () {
-        var _this = this;
-        _this.target = $('.js-form'); //폼 타겟팅
-
-        this.initEvent();
+    getModalParams: function () {
+        return {
+            guestNm: this.model.get('guestNm'),
+            guestTel: this.model.get('guestTel'),
+            email: this.model.get('email'),
+        };
+    },
+    setGuestValue: function (data) {
+        if (!data) return;
+        console.log(data);
+        this.model.set('guestNm', data.guestNm);
+        this.model.set('guestTel', data.guestTel);
+        this.model.set('email', data.email);
+        this.model.set('guestNmEng;', data.guestNmEng);
+        this.model.set('brth;', data.brth);
+        this.model.set('gender;', data.gender);
+        this.model.set('langCd;;', data.langCd);
     },
 });

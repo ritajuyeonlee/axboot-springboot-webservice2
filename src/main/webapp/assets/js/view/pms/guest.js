@@ -10,7 +10,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             callback: function (res) {
                 caller.formView01.clear();
                 caller.gridView01.setData(res);
-                caller.gridView02.setData(res);
             },
             options: {
                 // axboot.ajax 함수에 2번째 인자는 필수가 아닙니다. ajax의 옵션을 전달하고자 할때 사용합니다.
@@ -23,12 +22,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SAVE: function (caller, act, data) {
         if (caller.formView01.validate()) {
             var item = caller.formView01.getData();
-            var fileIds = [];
-            var files = ax5.util.deepCopy(caller.formView01.UPLOAD.uploadedFiles);
-            $.each(files, function (idx, o) {
-                fileIds.push(o.id);
-            });
-            item.fileIdList = fileIds;
+
             if (!item.id) item.__created__ = true;
             axboot.ajax({
                 type: 'POST',
@@ -54,6 +48,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             url: '/api/v1/guest/' + id,
             callback: function (res) {
                 caller.formView01.setData(res);
+                //caller.gridView02.setData(res);
             },
         });
     },
@@ -61,7 +56,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         axDialog.confirm({ msg: LANG('ax.script.form.clearconfirm') }, function () {
             if (this.key == 'ok') {
                 caller.formView01.clear();
-                $('[data-ax-path="companyNm"]').focus();
+                $('[data-ax-path="guestNm;"]').focus();
             }
         });
     },
@@ -113,30 +108,27 @@ fnObj.pageButtonView = axboot.viewExtend({
 fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
         this.target = $(document['searchView0']);
-        this.target.attr('onsubmit', 'return false;');
+        this.target.attr('onsubmit', 'return ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);');
         this.target.on('keydown.search', 'input, .form-control', function (e) {
             if (e.keyCode === 13) {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
             }
         });
-
-        this.useYn = $('.js-useYn').on('change', function () {
-            ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
-        });
-        this.filter = $('.js-filter');
+        this.guestNm = $('.js-guestNm');
+        this.guestTel = $('.js-guestTel');
+        this.email = $('.js-email');
     },
     getData: function () {
         return {
-            pageNumber: this.pageNumber || 0,
-            pageSize: this.pageSize || 50,
-            useYn: this.useYn.val(),
-            filter: this.filter.val(),
+            guestNm: this.guestNm.val(),
+            guestTel: this.guestTel.val(),
+            email: this.email.val(),
         };
     },
 });
 
 /**
- * gridView
+ * gridViewv
  */
 fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
     initView: function () {
@@ -155,6 +147,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 { key: 'gender', label: '성별', width: 100, align: 'left', editor: 'readonly' },
                 { key: 'guestTel', label: '연락처', width: 100, align: 'center', editor: 'readonly' },
                 { key: 'email', label: '이메일', width: 100, align: 'center', editor: 'readonly' },
+                { key: 'langCd', label: '언어', width: 100, align: 'center', editor: 'readonly' },
                 { key: 'brth', label: '생년월일', width: 100, align: 'center', editor: 'readonly' },
             ],
             body: {
@@ -220,7 +213,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
             }
         }
 
-        if (item.bizno && !(pattern = /^([0-9]{3})\-?([0-9]{4})\-?([0-9]{4})$/).test(item.bizno)) {
+        if (item.guestTel && !(pattern = /^([0-9]{3})\-?([0-9]{4})\-?([0-9]{4})$/).test(item.guestTel)) {
             axDialog.alert('전화번호 형식을 확인하세요.'),
                 function () {
                     $('[data-ax-path="guestTel"]').focus();
@@ -230,123 +223,16 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
 
         return true;
     },
-    initUploader: function () {
-        var _this = this;
-        _this.UPLOAD = new ax5.ui.uploader({
-            //debug: true,
-            target: $('[data-ax5uploader="upload1"]'),
-            form: {
-                action: '/api/v1/files/upload',
-                fileName: 'file',
-            },
-            multiple: true,
-            manualUpload: false,
-            progressBox: true,
-            progressBoxDirection: 'left',
-            dropZone: {
-                target: $('[data-uploaded-box="upload1"]'),
-            },
-            uploadedBox: {
-                target: $('[data-uploaded-box="upload1"]'),
-                icon: {
-                    download: '<i class="cqc-download" aria-hidden="true"></i>',
-                    delete: '<i class="cqc-minus" aria-hidden="true"></i>',
-                },
-                columnKeys: {
-                    name: 'fileNm',
-                    type: 'extension',
-                    size: 'fileSize',
-                    uploadedName: 'saveName',
-                    uploadedPath: '',
-                    downloadPath: '',
-                    previewPath: '',
-                    thumbnail: '',
-                },
-                lang: {
-                    supportedHTML5_emptyListMsg: '<div class="text-center" style="padding-top: 30px;">첨부파일이 없습니다. </div>',
-                    emptyListMsg: '<div class="text-center" style="padding-top: 30px;">Empty of List.</div>',
-                },
-                onchange: function () {},
-                onclick: function () {
-                    var fileIndex = this.fileIndex;
-                    var file = this.uploadedFiles[fileIndex];
-
-                    switch (this.cellType) {
-                        case 'delete':
-                            axDialog.confirm(
-                                {
-                                    theme: 'danger',
-                                    msg: '삭제하시겠습니까?',
-                                },
-                                function () {
-                                    if (this.key == 'ok') {
-                                        $.ajax({
-                                            contentType: 'application/json',
-                                            method: 'get',
-                                            url: '/api/v1/files/delete',
-                                            /*
-                                        data: JSON.stringify([{
-                                            id: file.id
-                                        }]),
-                                        */
-                                            data: { id: file.id },
-                                            success: function (res) {
-                                                if (res.error) {
-                                                    alert(res.error.message);
-                                                    return;
-                                                }
-                                                _this.UPLOAD.removeFile(fileIndex);
-                                            },
-                                        });
-                                    }
-                                }
-                            );
-                            break;
-
-                        case 'download':
-                            if (file.download) {
-                                location.href = file.download;
-                            }
-                            break;
-                    }
-                },
-            },
-            validateSelectedFiles: function () {
-                var limitCount = 5;
-                if (this.uploadedFiles.length + this.selectedFiles.length > limitCount) {
-                    alert('You can not upload more than ' + limitCount + ' files.');
-                    return false;
-                }
-                return true;
-            },
-            onprogress: function () {},
-            onuploaderror: function () {
-                console.log(this.error);
-                axDialog.alert(this.error.message);
-            },
-            onuploaded: function () {},
-            onuploadComplete: function () {},
-        });
-    },
 
     initView: function () {
         var _this = this;
-        //fnObj.formView01// 다른프레임넘어오는 코드오면 다시 window가르키게되는거 방지
-        // setTimeout(function () {
-        //     this //window
-        // })
 
         _this.target = $('.js-form'); //폼 타겟팅
-        // _this.model = new ax5.ui.binder(); //바인더객체 주입
-        // _this.model.setModel({}, _this.target);
-
-        // console.log(_this.model.get());
 
         this.model = new ax5.ui.binder();
         this.model.setModel(this.getDefaultData(), this.target);
         this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
 
-        this.initUploader();
         console.log(this.model);
         this.initEvent();
     },

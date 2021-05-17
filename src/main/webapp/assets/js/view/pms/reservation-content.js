@@ -7,49 +7,58 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         }
     },
     PAGE_SEARCH: function (caller, act, data) {
-        if (!modalParams.id) return false;
         axboot.ajax({
             type: 'GET',
-            url: '/api/v1/chk/' + modalParams.id,
+            url: '/api/v1/guest',
+            data: modalParams,
+            callback: function (res) {
+                caller.formView01.clear();
+                caller.gridView01.setData(res);
+            },
+            options: {
+                // axboot.ajax 함수에 2번째 인자는 필수가 아닙니다. ajax의 옵션을 전달하고자 할때 사용합니다.
+                onError: function (err) {
+                    console.log(err);
+                },
+            },
+        });
+    },
+    PAGE_CHOICE: function (caller, act, data) {
+        var list = caller.gridView01.getData('selected');
+        if (list.length > 0) {
+            if (parent && parent.axboot && parent.axboot.modal) {
+                parent.axboot.modal.callback(list[0]);
+            }
+        } else {
+            alert(LANG('ax.script.requireselect'));
+        }
+    },
+
+    ITEM_CLICK: function (caller, act, data) {
+        //그리드에값을 바인딩 할수있으나 id를 통해서 조회후 바인딩하도록 프로세스 정의
+        //fnObj.formView01.setData(this.item);
+        var id = (data || {}).id;
+        if (!id) {
+            axDialog.alert('id는 필수입니다.');
+            return false;
+        }
+        axboot.ajax({
+            type: 'GET',
+            url: '/api/v1/guest/' + id,
             callback: function (res) {
                 caller.formView01.setData(res);
             },
         });
     },
-    PAGE_SAVE: function (caller, act, data) {
-        if (caller.formView01.validate()) {
-            var item = caller.formView01.getData();
-            if (!item.id) item.__created__ = true;
-            axboot.ajax({
-                type: 'POST',
-                url: '/api/v1/chk',
-                data: JSON.stringify(item),
-                callback: function (res) {
-                    axDialog.alert('저장 되었습니다', function () {
-                        if (parent && parent.axboot && parent.axboot.modal) {
-                            parent.axboot.modal.callback({ dirty: true });
-                        }
-                    });
-                },
-            });
-        }
-    },
-    PAGE_DELETE: function (caller, act, data) {
-        if (!modalParams.id) return false;
-        if (!confirm(LANG('ax.script.deleteconfirm'))) return;
-
-        axboot.ajax({
-            type: 'DELETE',
-            url: '/api/v1/education/teachgridform?ids=' + modalParams.id,
-            callback: function (res) {
-                axDialog.alert('삭제 되었습니다', function () {
-                    if (parent && parent.axboot && parent.axboot.modal) {
-                        parent.axboot.modal.callback({ dirty: true });
-                    }
-                });
-            },
+    FORM_CLEAR: function (caller, act, data) {
+        axDialog.confirm({ msg: LANG('ax.script.form.clearconfirm') }, function () {
+            if (this.key == 'ok') {
+                caller.formView01.clear();
+                $('[data-ax-path="companyNm"]').focus();
+            }
         });
     },
+
     dispatch: function (caller, act, data) {
         var result = ACTIONS.exec(caller, act, data);
         if (result != 'error') {
@@ -68,13 +77,10 @@ fnObj.pageStart = function () {
     var _this = this;
 
     _this.pageButtonView.initView();
+    _this.gridView01.initView();
     _this.formView01.initView();
 
-    if (!modalParams.id) {
-        $('[data-page-btn="delete"]').prop('disabled', true);
-    } else {
-        ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
-    }
+    ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
 };
 
 fnObj.pageResize = function () {};
@@ -83,15 +89,66 @@ fnObj.pageButtonView = axboot.viewExtend({
     initView: function () {
         axboot.buttonClick(this, 'data-page-btn', {
             save: function () {
-                ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
+                ACTIONS.dispatch(ACTIONS.PAGE_CHOICE);
             },
-            delete: function () {
-                ACTIONS.dispatch(ACTIONS.PAGE_DELETE);
-            },
+
             close: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_CLOSE);
             },
         });
+    },
+});
+/**
+ * gridView
+ */
+
+fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
+    initView: function () {
+        var _this = this;
+
+        this.target = axboot.gridBuilder({
+            frozenColumnIndex: 0,
+            multipleSelect: false,
+            target: $('[data-ax5grid="grid-view-01"]'),
+            columns: [
+                { key: 'guestNm', label: '이름', width: 100, align: 'left', editor: 'readonly' },
+                { key: 'gender', label: '성별', width: 100, align: 'left', editor: 'readonly' },
+                { key: 'guestTel', label: '연락처', width: 100, align: 'center', editor: 'readonly' },
+                { key: 'email', label: '이메일', width: 100, align: 'center', editor: 'readonly' },
+                { key: 'brth', label: '생년월일', width: 100, align: 'center', editor: 'readonly' },
+            ],
+            body: {
+                onClick: function () {
+                    this.self.select(this.dindex, { selectedClear: true });
+                    ACTIONS.dispatch(ACTIONS.ITEM_CLICK, this.item);
+                },
+            },
+        });
+
+        axboot.buttonClick(this, 'data-grid-view-01-btn', {
+            add: function () {
+                ACTIONS.dispatch(ACTIONS.ITEM_ADD);
+            },
+            delete: function () {
+                ACTIONS.dispatch(ACTIONS.ITEM_DEL);
+            },
+        });
+    },
+    getData: function (_type) {
+        var list = [];
+        var _list = this.target.getList(_type);
+
+        if (_type == 'modified' || _type == 'deleted') {
+            list = ax5.util.filter(_list, function () {
+                return this.id;
+            });
+        } else {
+            list = _list;
+        }
+        return list;
+    },
+    addRow: function () {
+        this.target.addRow({ __created__: true }, 'last');
     },
 });
 
@@ -100,7 +157,7 @@ fnObj.pageButtonView = axboot.viewExtend({
  */
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     getDefaultData: function () {
-        return { useYn: 'Y' };
+        return {};
     },
     getData: function () {
         var data = this.modelFormatter.getClearData(this.model.get()); // 모델의 값을 포멧팅 전 값으로 치환.
@@ -136,10 +193,10 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
             }
         }
 
-        if (item.bizno && !(pattern = /^([0-9]{3})\-?([0-9]{2})\-?([0-9]{5})$/).test(item.bizno)) {
-            axDialog.alert('사업자번호 형식을 확인하세요.'),
+        if (item.bizno && !(pattern = /^([0-9]{3})\-?([0-9]{4})\-?([0-9]{4})$/).test(item.bizno)) {
+            axDialog.alert('연락처 형식을 확인하세요.'),
                 function () {
-                    $('[data-ax-path="bizno"]').focus();
+                    $('[data-ax-path="guestTel"]').focus();
                 };
             return false;
         }

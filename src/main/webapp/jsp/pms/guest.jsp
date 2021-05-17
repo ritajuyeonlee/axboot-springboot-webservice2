@@ -7,15 +7,9 @@
 <ax:set key="page_auto_height" value="true"/>
 
 <ax:layout name="base">
-    <jsp:attribute name="css">
-        <link rel="stylesheet" type="text/css"
-            href="https://cdn.rawgit.com/ax5ui/ax5ui-uploader/master/dist/ax5uploader.css" />
-    </jsp:attribute>
     <jsp:attribute name="script">
         <ax:script-lang key="ax.script" var="LANG" />
         <ax:script-lang key="ax.base" var="COL" />
-        <script type="text/javascript" src="https://cdn.rawgit.com/ax5ui/ax5ui-uploader/master/dist/ax5uploader.js"></script>
-        <script type="text/javascript" src="<c:url value='/assets/plugins-fix/ckeditor/ckeditor.js' />"></script>
         <script type="text/javascript" src="<c:url value='/assets/js/view/pms/guest.js' />"></script>
     </jsp:attribute>
     <jsp:attribute name="js">
@@ -41,19 +35,19 @@
                     <div data-ax-td style="width:300px">
                         <div data-ax-td-label>이름</div>
                         <div data-ax-td-wrap>
-                            <input type="text" name="filter" class="js-filter form-control"  />
+                            <input type="text" class="js-guestNm form-control"  />
                         </div>
                     </div>
                     <div data-ax-td style="width:300px">
                         <div data-ax-td-label>전화번호</div>
                         <div data-ax-td-wrap>
-                            <input type="text" name="filter" class="js-filter form-control"/>
+                            <input type="text" class="js-guestTel form-control" />
                         </div>
                     </div>
                     <div data-ax-td style="width:500px">
                         <div data-ax-td-label>이메일</div>
                         <div data-ax-td-wrap>
-                            <input type="text" name="filter" class="js-filter form-control" />
+                            <input type="text"  class="js-email form-control"/>
                         </div>
                     </div>
                 </div>
@@ -91,95 +85,85 @@
                     
                     <div data-ax-tbl="" id="" class="ax-form-tbl" style="">
                         <div data-ax-tr="" id="" class="" style="">
-                            <div data-ax-td="" id="" class="" style="width:50%;">
-                                <div data-ax-td-label="" class="" style="width:150px;">ID</div>
-                                <div data-ax-td-wrap="">
-    
-                                    <input type="text" data-ax-path="id" class="form-control" value="" readonly="readonly">
-    
-                                </div>
-                            </div>
+                            
                             <div data-ax-td=""  style="width:50%;">
-                                <div data-ax-td-label="" class="" style="width:150px;">이름</div>
+                                <div data-ax-td-label="" class="" style="width:100px;">이름</div>
                                 <div data-ax-td-wrap="">
     
                                     <input type="text" data-ax-path="guestNm" class="form-control" value="">
     
                                 </div>
                             </div>
-    
-                        </div>
-                        <div data-ax-tr="" id="" class="" style="">
-                            <div data-ax-td="" id="" class="" style="width:50%;">
-                                <div data-ax-td-label="" class="" style="width:150px;">연락처</div>
+                            <div data-ax-td="" style="width:50%;">
+                                <div data-ax-td-label="" class="" style="width:100px;">영문 이름</div>
                                 <div data-ax-td-wrap="">
-    
-                                    <input type="text" data-ax-path="guestTel" class="form-control" value="">
-    
-                                </div>
-                            </div>
-                            <div data-ax-td="" id="" class="" style="width:50%;">
-                                <div data-ax-td-label="" class="" style="width:150px;">이메일</div>
-                                <div data-ax-td-wrap="">
-    
-                                    <input type="text" data-ax-path="email" class="form-control" value="">
-    
+                            
+                                    <input type="text" data-ax-path="guestNmEng" class="form-control" value="">
+                            
                                 </div>
                             </div>
     
                         </div>
                         <div data-ax-tr="" id="" class="" style="">
                             <div data-ax-td="" id="" class="" style="width:50%;">
-                                <div data-ax-td-label="" class="" style="width:150px;">성별</div>
+                                <div data-ax-td-label="" class="" style="width:100px;">연락처</div>
                                 <div data-ax-td-wrap="">
     
-                                    <input type="text" data-ax-path="gender" class="form-control" value="">
+                                    <input type="text" name="guestTel" data-ax-path="guestTel" class="form-control" placeholder="000-0000-0000">
     
                                 </div>
                             </div>
                             <div data-ax-td="" id="" class="" style="width:50%;">
-                                <div data-ax-td-label="" class="" style="width:150px;">생일</div>
+                                <div data-ax-td-label="" class="" style="width:100px;">이메일</div>
                                 <div data-ax-td-wrap="">
     
-                                    <input type="text" data-ax-path="gender" class="form-control" value="">
+                                    <input type="text" name="email" data-ax-path="email" class="form-control"  placeholder="x@x.xx">
     
                                 </div>
                             </div>
     
+                        </div>
+                        <div data-ax-tr>
+                            <div data-ax-td style="width:50%">
+                                <div data-ax-td-label style="width:100px;">언어</div>
+                                <div data-ax-td-wrap>
+                                    <ax:common-code groupCd="PMS_LANG" clazz="js-langCd;" emptyText="전체" />
+                                </div>
+                            </div>
+                            <div data-ax-td style="width:50%">
+                                <div data-ax-td-label style="width:100px;">생년월일</div>
+                                <div data-ax-td-wrap>
+                                    <input type="date" data-ax-path="brth" class="form-control W150" style="display:inline-block;" name="brth">
+                                    <input type="radio" name="gender" data-ax-path="gender" value="남"> 남
+                                    <input type="radio" name="gender" data-ax-path="gender" value="여"> 여
+                                </div>
+                            </div>
                         </div>
                        
                         <div data-ax-tr="" id="" class="" style="">
                             
                             <div data-ax-td="" id="" class="" style="width:50%;">
-                                <div data-ax-td-label="" class="" style="width:150px;">비고</div>
+                                <div data-ax-td-label="" class="" style="width:100px;">비고</div>
                                 <div data-ax-td-wrap="">
     
-                                <textarea name="rmk" data-ax-path="rmk" rows="5" class="form-control"></textarea>
+                                <textarea name="rmk" data-ax-path="rmk" rows="2" class="form-control"></textarea>
     
                                 </div>
                             </div>
                         </div>
-                        <ax:tr labelWidth="120px">
-                            <ax:td label="첨부파일 <i class='icon-info-circled cp'></i>" width="100%">
-                                <div data-ax5uploader="upload1">
-                                    <input type="hidden" id="targetType" name="targetType" value="EDUCATION_TEACH" />
-                                    <button data-ax5uploader-button="selector" class="btn btn-primary">Select File (*/*)</button>
-                                    (Upload Max fileSize 100MB)
-                                    <div data-uploaded-box="upload1" data-ax5uploader-uploaded-box="inline"></div>
-                                </div>
-                            </ax:td>
-                        </ax:tr>
+                        
                     </div>
                 </form>
 
                 <div class="ax-button-group" data-fit-height-aside="grid-view-02">
                     <div class="left">
+                        <br>
                         <h2><i class="cqc-list"></i>
                             투숙 이력 </h2>
                     </div>
                 </div>
 
-                <div data-ax5grid="grid-view-02" data-fit-height-content="grid-view-02" style="height: 300px;"></div>
+                <div data-ax5grid="grid-view-02" data-fit-height-content="grid-view-02" style="height: 200px;"></div>
                 
             </div>
         </div>
