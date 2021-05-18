@@ -91,7 +91,6 @@ fnObj.pageButtonView = axboot.viewExtend({
             save: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_CHOICE);
             },
-
             close: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_CLOSE);
             },
@@ -122,15 +121,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                     this.self.select(this.dindex, { selectedClear: true });
                     ACTIONS.dispatch(ACTIONS.ITEM_CLICK, this.item);
                 },
-            },
-        });
-
-        axboot.buttonClick(this, 'data-grid-view-01-btn', {
-            add: function () {
-                ACTIONS.dispatch(ACTIONS.ITEM_ADD);
-            },
-            delete: function () {
-                ACTIONS.dispatch(ACTIONS.ITEM_DEL);
             },
         });
     },
@@ -170,6 +160,13 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         this.model.setModel(data);
         this.modelFormatter.formatting(); // 입력된 값을 포메팅 된 값으로 변경
     },
+    initEvent: function () {
+        axboot.buttonClick(this, 'data-form-view-01-btn', {
+            'form-clear': function () {
+                ACTIONS.dispatch(ACTIONS.FORM_CLEAR);
+            },
+        });
+    },
     validate: function () {
         var item = this.model.get();
 
@@ -203,13 +200,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
 
         return true;
     },
-    initEvent: function () {
-        axboot.buttonClick(this, 'data-form-view-01-btn', {
-            'form-clear': function () {
-                ACTIONS.dispatch(ACTIONS.FORM_CLEAR);
-            },
-        });
-    },
+
     initView: function () {
         var _this = this; // fnObj.formView01
 

@@ -125,6 +125,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                         },
                     },
                 },
+                { key: 'guestId', label: '투숙객ID', width: 100, align: 'center', editor: 'text' },
                 { key: 'guestNm', label: '투숙객 명', width: 100, align: 'center', editor: 'text' },
                 {
                     key: 'roomTypCd',

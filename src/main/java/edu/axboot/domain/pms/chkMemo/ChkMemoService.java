@@ -1,5 +1,6 @@
 package edu.axboot.domain.pms.chkMemo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import edu.axboot.domain.BaseService;
 import javax.inject.Inject;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Service
 public class ChkMemoService extends BaseService<ChkMemo, Long> {
+    @Autowired
     private ChkMemoRepository chkMemoRepository;
 
     @Inject

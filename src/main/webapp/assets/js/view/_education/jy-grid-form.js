@@ -19,16 +19,6 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         return false;
     },
     PAGE_SAVE: function (caller, act, data) {
-        //var item = caller.formView01.getData(); //foreach 대신 getData새로만듬
-        // caller.formView01.target.find('input,select').each(function (i, elem) {
-        //     //elem에 셀렉트박스
-        //     var $elem = $(elem); //==$(this)
-        //     //제이쿼리 이치문 안의 디스는 엘리먼트 가르킴
-        //     var name = $elem.data('axPath'); //data-ax-path 에서 데이터 사라지고 카멜케이스로 바꿈
-        //     var value = $elem.val() || '';
-        //     item[name] = value;
-        // });
-
         if (caller.formView01.validate()) {
             var item = caller.formView01.getData();
             var fileIds = [];

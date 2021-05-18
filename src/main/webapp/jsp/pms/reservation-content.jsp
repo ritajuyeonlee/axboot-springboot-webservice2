@@ -25,12 +25,9 @@
                        
                         <jsp:body>
 
-                            <ax:page-buttons>
-                                <button type="button" class="btn btn-default" data-page-btn="close"> 닫기 </button>
-                                <button type="button" class="btn btn-info" data-page-btn="save"> 선택 </button>                              
-                            </ax:page-buttons>
+                            
 
-                            <br>
+                            
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -58,58 +55,57 @@
                             
                                             <div data-ax-tbl="" id="" class="ax-form-tbl" style="">
                                                 <div data-ax-tr="" id="" class="" style="">
-                                                    <div data-ax-td="" id="" class="" style="width:50%;">
-                                                        <div data-ax-td-label="" class="" style="width:150px;">ID</div>
+                                                    
+                                                    <div data-ax-td="" style="width:50%;">
+                                                        <div data-ax-td-label="" class="" style="width:100px;">이름</div>
                                                         <div data-ax-td-wrap="">
                             
-                                                            <input type="text" data-ax-path="id" class="form-control" value="" readonly="readonly">
+                                                            <input type="text" data-ax-path="guestNm" class="form-control"readonly="readonly">
                             
                                                         </div>
                                                     </div>
                                                     <div data-ax-td="" style="width:50%;">
-                                                        <div data-ax-td-label="" class="" style="width:150px;">이름</div>
+                                                        <div data-ax-td-label="" class="" style="width:100px;">영문 이름</div>
                                                         <div data-ax-td-wrap="">
-                            
-                                                            <input type="text" data-ax-path="guestNm" class="form-control" value="">
-                            
+                                                    
+                                                            <input type="text" data-ax-path="guestNmEng" class="form-control" readonly="readonly">
+                                                    
                                                         </div>
                                                     </div>
                             
                                                 </div>
                                                 <div data-ax-tr="" id="" class="" style="">
                                                     <div data-ax-td="" id="" class="" style="width:50%;">
-                                                        <div data-ax-td-label="" class="" style="width:150px;">연락처</div>
+                                                        <div data-ax-td-label="" class="" style="width:100px;">연락처</div>
                                                         <div data-ax-td-wrap="">
                             
-                                                            <input type="text" data-ax-path="guestTel" class="form-control" value="">
+                                                            <input type="text" data-ax-path="guestTel" class="form-control" readonly="readonly">
                             
                                                         </div>
                                                     </div>
                                                     <div data-ax-td="" id="" class="" style="width:50%;">
-                                                        <div data-ax-td-label="" class="" style="width:150px;">이메일</div>
+                                                        <div data-ax-td-label="" class="" style="width:100px;">이메일</div>
                                                         <div data-ax-td-wrap="">
                             
-                                                            <input type="text" data-ax-path="email" class="form-control" value="">
+                                                            <input type="text" data-ax-path="email" class="form-control" readonly="readonly">
                             
                                                         </div>
                                                     </div>
                             
                                                 </div>
                                                 <div data-ax-tr="" id="" class="" style="">
-                                                    <div data-ax-td="" id="" class="" style="width:50%;">
-                                                        <div data-ax-td-label="" class="" style="width:150px;">성별</div>
-                                                        <div data-ax-td-wrap="">
-                            
-                                                            <input type="text" data-ax-path="gender" class="form-control" value="">
-                            
+                                                    <div data-ax-td style="width:50%">
+                                                        <div data-ax-td-label style="width:100px;">언어</div>
+                                                        <div data-ax-td-wrap>
+                                                            <ax:common-code groupCd="PMS_LANG" id="langCd" clazz="js-langCd;" emptyText="전체" />
                                                         </div>
                                                     </div>
-                                                    <div data-ax-td="" id="" class="" style="width:50%;">
-                                                        <div data-ax-td-label="" class="" style="width:150px;">생일</div>
-                                                        <div data-ax-td-wrap="">
-                            
-                                                            <input type="text" data-ax-path="brth;" class="form-control" value="">
-                            
+                                                    <div data-ax-td style="width:50%">
+                                                        <div data-ax-td-label style="width:100px;">생년월일</div>
+                                                        <div data-ax-td-wrap>
+                                                            <input type="date" data-ax-path="brth" class="form-control W150" style="display:inline-block;">
+                                                            <input type="radio" data-ax-path="gender" value="남"> 남
+                                                            <input type="radio" data-ax-path="gender" value="여"> 여
                                                         </div>
                                                     </div>
                             
@@ -118,10 +114,10 @@
                                                 <div data-ax-tr="" id="" class="" style="">
                             
                                                     <div data-ax-td="" id="" class="" style="width:50%;">
-                                                        <div data-ax-td-label="" class="" style="width:150px;">비고</div>
+                                                        <div data-ax-td-label="" class="" style="width:100px;">비고</div>
                                                         <div data-ax-td-wrap="">
                             
-                                                            <textarea name="rmk" data-ax-path="rmk" rows="2" class="form-control"></textarea>
+                                                            <textarea name="rmk" data-ax-path="rmk" rows="2" class="form-control" readonly="readonly"></textarea>
                             
                                                         </div>
                                                     </div>
@@ -135,6 +131,10 @@
                                 </div>
                             </div>
 
+                            <ax:page-buttons>
+                                <button type="button" class="btn btn-default" data-page-btn="close"> 닫기 </button>
+                                <button type="button" class="btn btn-info" data-page-btn="save"> 선택 </button>
+                            </ax:page-buttons>
 
                         </jsp:body>
                     </ax:layout>

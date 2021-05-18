@@ -53,6 +53,7 @@
                 </div>
             </div>
         </form>
+        
         <div class="H10"></div>
     </div>
     
@@ -67,7 +68,7 @@
                     </div>
                     
                 </div> <div data-ax5grid="grid-view-01" data-fit-height-content="grid-view-01" style="height: 300px;"></div>
-                <form name="excelForm" method="post">
+                <form name="excelForm" class="js-form" method="post">
                 </form>
     
     
@@ -102,8 +103,8 @@
                             
                                 </div>
                             </div>
-    
                         </div>
+
                         <div data-ax-tr="" id="" class="" style="">
                             <div data-ax-td="" id="" class="" style="width:50%;">
                                 <div data-ax-td-label="" class="" style="width:100px;">연락처</div>
@@ -127,15 +128,15 @@
                             <div data-ax-td style="width:50%">
                                 <div data-ax-td-label style="width:100px;">언어</div>
                                 <div data-ax-td-wrap>
-                                    <ax:common-code groupCd="PMS_LANG" clazz="js-langCd;" emptyText="전체" />
+                                    <ax:common-code groupCd="PMS_LANG" name="langCd" dataPath="langCd" clazz="js-langCd;" emptyText="-" />
                                 </div>
                             </div>
                             <div data-ax-td style="width:50%">
                                 <div data-ax-td-label style="width:100px;">생년월일</div>
                                 <div data-ax-td-wrap>
-                                    <input type="date" data-ax-path="brth" class="form-control W150" style="display:inline-block;" name="brth">
-                                    <input type="radio" name="gender" data-ax-path="gender" value="남"> 남
-                                    <input type="radio" name="gender" data-ax-path="gender" value="여"> 여
+                                    <input type="date" data-ax-path="brth" class="form-control W150" style="display:inline-block;" >
+                                    <input type="radio"  data-ax-path="gender" value="남"> 남
+                                    <input type="radio"  data-ax-path="gender" value="여"> 여
                                 </div>
                             </div>
                         </div>

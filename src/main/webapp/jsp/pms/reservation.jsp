@@ -8,6 +8,8 @@
 
 <ax:layout name="base">
     <jsp:attribute name="script">
+        <ax:script-lang key="ax.script" var="LANG" />
+        <ax:script-lang key="ax.base" var="COL" />
         <script type="text/javascript" src="<c:url value='/assets/js/view/pms/reservation.js' />"></script>
     </jsp:attribute>
     <jsp:body>
@@ -113,17 +115,19 @@
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:100px;">언어</div>
                                                 <div data-ax-td-wrap>
-                                                    <ax:common-code groupCd="PMS_LANG" clazz="js-langCd;" emptyText="전체" />
+                                                    <ax:common-code groupCd="PMS_LANG" name="langCd" dataPath="langCd" clazz="js-langCd;" />
                                                 </div>
                                             </div>
+                                            
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:120px;">생년월일</div>
                                                 <div data-ax-td-wrap>
-                                                <input type="date" data-ax-path="brth" class="form-control W100" style="display:inline-block;" name="brth">
-                                                &nbsp;
-                                                &nbsp;
-                                                <input type="radio" name="gender" data-ax-path="gender" value="male"> 남
-                                                <input type="radio" name="gender" data-ax-path="gender" value="femail"> 여
+                                                    <input type="date" data-ax-path="brth" name="brth" class="form-control W150" style="display:inline-block;" >
+                                                    
+                                                      
+                                                        <input type="radio" name="gender" data-ax-path="gender" value="남"> 남
+                                                        <input type="radio" name="gender" data-ax-path="gender" value="여"> 여
+                                                    
                                                 </div>
                                             </div>
                                         </div>

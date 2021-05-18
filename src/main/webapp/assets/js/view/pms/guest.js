@@ -9,6 +9,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             data: paramObj,
             callback: function (res) {
                 caller.formView01.clear();
+                caller.gridView02.clear();
                 caller.gridView01.setData(res);
             },
             options: {
@@ -48,7 +49,8 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             url: '/api/v1/guest/' + id,
             callback: function (res) {
                 caller.formView01.setData(res);
-                //caller.gridView02.setData(res);
+                caller.gridView02.clear();
+                caller.gridView02.setData(res.chkList);
             },
         });
     },
@@ -59,6 +61,12 @@ var ACTIONS = axboot.actionExtend(fnObj, {
                 $('[data-ax-path="guestNm;"]').focus();
             }
         });
+    },
+    EXCEL_DOWN: function (caller, act, data) {
+        var frm = $('.js-form').get(0);
+        frm.action = '/api/v1/guest/exceldown';
+        frm.enctype = 'application/x-www-form-urlencoded';
+        frm.submit();
     },
     dispatch: function (caller, act, data) {
         var result = ACTIONS.exec(caller, act, data);
@@ -93,9 +101,8 @@ fnObj.pageButtonView = axboot.viewExtend({
             save: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
             },
-            excel: function () {},
-            fn1: function () {
-                ACTIONS.dispatch(ACTIONS.PAGE_DELETE);
+            excel: function () {
+                ACTIONS.dispatch(ACTIONS.EXCEL_DOWN);
             },
         });
     },
@@ -135,9 +142,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
         var _this = this;
 
         this.target = axboot.gridBuilder({
-            onPageChange: function (pageNumber) {
-                ACTIONS.dispatch(ACTIONS.PAGE_SEARCH, { pageNumber: pageNumber });
-            },
             showRowSelector: true,
             frozenColumnIndex: 0,
             multipleSelect: true,
@@ -147,7 +151,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 { key: 'gender', label: '성별', width: 100, align: 'left', editor: 'readonly' },
                 { key: 'guestTel', label: '연락처', width: 100, align: 'center', editor: 'readonly' },
                 { key: 'email', label: '이메일', width: 100, align: 'center', editor: 'readonly' },
-                { key: 'langCd', label: '언어', width: 100, align: 'center', editor: 'readonly' },
                 { key: 'brth', label: '생년월일', width: 100, align: 'center', editor: 'readonly' },
             ],
             body: {
@@ -233,33 +236,45 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         this.model.setModel(this.getDefaultData(), this.target);
         this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
 
-        console.log(this.model);
         this.initEvent();
     },
 });
+
 fnObj.gridView02 = axboot.viewExtend(axboot.gridView, {
     initView: function () {
         var _this = this;
 
         this.target = axboot.gridBuilder({
-            onPageChange: function (pageNumber) {
-                ACTIONS.dispatch(ACTIONS.PAGE_SEARCH, { pageNumber: pageNumber });
-            },
-            showRowSelector: false,
+            showRowSelector: true,
             frozenColumnIndex: 0,
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-02"]'),
             columns: [
-                { key: 'guestNm', label: '이름', width: 100, align: 'left', editor: 'readonly' },
-                { key: 'gender', label: '성별', width: 100, align: 'left', editor: 'readonly' },
-                { key: 'guestTel', label: '연락처', width: 100, align: 'center', editor: 'readonly' },
-                { key: 'email', label: '이메일', width: 100, align: 'center', editor: 'readonly' },
-                { key: 'brth', label: '생년월일', width: 100, align: 'center', editor: 'readonly' },
+                {
+                    key: 'rsvDt',
+                    label: '투숙일',
+                    width: 100,
+                    align: 'center',
+                    formatter: function () {
+                        return moment(this.item.arrDt).format('YY.M.D') + '-' + moment(this.item.depDt).format('YY.M.D');
+                    },
+                },
+                { key: 'nightCnt', label: '숙박수', width: 50, align: 'center' },
+                { key: 'roomNum', label: '객실번호', width: 80, align: 'center' },
+                {
+                    key: 'roomTypCd',
+                    label: '객실타입',
+                    width: 120,
+                    align: 'center',
+                    // formatter: function formatter() {
+                    //     return parent.COMMON_CODE['PMS_ROOM_TYPE'].map[this.value];
+                    // },
+                },
+                { key: 'rsvNum', label: '투숙번호', width: 120, align: 'center' },
             ],
             body: {
                 onClick: function () {
                     this.self.select(this.dindex, { selectedClear: true });
-                    ACTIONS.dispatch(ACTIONS.ITEM_CLICK, this.item);
                 },
             },
         });

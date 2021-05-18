@@ -1,25 +1,19 @@
 package edu.axboot.domain.pms.chkMemo;
 
-import com.chequer.axboot.core.annotations.ColumnPosition;
-import edu.axboot.domain.SimpleJpaModel;
-import lombok.*;
-import org.apache.ibatis.type.Alias;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 import com.chequer.axboot.core.annotations.Comment;
+import edu.axboot.domain.BaseJpaModel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Setter
 @Getter
-@DynamicInsert
-@DynamicUpdate
+@NoArgsConstructor
 @Entity
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "PMS_CHK_MEMO")
-@Comment(value = "")
-@Alias("chkMemo")
-public class ChkMemo extends SimpleJpaModel<Long> {
+
+public class ChkMemo extends BaseJpaModel<Long> {
 
 	@Id
 	@Column(name = "ID", precision = 19, nullable = false)

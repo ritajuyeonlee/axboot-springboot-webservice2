@@ -4,7 +4,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         axboot.ajax({
             type: 'GET',
             url: '/api/v1/chk',
-            data: caller.formView.getData(),
+            //    data: caller.formView01.getData(),
             callback: function (res) {
                 caller.gridView01.setData(res);
             },
@@ -51,9 +51,18 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             },
             header: { title: '투숙객 조회' },
             callback: function (data) {
+                console.log(data);
                 caller.formView01.setGuestValue(data);
                 this.close();
             },
+        });
+    },
+    FORM_CLEAR: function (caller, act, data) {
+        axDialog.confirm({ msg: LANG('ax.script.form.clearconfirm') }, function () {
+            if (this.key == 'ok') {
+                caller.formView01.clear();
+                $('[data-ax-path="rsvNum"]').focus();
+            }
         });
     },
     dispatch: function (caller, act, data) {
@@ -81,13 +90,12 @@ fnObj.pageResize = function () {};
 fnObj.pageButtonView = axboot.viewExtend({
     initView: function () {
         axboot.buttonClick(this, 'data-page-btn', {
-            search: function () {
-                ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
-            },
             save: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
             },
-            fn1: function () {},
+            fn1: function () {
+                ACTIONS.dispatch(ACTIONS.FORM_CLEAR);
+            },
         });
         $('[data-page-btn="fn1"]').text('신규등록');
     },
@@ -295,13 +303,13 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
     setGuestValue: function (data) {
         if (!data) return;
-        console.log(data);
+        console.log(data.brth);
         this.model.set('guestNm', data.guestNm);
         this.model.set('guestTel', data.guestTel);
         this.model.set('email', data.email);
-        this.model.set('guestNmEng;', data.guestNmEng);
-        this.model.set('brth;', data.brth);
-        this.model.set('gender;', data.gender);
-        this.model.set('langCd;;', data.langCd);
+        this.model.set('guestNmEng', data.guestNmEng);
+        this.model.set('brth', data.brth);
+        this.model.set('gender', data.gender);
+        this.model.set('langCd', data.langCd);
     },
 });

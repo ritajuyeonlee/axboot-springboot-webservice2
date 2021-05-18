@@ -1,14 +1,19 @@
 package edu.axboot.domain.pms.guest;
 
-import com.chequer.axboot.core.parameter.RequestParams;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Projections;
+import edu.axboot.controllers.dto.pms.GuestListResponseDto;
+import edu.axboot.controllers.dto.pms.GuestResponseDto;
+import edu.axboot.controllers.dto.pms.GuestSaveRequestDto;
+import edu.axboot.controllers.dto.pms.GuestUpdateRequestDto;
 import edu.axboot.domain.BaseService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GuestService extends BaseService<Guest, Long> {
@@ -22,42 +27,64 @@ public class GuestService extends BaseService<Guest, Long> {
         this.guestRepository = guestRepository;
     }
 
-    public List<Guest> gets(RequestParams<Guest> requestParams) {
-        List<Guest> list2 = this.getFilter(findAll(), requestParams.getString("guestNm", ""), 1);
-        List<Guest> list3 = this.getFilter(list2, requestParams.getString("guestTel", ""), 2);
-        List<Guest> list4 = this.getFilter(list3, requestParams.getString("email", ""), 3);
-        return list4;
-    }
-    private List<Guest> getFilter(List<Guest> sources, String filter, int typ) {
-        List<Guest> targets = new ArrayList<Guest>();
-        for (Guest entity : sources) {
-            if ("".equals(filter)) {
-                targets.add(entity);
-            } else {
-                if (typ == 1) {
-
-                    if (StringUtils.isNotEmpty(entity.getGuestNm()) && entity.getGuestNm().contains(filter)) {
-                        targets.add(entity);
-                    }
-                } else if (typ == 2) {
-                    if (StringUtils.isNotEmpty(entity.getGuestTel()) && entity.getGuestTel().contains(filter)) {
-                        targets.add(entity);
-                    }
-                } else if (typ == 3) {
-                    if (StringUtils.isNotEmpty(entity.getEmail()) && entity.getEmail().contains(filter)) {
-                        targets.add(entity);
-                    }
-                }
-            }
-        }
-        return targets;
-    }
-
-    public Guest findById(Long id) {
+    public GuestResponseDto findById(Long id) {
         Guest guest = guestRepository.findOne(id);
         if (guest == null) {
             throw new IllegalArgumentException("해당 고객이 없습니다. id=" + id);
         }
-        return guest;
+        return new GuestResponseDto(guest);
+    }
+
+    @Transactional(readOnly = true)
+    public List<GuestListResponseDto> findBy(String srchGuestNm, String srchGuestTel, String srchEmail) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if (isNotEmpty(srchGuestNm)) {
+            builder.and(qGuest.guestNm.like("%" + srchGuestNm +"%"));
+        }
+
+        if (isNotEmpty(srchGuestTel)) {
+            builder.and(qGuest.guestTel.like("%" + srchGuestTel +"%"));
+        }
+
+        if (isNotEmpty(srchEmail)) {
+            builder.and(qGuest.email.like("%" + srchEmail +"%"));
+        }
+
+        List<Guest> entities = select().select(
+                Projections.fields(Guest.class,
+                        qGuest.id, qGuest.guestNm, qGuest.guestTel, qGuest.email, qGuest.gender, qGuest.brth, qGuest.langCd
+                ))
+                .from(qGuest)
+                .where(builder)
+                .orderBy(qGuest.guestNm.asc())
+                .fetch();
+
+        return entities.stream()
+                .map(GuestListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    public Long save(GuestSaveRequestDto requestDto) {
+        return guestRepository.save(requestDto.toEntity()).getId();
+
+    }
+    @Transactional
+    public long update(GuestSaveRequestDto saveDto) {
+        return guestRepository.save(saveDto.toEntity()).getId();
+    }
+
+    @Transactional
+    public Long update(GuestUpdateRequestDto requestDto) {
+        Guest guest = guestRepository.findOne(requestDto.getId());
+        if (guest == null) {
+            throw new IllegalArgumentException("해당 거래처가 없습니다. id=" + requestDto.getId());
+        }
+
+        guest.update(requestDto.getGuestNm(),requestDto.getGuestNmEng(),requestDto.getGuestTel(),requestDto.getEmail(),requestDto.getBrth(),requestDto.getGender(), requestDto.getLangCd(), requestDto.getRmk());
+
+        return requestDto.getId();
     }
 }
