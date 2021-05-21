@@ -130,7 +130,8 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
         return list;
     },
     addRow: function () {
-        this.target.addRow({ __created__: true }, 'last');
+        var memoDtti = moment().format('yyyy-MM-dd hh:mm');
+        this.target.addRow({ __created__: true, memoDtti: memoDtti }, 'last'); //delYn:'Y'
     },
 });
 

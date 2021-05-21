@@ -12,6 +12,8 @@
 <%@ attribute name="defaultValue" required="false" %>
 <%@ attribute name="emptyValue" required="false" %>
 <%@ attribute name="emptyText" required="false" %>
+<%@ attribute name="dataValidate" required="false" %>
+<%@ attribute name="title" required="false" %>
 
 <%
     if (StringUtils.isEmpty(type)) {
@@ -40,6 +42,12 @@
 
             if (StringUtils.isNotEmpty(dataPath)) {
                 builder.append("data-ax-path=\"" + dataPath + "\"");
+            }
+            if (StringUtils.isNotEmpty(dataValidate)) {
+                builder.append("data-ax-validate=\"" + dataValidate + "\"");
+            }
+            if (StringUtils.isNotEmpty(title)) {
+                builder.append("title=\"" + title + "\"");
             }
 
             builder.append(">");
