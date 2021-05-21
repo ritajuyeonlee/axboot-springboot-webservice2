@@ -1,4 +1,4 @@
-package edu.axboot.controllers.dto;
+package edu.axboot.controllers.dto.education;
 
 import lombok.Builder;
 import lombok.Getter;

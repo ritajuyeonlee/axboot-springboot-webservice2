@@ -1,36 +1,20 @@
 var fnObj = {};
 var ACTIONS = axboot.actionExtend(fnObj, {
-    PAGE_SEARCH: function (caller, act, data) {
-        axboot.ajax({
-            type: 'GET',
-            url: '/api/v1/chk',
-            //    data: caller.formView01.getData(),
-            callback: function (res) {
-                caller.gridView01.setData(res);
-            },
-            options: {
-                // axboot.ajax 함수에 2번째 인자는 필수가 아닙니다. ajax의 옵션을 전달하고자 할때 사용합니다.
-                onError: function (err) {
-                    console.log(err);
-                },
-            },
-        });
-
-        return false;
-    },
     PAGE_SAVE: function (caller, act, data) {
-        var saveList = [].concat(caller.gridView01.getData());
-        saveList = saveList.concat(caller.gridView01.getData('deleted'));
+        if (caller.formView01.validate()) {
+            var item = caller.formView01.getData();
+            item.memos = [].concat(caller.gridView01.getData());
 
-        axboot.ajax({
-            type: 'POST',
-            url: '/api/v1/chk',
-            data: JSON.stringify(saveList),
-            callback: function (res) {
-                ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
-                axToast.push('저장 되었습니다');
-            },
-        });
+            if (!item.id) item.__created__ = true;
+            axboot.ajax({
+                type: 'POST',
+                url: '/api/v1/rsv',
+                data: JSON.stringify(item),
+                callback: function (res) {
+                    axToast.push('저장 되었습니다');
+                },
+            });
+        }
     },
     ITEM_CLICK: function (caller, act, data) {},
     ITEM_ADD: function (caller, act, data) {
@@ -53,6 +37,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             callback: function (data) {
                 console.log(data);
                 caller.formView01.setGuestValue(data);
+
                 this.close();
             },
         });
@@ -61,7 +46,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         axDialog.confirm({ msg: LANG('ax.script.form.clearconfirm') }, function () {
             if (this.key == 'ok') {
                 caller.formView01.clear();
-                $('[data-ax-path="rsvNum"]').focus();
+                //    $('[data-ax-path="rsvNum"]').focus();
             }
         });
     },
@@ -111,120 +96,8 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
             columns: [
-                { key: 'rsvNum', label: '예약 번호', width: 100, align: 'center', editor: 'text' },
-                {
-                    key: 'rsvDt',
-                    label: '예약일',
-                    width: 100,
-                    align: 'center',
-                    editor: {
-                        type: 'date',
-                        config: {
-                            content: {
-                                config: {
-                                    mode: 'year',
-                                    selectMode: 'day',
-                                },
-                            },
-                        },
-                    },
-                },
-                { key: 'guestNm', label: '투숙객 명', width: 100, align: 'center', editor: 'text' },
-                {
-                    key: 'roomTypCd',
-                    label: '객실타입',
-                    width: 100,
-                    align: 'center',
-                    editor: {
-                        type: 'select',
-                        config: {
-                            columnKeys: {
-                                optionValue: 'code',
-                                optionText: 'name',
-                            },
-                            options: parent.COMMON_CODE['PMS_ROOM_TYPE'],
-                        },
-                    },
-                    formatter: function () {
-                        if (!this.value) return '';
-                        return parent.COMMON_CODE['PMS_ROOM_TYPE'].map[this.value];
-                    },
-                },
-                { key: 'roomNum', label: '객실번호', width: 100, align: 'center', editor: 'text' },
-                {
-                    key: 'arrDt',
-                    label: '도착 일자',
-                    width: 100,
-                    align: 'center',
-                    editor: {
-                        type: 'date',
-                        config: {
-                            content: {
-                                config: {
-                                    mode: 'year',
-                                    selectMode: 'day',
-                                },
-                            },
-                        },
-                    },
-                },
-                {
-                    key: 'depDt',
-                    label: '출발 일자',
-                    width: 100,
-                    align: 'center',
-                    editor: {
-                        type: 'date',
-                        config: {
-                            content: {
-                                config: {
-                                    mode: 'year',
-                                    selectMode: 'day',
-                                },
-                            },
-                        },
-                    },
-                },
-                {
-                    key: 'saleTypCd',
-                    label: '판매유형',
-                    width: 100,
-                    align: 'center',
-                    editor: {
-                        type: 'select',
-                        config: {
-                            columnKeys: {
-                                optionValue: 'code',
-                                optionText: 'name',
-                            },
-                            options: parent.COMMON_CODE['PMS_SALE_TYPE'],
-                        },
-                    },
-                    formatter: function () {
-                        if (!this.value) return '';
-                        return parent.COMMON_CODE['PMS_SALE_TYPE'].map[this.value];
-                    },
-                },
-                {
-                    key: 'sttusCd',
-                    label: '투숙상태',
-                    width: 100,
-                    align: 'center',
-                    editor: {
-                        type: 'select',
-                        config: {
-                            columnKeys: {
-                                optionValue: 'code',
-                                optionText: 'name',
-                            },
-                            options: parent.COMMON_CODE['PMS_STAY_STATUS'],
-                        },
-                    },
-                    formatter: function () {
-                        if (!this.value) return '';
-                        return parent.COMMON_CODE['PMS_STAY_STATUS'].map[this.value];
-                    },
-                },
+                { key: 'memoDtti', label: '메모 일시', width: 100, align: 'center', editor: 'text' },
+                { key: 'memoCn', label: '메모 내용', width: 100, align: 'center', editor: 'text' },
             ],
             body: {
                 onClick: function () {
@@ -248,6 +121,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
 
         if (_type == 'modified' || _type == 'deleted') {
             list = ax5.util.filter(_list, function () {
+                // this.delYn = 'Y';
                 return this.id;
             });
         } else {
@@ -262,7 +136,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
 
 //== view 시작
 /**
- * searchView
+ * formView
  */
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     getDefaultData: function () {
@@ -278,6 +152,39 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
 
         this.model.setModel(data);
         this.modelFormatter.formatting(); // 입력된 값을 포메팅 된 값으로 변경
+    },
+    validate: function () {
+        var item = this.model.get();
+
+        var rs = this.model.validate();
+        if (rs.error) {
+            axDialog.alert(LANG('ax.script.form.validate', rs.error[0].jquery.attr('title')), function () {
+                rs.error[0].jquery.focus();
+            });
+            return false;
+        }
+
+        // required 이외 벨리데이션 정의
+        var pattern;
+        if (item.email) {
+            pattern = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.(?:[A-Za-z0-9]{2,}?)$/i;
+            if (!pattern.test(item.email)) {
+                axDialog.alert('이메일 형식을 확인하세요.', function () {
+                    $('[data-ax-path="email"]').focus();
+                });
+                return false;
+            }
+        }
+
+        if (item.guestTel && !(pattern = /^([0-9]{3})\-?([0-9]{4})\-?([0-9]{4})$/).test(item.guestTel)) {
+            axDialog.alert('전화번호 형식을 확인하세요.'),
+                function () {
+                    $('[data-ax-path="guestTel"]').focus();
+                };
+            return false;
+        }
+
+        return true;
     },
     initView: function () {
         var _this = this;
@@ -303,7 +210,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
     setGuestValue: function (data) {
         if (!data) return;
-        console.log(data.brth);
+        this.model.set('guestId', data.id);
         this.model.set('guestNm', data.guestNm);
         this.model.set('guestTel', data.guestTel);
         this.model.set('email', data.email);

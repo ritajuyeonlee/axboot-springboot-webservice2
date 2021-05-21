@@ -1,7 +1,7 @@
 package edu.axboot.domain.pms.room;
 
 import com.querydsl.core.BooleanBuilder;
-import edu.axboot.controllers.dto.pms.RoomListResponseDto;
+import edu.axboot.controllers.dto.pms.room.RoomListResponseDto;
 import edu.axboot.domain.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
 package edu.axboot.domain.education.book;
 import edu.axboot.AXBootApplication;
-import edu.axboot.controllers.dto.EducationResponseDto;
-import edu.axboot.controllers.dto.EducationSaveRequestDto;
-import edu.axboot.controllers.dto.EducationUpdateRequestDto;
+import edu.axboot.controllers.dto.education.EducationResponseDto;
+import edu.axboot.controllers.dto.education.EducationSaveRequestDto;
+import edu.axboot.controllers.dto.education.EducationUpdateRequestDto;
 import lombok.extern.java.Log;
 import org.junit.FixMethodOrder;
 import org.junit.Test;

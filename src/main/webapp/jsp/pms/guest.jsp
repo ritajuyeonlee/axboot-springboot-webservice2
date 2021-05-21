@@ -135,8 +135,8 @@
                                 <div data-ax-td-label style="width:100px;">생년월일</div>
                                 <div data-ax-td-wrap>
                                     <input type="date" data-ax-path="brth" class="form-control W150" style="display:inline-block;" >
-                                    <input type="radio"  data-ax-path="gender" value="남"> 남
-                                    <input type="radio"  data-ax-path="gender" value="여"> 여
+                                    <input type="radio"  data-ax-path="gender" value="M"> 남
+                                    <input type="radio"  data-ax-path="gender" value="F"> 여
                                 </div>
                             </div>
                         </div>

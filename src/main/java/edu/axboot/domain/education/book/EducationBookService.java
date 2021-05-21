@@ -2,8 +2,10 @@ package edu.axboot.domain.education.book;
 
 import com.querydsl.core.BooleanBuilder;
 
-import edu.axboot.controllers.dto.*;
-
+import edu.axboot.controllers.dto.education.EducationListResponseDto;
+import edu.axboot.controllers.dto.education.EducationResponseDto;
+import edu.axboot.controllers.dto.education.EducationSaveRequestDto;
+import edu.axboot.controllers.dto.education.EducationUpdateRequestDto;
 import edu.axboot.domain.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

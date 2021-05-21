@@ -1,7 +1,9 @@
 package edu.axboot.domain.pms.chkMemo;
 
 import com.chequer.axboot.core.annotations.Comment;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import edu.axboot.domain.BaseJpaModel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,6 +35,7 @@ public class ChkMemo extends BaseJpaModel<Long> {
 	@Comment(value = "메모 내용")
 	private String memoCn;
 
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm")
 	@Column(name = "MEMO_DTTI", nullable = false)
 	@Comment(value = "메모 일시")
 	private Timestamp memoDtti;
@@ -45,8 +48,18 @@ public class ChkMemo extends BaseJpaModel<Long> {
 	@Comment(value = "삭제 여부")
 	private String delYn;
 
+	@Builder
+	public ChkMemo(Long id, String rsvNum, Integer sno, String memoCn, Timestamp memoDtti, String memoMan, String delYn) {
+		this.id = id;
+		this.rsvNum = rsvNum;
+		this.sno = sno;
+		this.memoCn = memoCn;
+		this.memoDtti = memoDtti;
+		this.memoMan = memoMan;
+		this.delYn = delYn;
+	}
 
-    @Override
+	@Override
     public Long getId() {
         return id;
     }

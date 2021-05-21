@@ -24,7 +24,7 @@
                                 <div data-ax-td="" id="" class="" style="width:30%;">
                                     <div data-ax-td-label="" class="" style="width:150px;">도착일자</div>
                                     <div data-ax-td-wrap="">
-                                        <input type="date" data-ax-path="arrDt" class="form-control" name="trip-start" min="2000-01-01" max="2022-12-31">
+                                        <input type="date" data-ax-path="arrDt" class="form-control" title='도착일자' data-ax-validate="required">
                                     </div>
                                 </div>
                                 <div data-ax-td="" id="" class="" style="width:30%;">
@@ -39,7 +39,7 @@
                                     <div data-ax-td-label="" class="" style="width:150px;">출발일자</div>
                                     <div data-ax-td-wrap="">
                                 
-                                        <input type="date" data-ax-path="depDt" class="form-control" name="trip-start" min="2000-01-01" max="2022-12-31">
+                                        <input type="date" data-ax-path="depDt" class="form-control"  title='출발일자'  data-ax-validate="required" >
                                 
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                     <div data-ax-td-label="" class="" style="width:150px;">객실타입</div>
                                     <div data-ax-td-wrap="">
         
-                                        <ax:common-code groupCd="PMS_ROOM_TYPE" clazz="js-roomType;" emptyText="전체" />
+                                        <ax:common-code groupCd="PMS_ROOM_TYPE" dataPath="roomTypCd" clazz="js-roomType;" emptyText="전체" />
         
                                     </div>
                                 </div>
@@ -58,7 +58,7 @@
                                     <div data-ax-td-label="" class="" style="width:150px;">성인수</div>
                                     <div data-ax-td-wrap="">
         
-                                        <input type="text" data-ax-path="ceo" class="form-control" value="">
+                                        <input type="number" data-ax-path="adultCnt;" class="form-control"  title='성인수'  data-ax-validate="required">
         
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                                     <div data-ax-td-label="" class="" style="width:150px;">아동수</div>
                                     <div data-ax-td-wrap="">
                                 
-                                        <input type="text" data-ax-path="ceo" class="form-control" value="">
+                                        <input type="number" data-ax-path="chldCnt;" class="form-control"  title='아동수'  data-ax-validate="required">
                                 
                                     </div>
                                 </div>
@@ -83,7 +83,13 @@
                                     <form name="form" class="js-form">
                                         <div data-ax-tbl="" id="" class="ax-form-tbl" >
                                         <div data-ax-tr>
-                                            <div data-ax-td style="width:50%">
+                                            <div data-ax-td style="width:25%">
+                                                <div data-ax-td-label style="width:100px;">guestId</div>
+                                                <div data-ax-td-wrap>
+                                                    <input type="text" name="guestId" data-ax-path="guestId" class="form-control" readonly='readonly'/>
+                                                </div>
+                                            </div>
+                                            <div data-ax-td style="width:25%">
                                                 <div data-ax-td-label style="width:100px;">이름</div>
                                                 <div data-ax-td-wrap>
                                                     <input type="text" name="guestNm" data-ax-path="guestNm" class="form-control" />
@@ -125,8 +131,8 @@
                                                     <input type="date" data-ax-path="brth" name="brth" class="form-control W150" style="display:inline-block;" >
                                                     
                                                       
-                                                        <input type="radio" name="gender" data-ax-path="gender" value="남"> 남
-                                                        <input type="radio" name="gender" data-ax-path="gender" value="여"> 여
+                                                        <input type="radio" name="gender" data-ax-path="gender" value="M"> 남
+                                                        <input type="radio" name="gender" data-ax-path="gender" value="F"> 여
                                                     
                                                 </div>
                                             </div>
@@ -207,8 +213,11 @@
                                             <h2><i class=""></i> 투숙메모 </h2>
                                         </div>
                                         <div class="right">
-                                            <button type="button" class="btn btn-default" data-grid-view-01-btn="create">
+                                            <button type="button" class="btn btn-default" data-grid-view-01-btn="add">
                                                 <i class="cqc-erase"></i> 등록
+                                            </button>
+                                            <button type="button" class="btn btn-default" data-grid-view-01-btn="delete">
+                                                <i class="cqc-erase"></i> 삭제
                                             </button>
                                         </div>
                                     </div>

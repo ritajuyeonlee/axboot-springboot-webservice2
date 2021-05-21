@@ -4,6 +4,7 @@ import com.chequer.axboot.core.api.response.ApiResponse;
 import com.chequer.axboot.core.api.response.Responses;
 import com.chequer.axboot.core.controllers.BaseController;
 import com.chequer.axboot.core.parameter.RequestParams;
+import edu.axboot.controllers.dto.pms.chkMemo.ChkMemoSaveRequestDto;
 import edu.axboot.domain.pms.chkMemo.ChkMemo;
 import edu.axboot.domain.pms.chkMemo.ChkMemoService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class ChkMemoController extends BaseController {
     }
 
     @PostMapping("/api/v1/chkMemo")
-    public ApiResponse save(@RequestBody List<ChkMemo> request) {
+    public ApiResponse save(@RequestBody ChkMemoSaveRequestDto request) {
         chkMemoService.save(request);
         return ok();
     }

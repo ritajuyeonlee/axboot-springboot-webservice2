@@ -1,4 +1,4 @@
-package edu.axboot.controllers.dto.pms;
+package edu.axboot.controllers.dto.pms.room;
 
 import edu.axboot.domain.pms.room.Room;
 import lombok.Getter;

@@ -3,7 +3,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SEARCH: function (caller, act, data) {
         axboot.ajax({
             type: 'GET',
-            url: '/api/v1/chk',
+            url: '/api/v1/rsv',
             data: caller.searchView.getData(),
             callback: function (res) {
                 caller.gridView01.setData(res);
@@ -24,7 +24,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
 
         axboot.ajax({
             type: 'POST',
-            url: '/api/v1/chk',
+            url: '/api/v1/rsv',
             data: JSON.stringify(saveList),
             callback: function (res) {
                 ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
@@ -107,6 +107,8 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
             columns: [
+                { key: 'id', label: 'id', width: 100, align: 'center', editor: 'text' },
+                { key: 'sno', label: 'sno', width: 100, align: 'center', editor: 'text' },
                 { key: 'rsvNum', label: '예약 번호', width: 100, align: 'center', editor: 'text' },
                 {
                     key: 'rsvDt',

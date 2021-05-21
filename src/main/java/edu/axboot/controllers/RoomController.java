@@ -3,7 +3,7 @@ package edu.axboot.controllers;
 import com.chequer.axboot.core.api.response.ApiResponse;
 import com.chequer.axboot.core.api.response.Responses;
 import com.chequer.axboot.core.controllers.BaseController;
-import edu.axboot.controllers.dto.pms.RoomListResponseDto;
+import edu.axboot.controllers.dto.pms.room.RoomListResponseDto;
 import edu.axboot.domain.pms.room.Room;
 import edu.axboot.domain.pms.room.RoomService;
 import lombok.RequiredArgsConstructor;

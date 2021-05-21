@@ -2,10 +2,10 @@ package edu.axboot.domain.pms.guest;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
-import edu.axboot.controllers.dto.pms.GuestListResponseDto;
-import edu.axboot.controllers.dto.pms.GuestResponseDto;
-import edu.axboot.controllers.dto.pms.GuestSaveRequestDto;
-import edu.axboot.controllers.dto.pms.GuestUpdateRequestDto;
+import edu.axboot.controllers.dto.pms.guest.GuestListResponseDto;
+import edu.axboot.controllers.dto.pms.guest.GuestResponseDto;
+import edu.axboot.controllers.dto.pms.guest.GuestSaveRequestDto;
+import edu.axboot.controllers.dto.pms.guest.GuestUpdateRequestDto;
 import edu.axboot.domain.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,7 +69,6 @@ public class GuestService extends BaseService<Guest, Long> {
     @Transactional
     public Long save(GuestSaveRequestDto requestDto) {
         return guestRepository.save(requestDto.toEntity()).getId();
-
     }
     @Transactional
     public long update(GuestSaveRequestDto saveDto) {

@@ -1,4 +1,4 @@
-package edu.axboot.controllers.dto.pms;
+package edu.axboot.controllers.dto.pms.guest;
 
 import edu.axboot.domain.pms.chk.Chk;
 import edu.axboot.domain.pms.guest.Guest;

@@ -1,6 +1,5 @@
-package edu.axboot.controllers.dto.pms;
+package edu.axboot.controllers.dto.pms.guest;
 
-import edu.axboot.domain.pms.guest.Guest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -4,6 +4,7 @@ import edu.axboot.domain.code.QCommonCode;
 import edu.axboot.domain.education.QEducationJy;
 import edu.axboot.domain.education.book.QEducationBook;
 import edu.axboot.domain.file.QCommonFile;
+import edu.axboot.domain.pms.chk.QChk;
 import edu.axboot.domain.pms.guest.QGuest;
 import edu.axboot.domain.pms.room.QRoom;
 import edu.axboot.domain.program.QProgram;
@@ -29,6 +30,7 @@ public class BaseService<T, ID extends Serializable> extends AXBootBaseService<T
     protected QMenu qMenu = QMenu.menu;
     protected QRoom qRoom = QRoom.room;
     protected QGuest qGuest = QGuest.guest;
+    protected QChk qChk = QChk.chk;
     protected QCommonFile qCommonFile = QCommonFile.commonFile;
     protected QEducationJy qEducationJy = QEducationJy.educationJy;
     protected QEducationBook qEducationBook = QEducationBook.educationBook;
