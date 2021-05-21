@@ -12,17 +12,7 @@
         <ax:script-lang key="ax.base" var="COL" />
         <script type="text/javascript" src="<c:url value='/assets/js/view/pms/guest.js' />"></script>
     </jsp:attribute>
-    <jsp:attribute name="js">
-        <script type="text/javascript">
-        var UUID = "${UUID}";
-        </script>
-    </jsp:attribute>
-    <jsp:attribute name="css">
-
-        <style type="text/css">
-        /*.editor1{width:100%; border:1px solid #D7D7D7; border-radius: 3px; overflow: hidden; background: white;}*/
-        </style>
-    </jsp:attribute>
+    
 
 
     <jsp:body>
@@ -128,7 +118,7 @@
                             <div data-ax-td style="width:50%">
                                 <div data-ax-td-label style="width:100px;">언어</div>
                                 <div data-ax-td-wrap>
-                                    <ax:common-code groupCd="PMS_LANG" name="langCd" dataPath="langCd" clazz="js-langCd;" emptyText="-" />
+                                    <ax:common-code groupCd="PMS_LANG"  dataPath="langCd" emptyText="-" />
                                 </div>
                             </div>
                             <div data-ax-td style="width:50%">
@@ -141,10 +131,10 @@
                             </div>
                         </div>
                        
-                        <div data-ax-tr="" id="" class="" style="">
+                        <div data-ax-tr="">
                             
-                            <div data-ax-td="" id="" class="" style="width:50%;">
-                                <div data-ax-td-label="" class="" style="width:100px;">비고</div>
+                            <div data-ax-td="" style="width:50%;">
+                                <div data-ax-td-label="" style="width:100px;">비고</div>
                                 <div data-ax-td-wrap="">
     
                                 <textarea name="rmk" data-ax-path="rmk" rows="2" class="form-control"></textarea>

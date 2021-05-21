@@ -110,23 +110,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                 { key: 'id', label: 'id', width: 100, align: 'center', editor: 'text' },
                 { key: 'sno', label: 'sno', width: 100, align: 'center', editor: 'text' },
                 { key: 'rsvNum', label: '예약 번호', width: 100, align: 'center', editor: 'text' },
-                {
-                    key: 'rsvDt',
-                    label: '예약일',
-                    width: 100,
-                    align: 'center',
-                    editor: {
-                        type: 'date',
-                        config: {
-                            content: {
-                                config: {
-                                    mode: 'year',
-                                    selectMode: 'day',
-                                },
-                            },
-                        },
-                    },
-                },
+                { key: 'rsvDt', label: '예약일', width: 100, align: 'center', editor: 'text' },
                 { key: 'guestId', label: '투숙객ID', width: 100, align: 'center', editor: 'text' },
                 { key: 'guestNm', label: '투숙객 명', width: 100, align: 'center', editor: 'text' },
                 {

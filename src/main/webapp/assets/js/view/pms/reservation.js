@@ -3,7 +3,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SAVE: function (caller, act, data) {
         if (caller.formView01.validate()) {
             var item = caller.formView01.getData();
-            item.memos = [].concat(caller.gridView01.getData());
+            item.chkMemoList = [].concat(caller.gridView01.getData());
 
             if (!item.id) item.__created__ = true;
             axboot.ajax({
@@ -96,8 +96,20 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
             columns: [
-                { key: 'memoDtti', label: '메모 일시', width: 100, align: 'center', editor: 'text' },
-                { key: 'memoCn', label: '메모 내용', width: 800, align: 'center', editor: 'text' },
+                {
+                    key: 'memoDtti',
+                    label: '메모 일시',
+                    width: 150,
+                    align: 'center',
+                    formatter: function () {
+                        var date = this.value;
+                        if (!date && this.item.createdAt) createdAt = this.item.createdAt;
+                        if (!date) return '';
+
+                        return moment(date).format('yyyy-MM-DD');
+                    },
+                },
+                { key: 'memoCn', label: '메모 내용', width: '*', align: 'left', editor: { type: 'textarea' } },
             ],
             body: {
                 onClick: function () {
@@ -130,7 +142,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
         return list;
     },
     addRow: function () {
-        var memoDtti = moment().format('yyyy-MM-dd hh:mm');
+        var memoDtti = moment().format('yyyy-MM-DD hh:mm');
         this.target.addRow({ __created__: true, memoDtti: memoDtti }, 'last'); //delYn:'Y'
     },
 });
@@ -145,7 +157,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
     getData: function () {
         var data = this.modelFormatter.getClearData(this.model.get()); // 모델의 값을 포멧팅 전 값으로 치환.
-        return $.extend({}, data);
+        return $.extend({}, data, { sttusCd: 'RSV_01' });
     },
     setData: function (data) {
         if (typeof data === 'undefined') data = this.getDefaultData();

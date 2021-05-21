@@ -31,6 +31,7 @@ public class RsvService extends BaseService<Chk, Long> {
     public long save(RsvSaveRequestDto saveDto) {
         long id = 0;
         long guestId = 0;
+
         //TODO 투숙객 처리
         if(saveDto.getGuestId()==null || saveDto.getGuestId() == 0 ){
             Guest guest = Guest.builder()
@@ -58,7 +59,7 @@ public class RsvService extends BaseService<Chk, Long> {
             guestRepository.save(guest);
         }
 
-
+        //TODO SNO,RSVNUM 설정하기
         String rsvDt = LocalDate.now().toString();
         Chk todayLastChk = select().select(
                 Projections.fields(Chk.class, qChk.sno))
@@ -73,7 +74,6 @@ public class RsvService extends BaseService<Chk, Long> {
 
         Chk chk = saveDto.toEntity();
         chk.setGuestId(guestId);
-
         chk.rsvNumGenerator(rsvDt, sno);
         id = chkRepository.save(chk).getId();
 
@@ -81,7 +81,6 @@ public class RsvService extends BaseService<Chk, Long> {
 
         //TODO 투숙메모 처리
         List<ChkMemo> chkMemoList =saveDto.getChkMemoList();
-
         for (ChkMemo chkMemo : chkMemoList){
             chkMemoRepository.save(chkMemo);
         }

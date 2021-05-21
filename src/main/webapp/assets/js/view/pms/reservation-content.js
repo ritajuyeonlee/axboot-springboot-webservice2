@@ -203,13 +203,10 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
 
     initView: function () {
         var _this = this; // fnObj.formView01
-
         _this.target = $('.js-form');
-
         this.model = new ax5.ui.binder();
         this.model.setModel(this.getDefaultData(), this.target);
         this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
-
         this.initEvent();
     },
 });

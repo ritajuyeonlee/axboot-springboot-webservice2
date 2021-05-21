@@ -50,7 +50,7 @@
                                     <div data-ax-td-label="" style="width:150px;">객실타입</div>
                                     <div data-ax-td-wrap="">
         
-                                        <ax:common-code groupCd="PMS_ROOM_TYPE" dataPath="roomTypCd" clazz="js-roomType;" emptyText="전체" />
+                                        <ax:common-code groupCd="PMS_ROOM_TYPE" dataPath="roomTypCd"  emptyText="전체" />
         
                                     </div>
                                 </div>
@@ -86,19 +86,19 @@
                                             <div data-ax-td style="width:25%">
                                                 <div data-ax-td-label style="width:100px;">guestId</div>
                                                 <div data-ax-td-wrap>
-                                                    <input type="text" name="guestId" data-ax-path="guestId" class="form-control" readonly='readonly'/>
+                                                    <input type="text" data-ax-path="guestId" class="form-control" readonly='readonly'/>
                                                 </div>
                                             </div>
                                             <div data-ax-td style="width:25%">
                                                 <div data-ax-td-label style="width:100px;">이름</div>
                                                 <div data-ax-td-wrap>
-                                                    <input type="text" name="guestNm" data-ax-path="guestNm" class="form-control" />
+                                                    <input type="text" data-ax-path="guestNm" class="form-control" />
                                                 </div>
                                             </div>
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:120px;">영문</div>
                                                 <div data-ax-td-wrap>
-                                                    <input type="text" name="guestNmEng" data-ax-path="guestNmEng" class="form-control" />
+                                                    <input type="text"  data-ax-path="guestNmEng" class="form-control" />
                                                 </div>
                                             </div>
                                         </div>
@@ -107,13 +107,13 @@
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:100px;">연락처</div>
                                                 <div data-ax-td-wrap>
-                                                    <input type="text" name="guestTel" data-ax-path="guestTel" class="form-control" />
+                                                    <input type="text"  data-ax-path="guestTel" class="form-control" />
                                                 </div>
                                             </div>
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:120px;">이메일</div>
                                                 <div data-ax-td-wrap>
-                                                    <input type="text" name="email" data-ax-path="email" class="form-control" />
+                                                    <input type="text"data-ax-path="email" class="form-control" />
                                                 </div>
                                             </div>
                                         </div>
@@ -121,18 +121,16 @@
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:100px;">언어</div>
                                                 <div data-ax-td-wrap>
-                                                    <ax:common-code groupCd="PMS_LANG" name="langCd" dataPath="langCd" clazz="js-langCd;" />
+                                                    <ax:common-code groupCd="PMS_LANG" dataPath="langCd" clazz="js-langCd;" />
                                                 </div>
                                             </div>
                                             
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:120px;">생년월일</div>
                                                 <div data-ax-td-wrap>
-                                                    <input type="date" data-ax-path="brth" name="brth" class="form-control W150" style="display:inline-block;" >
-                                                    
-                                                      
-                                                        <input type="radio" name="gender" data-ax-path="gender" value="M"> 남
-                                                        <input type="radio" name="gender" data-ax-path="gender" value="F"> 여
+                                                    <input type="date" data-ax-path="brth" class="form-control W150" style="display:inline-block;" >
+                                                        <input type="radio" data-ax-path="gender" value="M"> 남
+                                                        <input type="radio"  data-ax-path="gender" value="F"> 여
                                                     
                                                 </div>
                                             </div>
@@ -155,13 +153,13 @@
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:100px;">판매유형</div>
                                                 <div data-ax-td-wrap>
-                                        <ax:common-code groupCd="PMS_SALE_TYPE" clazz="js-saleTypCd" emptyText="전체" />
+                                        <ax:common-code groupCd="PMS_SALE_TYPE" dataPath="saleTypCd" emptyText="전체" />
                                                 </div>
                                             </div>
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:120px;">예약경로</div>
                                                 <div data-ax-td-wrap>
-                                        <ax:common-code groupCd="PMS_RESERVATION_ROUTE" clazz="js-srcCd" emptyText="전체" />
+                                        <ax:common-code groupCd="PMS_RESERVATION_ROUTE" dataPath="srcCd" emptyText="전체" />
                                                 </div>
                                             </div>
                                         </div>
@@ -170,13 +168,15 @@
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:100px;">결제방법</div>
                                                 <div data-ax-td-wrap>
-                                        <ax:common-code groupCd="PMS_PAY_METHOD" clazz="js-payCd" emptyText="전체" />
+                                        <ax:common-code groupCd="PMS_PAY_METHOD" dataPath="payCd" emptyText="전체" />
                                                 </div>
                                             </div>
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:120px;">선수금여부</div>
                                                 <div data-ax-td-wrap>
-                                                    <input type="text" name="advnYn" data-ax-path="advnYn" class="form-control" />
+                                                    <input type="radio"  data-ax-path="advnYn" value="Y">Y
+                                                    <input type="radio" data-ax-path="advnYn" value="N">N
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -184,13 +184,13 @@
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:100px;">결제금액</div>
                                                 <div data-ax-td-wrap>
-                                                    <input type="text" name="salePrc" data-ax-path="salePrc" class="form-control" />
+                                                    <input type="text" data-ax-path="salePrc" class="form-control" value="0" />
                                                 </div>
                                             </div>
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:120px;">서비스금액</div>
                                                 <div data-ax-td-wrap>
-                                                    <input type="text" name="svcPrc" data-ax-path="svcPrc" class="form-control" />
+                                                    <input type="text" data-ax-path="svcPrc" class="form-control" value="0"/>
                                                     
                                                 </div>
                                             </div>

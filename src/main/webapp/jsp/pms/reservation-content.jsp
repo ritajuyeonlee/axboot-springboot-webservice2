@@ -25,10 +25,7 @@
                        
                         <jsp:body>
 
-                            
-
-                            
-                            <div class="container-fluid">
+                      <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <!-- 목록 -->
@@ -74,17 +71,17 @@
                                                     </div>
                             
                                                 </div>
-                                                <div data-ax-tr="" id="" class="" style="">
-                                                    <div data-ax-td="" id="" class="" style="width:50%;">
-                                                        <div data-ax-td-label="" class="" style="width:100px;">연락처</div>
+                                                <div data-ax-tr="">
+                                                    <div data-ax-td="" style="width:50%;">
+                                                        <div data-ax-td-label="" style="width:100px;">연락처</div>
                                                         <div data-ax-td-wrap="">
                             
                                                             <input type="text" data-ax-path="guestTel" class="form-control" readonly="readonly">
                             
                                                         </div>
                                                     </div>
-                                                    <div data-ax-td="" id="" class="" style="width:50%;">
-                                                        <div data-ax-td-label="" class="" style="width:100px;">이메일</div>
+                                                    <div data-ax-td="" style="width:50%;">
+                                                        <div data-ax-td-label=""  style="width:100px;">이메일</div>
                                                         <div data-ax-td-wrap="">
                             
                                                             <input type="text" data-ax-path="email" class="form-control" readonly="readonly">
@@ -93,19 +90,19 @@
                                                     </div>
                             
                                                 </div>
-                                                <div data-ax-tr="" id="" class="" style="">
+                                                <div data-ax-tr="" >
                                                     <div data-ax-td style="width:50%">
                                                         <div data-ax-td-label style="width:100px;">언어</div>
                                                         <div data-ax-td-wrap>
-                                                            <ax:common-code groupCd="PMS_LANG" id="langCd" clazz="js-langCd;" emptyText="전체" />
+                                                            <ax:common-code groupCd="PMS_LANG" id="langCd" emptyText="전체" />
                                                         </div>
                                                     </div>
                                                     <div data-ax-td style="width:50%">
                                                         <div data-ax-td-label style="width:100px;">생년월일</div>
                                                         <div data-ax-td-wrap>
                                                             <input type="date" data-ax-path="brth" class="form-control W150" style="display:inline-block;">
-                                                            <input type="radio" data-ax-path="gender" value="남"> 남
-                                                            <input type="radio" data-ax-path="gender" value="여"> 여
+                                                            <input type="radio" data-ax-path="gender" value="M"> 남
+                                                            <input type="radio" data-ax-path="gender" value="F"> 여
                                                         </div>
                                                     </div>
                             
@@ -121,12 +118,9 @@
                             
                                                         </div>
                                                     </div>
-                                                </div>
-                            
+                                                </div> 
                                             </div>
-                                        </form>
-                            
-                                        
+                                        </form>                                                        
                                     </div>
                                 </div>
                             </div>
