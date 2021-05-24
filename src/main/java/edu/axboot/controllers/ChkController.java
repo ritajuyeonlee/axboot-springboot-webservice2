@@ -4,6 +4,7 @@ import com.chequer.axboot.core.api.response.ApiResponse;
 import com.chequer.axboot.core.api.response.Responses;
 import com.chequer.axboot.core.controllers.BaseController;
 import edu.axboot.controllers.dto.pms.rsv.RsvListResponseDto;
+import edu.axboot.controllers.dto.pms.rsv.RsvResponseDto;
 import edu.axboot.controllers.dto.pms.rsv.RsvSaveRequestDto;
 import edu.axboot.domain.pms.chk.service.ChkService;
 import edu.axboot.domain.pms.chk.service.RsvService;
@@ -29,6 +30,11 @@ public class ChkController extends BaseController {
                                        @RequestParam(value = "guestNm", required = false) String guestNm) {
         List<RsvListResponseDto> list = rsvService.findBy(guestNm, roomTypCd, rsvNum);
         return Responses.ListResponse.of(list);
+    }
+
+    @GetMapping("/api/v1/rsv/{id}")
+    public RsvResponseDto findById(@PathVariable Long id) {
+        return rsvService.findById(id);
     }
 
 

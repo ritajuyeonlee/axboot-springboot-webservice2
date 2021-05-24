@@ -1,6 +1,6 @@
 package edu.axboot.domain.pms.chkMemo;
 
-import com.chequer.axboot.core.parameter.RequestParams;
+import com.querydsl.core.BooleanBuilder;
 import edu.axboot.domain.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +19,16 @@ public class ChkMemoService extends BaseService<ChkMemo, Long> {
         this.chkMemoRepository = chkMemoRepository;
     }
 
-    public List<ChkMemo> gets(RequestParams<ChkMemo> requestParams) {
-
-        return findAll();
+    public List<ChkMemo> gets(String rsvNum) {
+        BooleanBuilder builder = new BooleanBuilder();
+        if (isNotEmpty(rsvNum)) {
+            builder.and(qChkMemo.rsvNum.eq(rsvNum));
+        }
+        List<ChkMemo> list = select()
+                .from(qChkMemo)
+                .where(builder)
+                .orderBy(qChkMemo.rsvNum.asc())
+                .fetch();
+        return list;
     }
-
-
 }

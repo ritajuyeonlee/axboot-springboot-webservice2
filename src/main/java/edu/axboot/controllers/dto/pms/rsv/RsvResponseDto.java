@@ -73,7 +73,6 @@ public class RsvResponseDto {
         this.salePrc = entity.getSalePrc();
         this.svcPrc = entity.getSvcPrc();
 
-
         this.chkMemoList.addAll(entity.getChkMemoList());
     }
 }

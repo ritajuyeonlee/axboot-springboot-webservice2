@@ -6,7 +6,7 @@ import edu.axboot.domain.pms.chkMemo.ChkMemo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -185,7 +185,7 @@ public class Chk extends BaseJpaModel<Long> {
 	public void rsvNumGenerator(String rsvDt, int sno) {
 		this.rsvDt = rsvDt;
 		this.sno = sno;
-		this.rsvNum = "R" + rsvDt.replaceAll("-", "") + StringUtils.leftPad(Integer.toString(sno), 3);
+		this.rsvNum = "R" + rsvDt.replaceAll("-", "") + StringUtils.leftPad(Integer.toString(sno), 3, '0');
 	}
 
 }

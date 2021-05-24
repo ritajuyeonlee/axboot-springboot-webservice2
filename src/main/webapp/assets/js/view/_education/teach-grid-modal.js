@@ -21,6 +21,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         return false;
     },
     MODAL_OPEN: function (caller, act, data) {
+        console.log(data);
         if (!data) data = {};
 
         axboot.modal.open({

@@ -49,18 +49,30 @@ public class ChkMemo extends BaseJpaModel<Long> {
 	private String delYn;
 
 	@Builder
-	public ChkMemo(Long id, String rsvNum, Integer sno, String memoCn, Timestamp memoDtti, String memoMan, String delYn) {
+	public ChkMemo(Long id, String rsvNum, int sno, String memoCn, Timestamp memoDtti, String memoMan, String delYn, boolean isCreated, boolean isModified, boolean isDeleted) {
 		this.id = id;
 		this.rsvNum = rsvNum;
 		this.sno = sno;
 		this.memoCn = memoCn;
 		this.memoDtti = memoDtti;
-		this.memoMan = memoMan;
 		this.delYn = delYn;
+		this.memoMan = memoMan;
+		this.__created__ = isCreated;
+		this.__modified__ = isModified;
+		this.__deleted__ = isDeleted;
 	}
 
 	@Override
     public Long getId() {
         return id;
     }
+	public void update(String memoCn) {
+		this.memoCn = memoCn;
+	}
+	public void delete() {
+		this.delYn = "Y";
+	}
+	public void setRsvNum( String rsvNum){
+		this.rsvNum = rsvNum;
+	}
 }

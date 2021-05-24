@@ -21,14 +21,14 @@
             <ax:form name="searchView0">
                 <ax:tbl clazz="ax-search-tbl" minWidth="500px">
                     <ax:tr>
-                        <ax:td label='검색조건' width="300px">
-                            <input type="text" class="form-control" />
+                        <ax:td label='예약자' width="300px">
+                            <input type="text" class="js-guestNm form-control" />
                         </ax:td>
-                        <ax:td label='검색조건 1' width="300px">
-                            <input type="text" class="form-control" />
+                        <ax:td label='예약번호' width="300px">
+                            <input type="text" class="js-rsvNum form-control" />
                         </ax:td>
-                        <ax:td label='검색조건 2' width="300px">
-                            <input type="text" class="form-control" />
+                        <ax:td label='예약일' width="300px">
+                            <input type="text" class="js-rsvDate form-control" />
                         </ax:td>
                     </ax:tr>
                 </ax:tbl>
@@ -43,7 +43,7 @@
                 <div class="ax-button-group" data-fit-height-aside="grid-view-01">
                     <div class="left">
                         <h2><i class="cqc-list"></i>
-                            프로그램 목록 </h2>
+                            예약 목록 </h2>
                     </div>
                     <div class="right">
                         <button type="button" class="btn btn-default" data-grid-view-01-btn="add"><i class="cqc-circle-with-plus"></i> 추가</button>

@@ -47,7 +47,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             height: 600,
             iframe: {
                 param: 'id=' + (data.id || ''),
-                url: 'reserv-status-content.jsp',
+                url: 'check-out-content.jsp',
             },
             header: { title: '예약조회' },
             callback: function (data) {

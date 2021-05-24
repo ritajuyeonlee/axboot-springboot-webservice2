@@ -15,6 +15,7 @@
     <jsp:body>
 
         <ax:page-buttons></ax:page-buttons>
+        
         <div class="container-fluid">
             <div class="row">
                 <div>

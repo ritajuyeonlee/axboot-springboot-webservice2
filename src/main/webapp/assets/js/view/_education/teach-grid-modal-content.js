@@ -10,7 +10,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
         if (!modalParams.id) return false;
         axboot.ajax({
             type: 'GET',
-            url: '/api/v1/education/JyGridForm/' + modalParams.id,
+            url: '/api/v1/education/jyGridForm/' + modalParams.id,
             callback: function (res) {
                 caller.formView01.setData(res);
             },
@@ -22,7 +22,7 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             if (!item.id) item.__created__ = true;
             axboot.ajax({
                 type: 'POST',
-                url: '/api/v1/education/JyGridForm',
+                url: '/api/v1/education/jyGridForm',
                 data: JSON.stringify(item),
                 callback: function (res) {
                     axDialog.alert('저장 되었습니다', function () {
