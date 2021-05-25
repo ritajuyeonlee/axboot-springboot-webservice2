@@ -25,7 +25,11 @@
                                 <div data-ax-td=""  style="width:30%;">
                                     <div data-ax-td-label=""style="width:150px;">도착일자</div>
                                     <div data-ax-td-wrap="">
-                                        <input type="date" data-ax-path="arrDt" class="form-control" title='도착일자' data-ax-validate="required">
+                                        <div class="input-group" data-ax5picker="arrDt">
+                                            <input type="text" class="form-control" data-ax-path="arrDt" title='도착일자' data-ax-validate="required"
+                                                placeholder="yyyy.mm.dd">
+                                            <span class="input-group-addon"><i class="cqc-calendar"></i></span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div data-ax-td="" style="width:30%;">
@@ -39,9 +43,10 @@
                                 <div data-ax-td=""  style="width:30%;">
                                     <div data-ax-td-label="" style="width:150px;">출발일자</div>
                                     <div data-ax-td-wrap="">
-                                
-                                        <input type="date" data-ax-path="depDt" class="form-control"  title='출발일자'  data-ax-validate="required" >
-                                
+                                        <div class="input-group" data-ax5picker="depDt">
+                                            <input type="text" class="form-control" data-ax-path="depDt" title='출발일자' data-ax-validate="required"  placeholder="yyyy.mm.dd">
+                                            <span class="input-group-addon"><i class="cqc-calendar"></i></span>
+                                        </div>
                                     </div>
                                 </div>
         
@@ -129,7 +134,11 @@
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:120px;">생년월일</div>
                                                 <div data-ax-td-wrap>
-                                                    <input type="date" data-ax-path="brth" class="form-control W150" style="display:inline-block;" >
+                                                    <div class="input-group" data-ax5picker="brth" style="display:inline-block;">
+                                                        <input type="text" class="form-control  W150" data-ax-path="brth"  data-ax-validate="required"
+                                                            placeholder="yyyy.mm.dd">
+                                                        <span class="input-group-addon"><i class="cqc-calendar"></i></span>
+                                                    </div>
                                                         <input type="radio" data-ax-path="gender" value="M"> 남
                                                         <input type="radio"  data-ax-path="gender" value="F"> 여
                                                     

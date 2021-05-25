@@ -196,70 +196,78 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
 
         return true;
     },
-    calcDepDt: function (night) {
-        console.log('call calcDepDt...');
-        if (!night) return;
-        var arrDt = $('.js-arrDt').val();
-        if (!arrDt) return;
-        if (night < 0 || night == 0) {
-            axDialog.alert('1 이상의 숙박수를 입력하세요.', function () {
-                $('[data-ax-path="nightCnt"]').val('').focus();
-                $('[data-ax-path="depDt"]').val('');
-            });
-            return;
-        }
-        var depDt = moment(arrDt).add(night, 'day').format('yyyy-MM-DD');
-        console.log('depDt', depDt);
-        this.model.set('depDt', depDt);
-    },
-    calcNigth: function (Dt) {
-        console.log('call calcNigth...');
-        if (!Dt) return;
-        var arrDt = $('.js-arrDt').val();
-        var depDt = $('.js-depDt').val();
-        if (!arrDt && !depDt) return;
-        var night = moment(depDt).diff(moment(arrDt), 'days');
-        if (night < 0) {
-            axDialog.alert('도착일 이후의 날짜를 선택하세요.', function () {
-                $('[data-ax-path="nightCnt"]').val('');
-                $('[data-ax-path="depDt"]').val('').focus();
-            });
-            return;
-        }
-        this.model.set('nightCnt', night);
-    },
 
     initView: function () {
         var _this = this;
 
         _this.target = $('.js-form');
-        _this.target.find('[data-ax5picker="date"]').ax5picker({
+
+        this.nightCnt = _this.target.find('[data-ax-path="nightCnt"]');
+        _this.target.find('[data-ax5picker="depDt"]').ax5picker({
+            direction: 'auto',
+            content: {
+                type: 'date',
+            },
+        });
+        _this.target.find('[data-ax5picker="arrDt"]').ax5picker({
+            direction: 'auto',
+            content: {
+                type: 'date',
+            },
+        });
+        _this.target.find('[data-ax5picker="brth"]').ax5picker({
             direction: 'auto',
             content: {
                 type: 'date',
             },
         });
 
-        this.model = new ax5.ui.binder();
-        this.model.setModel(this.getDefaultData(), this.target);
-        this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
-
-        $('.js-nightCnt').on('change', function () {
-            _this.calcDepDt($(this).val());
+        this.arrDt = _this.target.find('[data-ax-path="arrDt"]').on('change', function () {
+            var arrDt = $(this).val();
+            var depDt = _this.depDt.val();
+            if (!arrDt || !depDt) return;
+            var momArrDt = moment(arrDt);
+            var momDepDt = moment(depDt);
+            var nightCnt = momDepDt.diff(momArrDt, 'days');
+            if (nightCnt < 1) {
+                nightCnt = 1;
+                _this.model.set('depDt', momArrDt.add(nightCnt, 'days').format('yyyy-MM-DD'));
+            }
+            _this.model.set('nightCnt', nightCnt);
+        });
+        this.depDt = _this.target.find('[data-ax-path="depDt"]').on('change', function () {
+            var arrDt = _this.arrDt.val();
+            var depDt = $(this).val();
+            if (!arrDt || !depDt) return;
+            var momArrDt = moment(arrDt);
+            var momDepDt = moment(depDt);
+            var nightCnt = momDepDt.diff(momArrDt, 'days');
+            if (nightCnt < 1) {
+                nightCnt = 1;
+                _this.model.set('arrDt', momDepDt.add(-nightCnt, 'days').format('yyyy-MM-DD'));
+            }
+            _this.model.set('nightCnt', nightCnt);
+        });
+        this.nightCnt.on('change', function () {
+            var arrDt = _this.arrDt.val();
+            if (!arrDt) return;
+            var nightCnt = _this.nightCnt.val();
+            if (nightCnt < 1) {
+                nightCnt = 1;
+                _this.model.set('nightCnt', nightCnt);
+            }
+            _this.model.set('depDt', moment(arrDt).add(nightCnt, 'days').format('yyyy-MM-DD'));
         });
 
-        $('.js-depDt').on('change', function () {
-            _this.calcNigth($(this).val());
-        });
-
-        $('.js-arrDt').on('change', function () {
-            _this.calcNigth($(this).val());
-        });
         axboot.buttonClick(this, 'data-form-view-01-btn', {
             guestsearch: function () {
                 ACTIONS.dispatch(ACTIONS.MODAL_OPEN, _this.getModalParams());
             },
         });
+
+        this.model = new ax5.ui.binder();
+        this.model.setModel(this.getDefaultData(), this.target);
+        this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
     },
     getModalParams: function () {
         return {

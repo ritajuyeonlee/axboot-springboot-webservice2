@@ -1,5 +1,6 @@
 var modalParams = modalParams || {};
 var fnObj = {};
+
 var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_CLOSE: function (caller, act, data) {
         if (parent) {
@@ -39,25 +40,25 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     ITEM_DEL: function (caller, act, data) {
         caller.gridView01.delRow('selected');
     },
-    MODAL_OPEN: function (caller, act, data) {
-        if (!data) data = {};
+    // MODAL_OPEN: function (caller, act, data) {
+    //     if (!data) data = {};
 
-        axboot.modal.open({
-            width: 780,
-            height: 520,
-            iframe: {
-                param: 'guestNm=' + (data.guestNm || '') + '&guestTel=' + (data.guestTel || '') + '&email=' + (data.email || ''),
-                url: 'reservation-content.jsp',
-            },
-            header: { title: '투숙객 조회' },
-            callback: function (data) {
-                console.log(data);
-                caller.formView01.setGuestValue(data);
+    //     axboot.modal.open({
+    //         width: 780,
+    //         height: 520,
+    //         iframe: {
+    //             param: 'guestNm=' + (data.guestNm || '') + '&guestTel=' + (data.guestTel || '') + '&email=' + (data.email || ''),
+    //             url: 'reservation-content.jsp',
+    //         },
+    //         header: { title: '투숙객 조회' },
+    //         callback: function (data) {
+    //             console.log(data);
+    //             caller.formView01.setGuestValue(data);
 
-                this.close();
-            },
-        });
-    },
+    //             this.close();
+    //         },
+    //     });
+    // },
     dispatch: function (caller, act, data) {
         var result = ACTIONS.exec(caller, act, data);
         if (result != 'error') {
@@ -76,6 +77,7 @@ fnObj.pageStart = function () {
     this.pageButtonView.initView();
     this.formView01.initView();
     this.gridView01.initView();
+    this.guestModalView.initView();
     ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
 };
 
@@ -95,6 +97,40 @@ fnObj.pageButtonView = axboot.viewExtend({
     },
 });
 
+fnObj.guestModalView = axboot.viewExtend({
+    open: function (data) {
+        var _this = this;
+        if (!data) data = {};
+        this.modal.open({
+            width: 760,
+            height: 600,
+            header: false,
+            iframe: {
+                param:
+                    'guestNm=' +
+                    (data.guestNm || '') +
+                    '&guestTel=' +
+                    (data.guestTel || '') +
+                    '&email=' +
+                    (data.email || '') +
+                    '&modalView=guestModalView',
+                url: 'guest-modal.jsp',
+            },
+        });
+    },
+
+    close: function () {
+        this.modal.close();
+    },
+    callback: function (data) {
+        fnObj.formView01.setGuestValue(data);
+        this.modal.close();
+    },
+    initView: function () {
+        this.modal = new ax5.ui.modal();
+    },
+});
+
 /**
  * formView
  */
@@ -104,7 +140,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
     getData: function () {
         var data = this.modelFormatter.getClearData(this.model.get()); // 모델의 값을 포멧팅 전 값으로 치환.
-        return $.extend({}, data);
+        return $.extend({}, data, { sttusCd: 'RSV_01' });
     },
     setData: function (data) {
         if (typeof data === 'undefined') data = this.getDefaultData();
@@ -147,6 +183,78 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         return true;
     },
 
+    initView: function () {
+        var _this = this;
+
+        _this.target = $('.js-form');
+
+        this.nightCnt = _this.target.find('[data-ax-path="nightCnt"]');
+        _this.target.find('[data-ax5picker="depDt"]').ax5picker({
+            direction: 'auto',
+            content: {
+                type: 'date',
+            },
+        });
+        _this.target.find('[data-ax5picker="arrDt"]').ax5picker({
+            direction: 'auto',
+            content: {
+                type: 'date',
+            },
+        });
+        _this.target.find('[data-ax5picker="brth"]').ax5picker({
+            direction: 'auto',
+            content: {
+                type: 'date',
+            },
+        });
+
+        this.arrDt = _this.target.find('[data-ax-path="arrDt"]').on('change', function () {
+            var arrDt = $(this).val();
+            var depDt = _this.depDt.val();
+            if (!arrDt || !depDt) return;
+            var momArrDt = moment(arrDt);
+            var momDepDt = moment(depDt);
+            var nightCnt = momDepDt.diff(momArrDt, 'days');
+            if (nightCnt < 1) {
+                nightCnt = 1;
+                _this.model.set('depDt', momArrDt.add(nightCnt, 'days').format('yyyy-MM-DD'));
+            }
+            _this.model.set('nightCnt', nightCnt);
+        });
+        this.depDt = _this.target.find('[data-ax-path="depDt"]').on('change', function () {
+            var arrDt = _this.arrDt.val();
+            var depDt = $(this).val();
+            if (!arrDt || !depDt) return;
+            var momArrDt = moment(arrDt);
+            var momDepDt = moment(depDt);
+            var nightCnt = momDepDt.diff(momArrDt, 'days');
+            if (nightCnt < 1) {
+                nightCnt = 1;
+                _this.model.set('arrDt', momDepDt.add(-nightCnt, 'days').format('yyyy-MM-DD'));
+            }
+            _this.model.set('nightCnt', nightCnt);
+        });
+        this.nightCnt.on('change', function () {
+            var arrDt = _this.arrDt.val();
+            if (!arrDt) return;
+            var nightCnt = _this.nightCnt.val();
+            if (nightCnt < 1) {
+                nightCnt = 1;
+                _this.model.set('nightCnt', nightCnt);
+            }
+            _this.model.set('depDt', moment(arrDt).add(nightCnt, 'days').format('yyyy-MM-DD'));
+        });
+
+        axboot.buttonClick(this, 'data-form-view-01-btn', {
+            guestsearch: function () {
+                fnObj.guestModalView.open(_this.getModalParams());
+            },
+        });
+
+        this.model = new ax5.ui.binder();
+        this.model.setModel(this.getDefaultData(), this.target);
+        this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
+    },
     getModalParams: function () {
         return {
             guestNm: this.model.get('guestNm'),
@@ -164,21 +272,6 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         this.model.set('brth', data.brth);
         this.model.set('gender', data.gender);
         this.model.set('langCd', data.langCd);
-    },
-    initView: function () {
-        var _this = this;
-
-        _this.target = $('.js-form');
-
-        this.model = new ax5.ui.binder();
-        this.model.setModel(this.getDefaultData(), this.target);
-        this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
-
-        axboot.buttonClick(this, 'data-form-view-01-btn', {
-            guestsearch: function () {
-                ACTIONS.dispatch(ACTIONS.MODAL_OPEN, _this.getModalParams());
-            },
-        });
     },
 });
 

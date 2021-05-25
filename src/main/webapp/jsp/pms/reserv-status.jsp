@@ -28,7 +28,7 @@
                             <input type="text" class="js-rsvNum form-control" />
                         </ax:td>
                         <ax:td label='예약일' width="300px">
-                            <input type="text" class="js-rsvDate form-control" />
+                            <input type="date" class="js-rsvDate form-control" />
                         </ax:td>
                     </ax:tr>
                 </ax:tbl>

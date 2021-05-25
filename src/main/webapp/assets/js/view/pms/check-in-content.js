@@ -104,15 +104,11 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
     getData: function () {
         var data = this.modelFormatter.getClearData(this.model.get()); // 모델의 값을 포멧팅 전 값으로 치환.
-        return $.extend({}, data);
+        return $.extend({}, data, { sttusCd: 'RSV_01' });
     },
     setData: function (data) {
         if (typeof data === 'undefined') data = this.getDefaultData();
         data = $.extend({}, data);
-
-        // if (data.rsvNum) {
-        //     $('.js-rsvNum').text('예약번호: ' + data.rsvNum);
-        // }
 
         this.model.setModel(data);
         this.modelFormatter.formatting(); // 입력된 값을 포메팅 된 값으로 변경
@@ -151,6 +147,78 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         return true;
     },
 
+    initView: function () {
+        var _this = this;
+
+        _this.target = $('.js-form');
+
+        this.nightCnt = _this.target.find('[data-ax-path="nightCnt"]');
+        _this.target.find('[data-ax5picker="depDt"]').ax5picker({
+            direction: 'auto',
+            content: {
+                type: 'date',
+            },
+        });
+        _this.target.find('[data-ax5picker="arrDt"]').ax5picker({
+            direction: 'auto',
+            content: {
+                type: 'date',
+            },
+        });
+        _this.target.find('[data-ax5picker="brth"]').ax5picker({
+            direction: 'auto',
+            content: {
+                type: 'date',
+            },
+        });
+
+        this.arrDt = _this.target.find('[data-ax-path="arrDt"]').on('change', function () {
+            var arrDt = $(this).val();
+            var depDt = _this.depDt.val();
+            if (!arrDt || !depDt) return;
+            var momArrDt = moment(arrDt);
+            var momDepDt = moment(depDt);
+            var nightCnt = momDepDt.diff(momArrDt, 'days');
+            if (nightCnt < 1) {
+                nightCnt = 1;
+                _this.model.set('depDt', momArrDt.add(nightCnt, 'days').format('yyyy-MM-DD'));
+            }
+            _this.model.set('nightCnt', nightCnt);
+        });
+        this.depDt = _this.target.find('[data-ax-path="depDt"]').on('change', function () {
+            var arrDt = _this.arrDt.val();
+            var depDt = $(this).val();
+            if (!arrDt || !depDt) return;
+            var momArrDt = moment(arrDt);
+            var momDepDt = moment(depDt);
+            var nightCnt = momDepDt.diff(momArrDt, 'days');
+            if (nightCnt < 1) {
+                nightCnt = 1;
+                _this.model.set('arrDt', momDepDt.add(-nightCnt, 'days').format('yyyy-MM-DD'));
+            }
+            _this.model.set('nightCnt', nightCnt);
+        });
+        this.nightCnt.on('change', function () {
+            var arrDt = _this.arrDt.val();
+            if (!arrDt) return;
+            var nightCnt = _this.nightCnt.val();
+            if (nightCnt < 1) {
+                nightCnt = 1;
+                _this.model.set('nightCnt', nightCnt);
+            }
+            _this.model.set('depDt', moment(arrDt).add(nightCnt, 'days').format('yyyy-MM-DD'));
+        });
+
+        axboot.buttonClick(this, 'data-form-view-01-btn', {
+            guestsearch: function () {
+                ACTIONS.dispatch(ACTIONS.MODAL_OPEN, _this.getModalParams());
+            },
+        });
+
+        this.model = new ax5.ui.binder();
+        this.model.setModel(this.getDefaultData(), this.target);
+        this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
+    },
     getModalParams: function () {
         return {
             guestNm: this.model.get('guestNm'),
@@ -168,21 +236,6 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         this.model.set('brth', data.brth);
         this.model.set('gender', data.gender);
         this.model.set('langCd', data.langCd);
-    },
-    initView: function () {
-        var _this = this;
-
-        _this.target = $('.js-form');
-
-        this.model = new ax5.ui.binder();
-        this.model.setModel(this.getDefaultData(), this.target);
-        this.modelFormatter = new axboot.modelFormatter(this.model); // 모델 포메터 시작
-
-        axboot.buttonClick(this, 'data-form-view-01-btn', {
-            guestsearch: function () {
-                ACTIONS.dispatch(ACTIONS.MODAL_OPEN, _this.getModalParams());
-            },
-        });
     },
 });
 
