@@ -121,7 +121,8 @@ public class RsvService extends BaseService<Chk, Long> {
     }
 
     @Transactional(readOnly = true)
-    public List<RsvListResponseDto> findBy(String guestNm, String roomTypCd, String rsvNum) {
+    public List<RsvListResponseDto>findBy(String guestNm,String roomTypCd,String sttusCd,String sRsvDt,String sDeptDt
+            ,String sArrDt,String eRsvDt,String eDeptDt,String eArrDt,String rsvNum) {
         BooleanBuilder builder = new BooleanBuilder();
 
         if (isNotEmpty(guestNm)) {
@@ -129,11 +130,23 @@ public class RsvService extends BaseService<Chk, Long> {
         }
 
         if (isNotEmpty(roomTypCd)) {
-            builder.and(qChk.roomTypCd.like("%" + roomTypCd +"%"));
+            builder.and(qChk.roomTypCd.eq(roomTypCd));
         }
 
         if (isNotEmpty(rsvNum)) {
             builder.and(qChk.rsvNum.like("%" + rsvNum +"%"));
+        }
+        if (isNotEmpty(sttusCd)) {
+            builder.and(qChk.sttusCd.eq(sttusCd));
+        }
+        if (isNotEmpty(sRsvDt)&&isNotEmpty(eRsvDt)) {
+            builder.and(qChk.rsvDt.between(sRsvDt,eRsvDt));
+        }
+        if (isNotEmpty(sDeptDt)&&isNotEmpty(eDeptDt)) {
+            builder.and(qChk.depDt.between(sDeptDt,eDeptDt));
+        }
+        if (isNotEmpty(sArrDt)&&isNotEmpty(eArrDt)) {
+            builder.and(qChk.arrDt.between(sArrDt,eArrDt));
         }
 
         List<Chk> entities = select().select(

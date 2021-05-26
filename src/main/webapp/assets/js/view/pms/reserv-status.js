@@ -101,15 +101,37 @@ fnObj.pageButtonView = axboot.viewExtend({
 fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
         this.target = $(document['searchView0']);
+
+        this.target.find('[data-ax5picker="date"]').ax5picker({
+            direction: 'auto',
+            content: {
+                type: 'date',
+            },
+        });
+
         this.target.attr('onsubmit', 'return ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);');
 
         this.guestNm = $('.js-guestNm');
         this.rsvNum = $('.js-rsvNum');
+        this.sRsvDt = $('.js-sRsvDt');
+        this.eRsvDt = $('.js-eRsvDt');
+        this.sArrDt = $('.js-sArrDt');
+        this.eArrDt = $('.js-eArrDt');
+        this.sDeptDt = $('.js-sDeptDt');
+        this.eDeptDt = $('.js-eDeptDt');
+        this.sttusCd = $('#sttusCd');
     },
     getData: function () {
         return {
             guestNm: this.guestNm.val(),
             rsvNum: this.rsvNum.val(),
+            sttusCd: this.sttusCd.val(),
+            sRsvDt: this.sRsvDt.val(),
+            eRsvDt: this.eRsvDt.val(),
+            sArrDt: this.sArrDt.val(),
+            eArrDt: this.eArrDt.val(),
+            sDeptDt: this.sDeptDt.val(),
+            eDeptDt: this.eDeptDt.val(),
         };
     },
 });

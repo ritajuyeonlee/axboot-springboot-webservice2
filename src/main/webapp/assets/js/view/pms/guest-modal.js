@@ -78,9 +78,6 @@ fnObj.pageButtonView = axboot.viewExtend({
     initView: function () {
         $('[data-page-btn="excel"]').text('엑셀 다운로드');
         axboot.buttonClick(this, 'data-page-btn', {
-            search: function () {
-                ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);
-            },
             choice: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_CHOICE);
             },
@@ -99,9 +96,6 @@ fnObj.pageButtonView = axboot.viewExtend({
 fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
     initView: function () {
         this.target = axboot.gridBuilder({
-            onPageChange: function (pageNumber) {
-                ACTIONS.dispatch(ACTIONS.PAGE_SEARCH, { pageNumber: pageNumber });
-            },
             showRowSelector: false,
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
