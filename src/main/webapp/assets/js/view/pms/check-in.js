@@ -101,8 +101,17 @@ fnObj.pageButtonView = axboot.viewExtend({
 fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
         this.target = $(document['searchView0']);
+
+        this.target.find('[data-ax5picker="date"]').ax5picker({
+            direction: 'auto',
+            content: {
+                type: 'date',
+            },
+        });
         this.target.attr('onsubmit', 'return ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);');
 
+        this.sArrDt = $('.js-sArrDt');
+        this.eArrDt = $('.js-eArrDt');
         this.guestNm = $('.js-guestNm');
         this.rsvNum = $('.js-rsvNum');
     },

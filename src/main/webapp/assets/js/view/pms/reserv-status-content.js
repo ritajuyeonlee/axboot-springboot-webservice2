@@ -146,6 +146,10 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
         if (typeof data === 'undefined') data = this.getDefaultData();
         data = $.extend({}, data);
 
+        if (data.rsvNum) {
+            $('.js-rsvNum').text('예약번호: ' + data.rsvNum);
+        }
+
         this.model.setModel(data);
         this.modelFormatter.formatting(); // 입력된 값을 포메팅 된 값으로 변경
     },

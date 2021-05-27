@@ -10,7 +10,7 @@
                 <jsp:attribute name="script">
 
                     <script type="text/javascript"
-                        src="<c:url value='/assets/js/view/pms/reserv-status.js' />"></script>
+                        src="<c:url value='/assets/js/view/pms/check-out.js' />"></script>
 
                 </jsp:attribute>
                 <jsp:body>

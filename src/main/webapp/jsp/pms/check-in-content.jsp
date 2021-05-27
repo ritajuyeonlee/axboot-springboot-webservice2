@@ -17,21 +17,20 @@
         <script>
             var modalParams = {id: "${id}"};
         </script>
-        <script type="text/javascript" src="<c:url value='/assets/js/view/pms/reserv-status-content.js' />"></script>
+        <script type="text/javascript" src="<c:url value='/assets/js/view/pms/check-in-content.js' />"></script>
             <script type="text/javascript"
                 src="<c:url value='https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js' />"></script>
 
     </jsp:attribute>
     <jsp:attribute name="header">
-        <h3 class="title">
-            예약번호 :
-        </h3>
+     
+        <div class="js-rsvNum" style="display:inline-block;">예약번호 :         </div>
     </jsp:attribute>
     <jsp:body>
-        <div class="js-rsvNum">예약번호 : </div>;
+        
         <ax:page-buttons>
             <button type="button" class="btn btn-default" data-page-btn="close"> 닫기 </button>
-            <button type="button" class="btn btn-info" data-page-btn="save"> 저장 </button>
+            <button type="button" class="btn btn-info" data-page-btn="save"> 체크인 </button>
         </ax:page-buttons>
 
         <div class="container-fluid">
@@ -73,31 +72,36 @@
                             <div data-ax-tr="">
                                 <div data-ax-td="" style="width:30%;">
                                     <div data-ax-td-label="" style="width:150px;">객실타입</div>
+                                    <div data-ax-td-wrap="">       
+                                        <ax:common-code groupCd="PMS_ROOM_TYPE" dataPath="roomTypCd" emptyText="전체" />        
+                                    </div>                                  
+                                </div>
+                                <div data-ax-td="" style="width:30%;">
+                                    <div data-ax-td-label="" style="width:150px;">객실번호</div>
                                     <div data-ax-td-wrap="">
-        
-                                        <ax:common-code groupCd="PMS_ROOM_TYPE" dataPath="roomTypCd" emptyText="전체" />
-        
+                        <input type="text" class="form-control" data-ax-path="roomNum" title='객실번호' data-ax-validate="required">
                                     </div>
                                 </div>
+                               
+                            </div>
+                            <div data-ax-tr="">
+                             
                                 <div data-ax-td="" style="width:30%;">
                                     <div data-ax-td-label="" style="width:150px;">성인수</div>
                                     <div data-ax-td-wrap="">
-        
-                                        <input type="number" data-ax-path="adultCnt" class="form-control" title='성인수'
-                                            data-ax-validate="required">
-        
+                            
+                                        <input type="number" data-ax-path="adultCnt" class="form-control" title='성인수' data-ax-validate="required">
+                            
                                     </div>
                                 </div>
                                 <div data-ax-td="" style="width:30%;">
                                     <div data-ax-td-label="" style="width:150px;">아동수</div>
                                     <div data-ax-td-wrap="">
-        
-                                        <input type="number" data-ax-path="chldCnt" class="form-control" title='아동수'
-                                            data-ax-validate="required">
-        
+                            
+                                        <input type="number" data-ax-path="chldCnt" class="form-control" title='아동수' data-ax-validate="required">
+                            
                                     </div>
                                 </div>
-        
                             </div>
                             <div data-ax-tr>
                                 <div data-ax-td style="width:100%">
@@ -135,7 +139,7 @@
                                                 <div data-ax-td style="width:50%">
                                                     <div data-ax-td-label style="width:100px;">연락처</div>
                                                     <div data-ax-td-wrap>
-                                                        <input type="text" data-ax-path="guestTel" class="form-control" />
+                                                        <input type="text" data-ax-path="guestTel" class="form-control"data-ax-validate="required" />
                                                     </div>
                                                 </div>
                                                 <div data-ax-td style="width:50%">
@@ -160,7 +164,7 @@
                                                         <div class="input-group" data-ax5picker="brth"
                                                             style="display:inline-block;">
                                                             <input type="text" class="form-control  W150" data-ax-path="brth"
-                                                                data-ax-validate="required" placeholder="yyyy.mm.dd">
+                                                                 placeholder="yyyy.mm.dd">
                                                             <span class="input-group-addon"><i class="cqc-calendar"></i></span>
                                                         </div>
                                                         <input type="radio" data-ax-path="gender" value="M"> 남

@@ -17,7 +17,7 @@
         <script>
             var modalParams = {id: "${id}"};
         </script>
-        <script type="text/javascript" src="<c:url value='/assets/js/view/pms/reserv-status-content.js' />"></script>
+        <script type="text/javascript" src="<c:url value='/assets/js/view/pms/check-out-content.js' />"></script>
             <script type="text/javascript"
                 src="<c:url value='https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js' />"></script>
 

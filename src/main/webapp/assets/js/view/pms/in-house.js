@@ -101,15 +101,38 @@ fnObj.pageButtonView = axboot.viewExtend({
 fnObj.searchView = axboot.viewExtend(axboot.searchView, {
     initView: function () {
         this.target = $(document['searchView0']);
+
+        this.target.find('[data-ax5picker="date"]').ax5picker({
+            direction: 'auto',
+            content: {
+                type: 'date',
+            },
+        });
+
         this.target.attr('onsubmit', 'return ACTIONS.dispatch(ACTIONS.PAGE_SEARCH);');
 
         this.guestNm = $('.js-guestNm');
         this.rsvNum = $('.js-rsvNum');
+        this.roomTypCd = $('.js-roomTypCd');
+        this.sRsvDt = $('.js-sRsvDt');
+        this.eRsvDt = $('.js-eRsvDt');
+        this.sArrDt = $('.js-sArrDt');
+        this.eArrDt = $('.js-eArrDt');
+        this.sDeptDt = $('.js-sDeptDt');
+        this.eDeptDt = $('.js-eDeptDt');
     },
     getData: function () {
         return {
             guestNm: this.guestNm.val(),
             rsvNum: this.rsvNum.val(),
+            roomTypCd: this.roomTypCd.val(),
+            sttusCd: 'CHK_01',
+            sRsvDt: this.sRsvDt.val(),
+            eRsvDt: this.eRsvDt.val(),
+            sArrDt: this.sArrDt.val(),
+            eArrDt: this.eArrDt.val(),
+            sDeptDt: this.sDeptDt.val(),
+            eDeptDt: this.eDeptDt.val(),
         };
     },
 });
@@ -127,8 +150,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
             columns: [
-                { key: 'id', label: 'id', width: 100, align: 'center' },
-                { key: 'sno', label: 'sno', width: 100, align: 'center' },
                 { key: 'rsvNum', label: '예약 번호', width: 100, align: 'center' },
                 { key: 'rsvDt', label: '예약일', width: 100, align: 'center' },
                 { key: 'guestId', label: '투숙객ID', width: 100, align: 'center' },

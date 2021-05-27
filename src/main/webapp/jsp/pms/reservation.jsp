@@ -127,7 +127,7 @@
                                             <div data-ax-td style="width:50%">
                                                 <div data-ax-td-label style="width:100px;">언어</div>
                                                 <div data-ax-td-wrap>
-                                                    <ax:common-code groupCd="PMS_LANG" dataPath="langCd" clazz="js-langCd;" />
+                                                    <ax:common-code groupCd="PMS_LANG" dataPath="langCd" name="langCd" />
                                                 </div>
                                             </div>
                                             

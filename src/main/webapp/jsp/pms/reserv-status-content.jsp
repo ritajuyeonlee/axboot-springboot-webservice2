@@ -23,9 +23,9 @@
 
     </jsp:attribute>
     <jsp:attribute name="header">
-        <h3 class="title">
+        <div class="js-rsvNum" style="display:inline-block;">
             예약번호 :
-        </h3>
+        </div>
     </jsp:attribute>
     <jsp:body>
 

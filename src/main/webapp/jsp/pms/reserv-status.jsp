@@ -38,7 +38,8 @@
                     </ax:tr>
                     <ax:tr>
                         <ax:td label='객실타입' width="300px">
-                            <input type="text" class="js-roomTypCd form-control" />
+                        <ax:common-code groupCd="PMS_ROOM_TYPE" name="roomTypCd" dataPath="roomTypCd" clazz="js-roomTypCd form-control W100"
+                            emptyText="전체" />
                         </ax:td>
                         <ax:td label='도착일' width="400px">
                             <div class="input-group" data-ax5picker="date">

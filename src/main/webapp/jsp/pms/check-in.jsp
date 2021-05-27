@@ -10,7 +10,7 @@
                 <jsp:attribute name="script">
 
                     <script type="text/javascript"
-                        src="<c:url value='/assets/js/view/pms/reserv-status.js' />"></script>
+                        src="<c:url value='/assets/js/view/pms/check-in.js' />"></script>
 
                 </jsp:attribute>
                 <jsp:body>
@@ -28,8 +28,13 @@
                                     <ax:td label='예약번호' width="300px">
                                         <input type="text" class="js-rsvNum form-control" />
                                     </ax:td>
-                                    <ax:td label='예약일' width="300px">
-                                        <input type="text" class="js-rsvDate form-control" />
+                                    <ax:td label='도착일' width="400px">
+                                        <div class="input-group" data-ax5picker="date">
+                                            <input type="text" class="js-sArrDt form-control" data-ax-path="sArrDt" placeholder="yyyy/mm/dd">
+                                            <span class="input-group-addon">~</span>
+                                            <input type="text" class="js-eArrDt form-control" data-ax-path="eArrDt" placeholder="yyyy/mm/dd">
+                                            <span class="input-group-addon"><i class="cqc-calendar"></i></span>
+                                        </div>
                                     </ax:td>
                                 </ax:tr>
                             </ax:tbl>
