@@ -119,13 +119,20 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
         this.eArrDt = $('.js-eArrDt');
         this.sDeptDt = $('.js-sDeptDt');
         this.eDeptDt = $('.js-eDeptDt');
-        this.sttusCd = $('#sttusCd');
+        this.sttusCd = $('input[name="sttusCd"]');
     },
     getData: function () {
+        var sttusCds = [];
+        this.sttusCd.each(function () {
+            if ($(this).is(':checked')) {
+                sttusCds.push($(this).val());
+            }
+        });
+
         return {
             guestNm: this.guestNm.val(),
             rsvNum: this.rsvNum.val(),
-            sttusCd: this.sttusCd.val(),
+            sttusCd: sttusCds.join(','),
             sRsvDt: this.sRsvDt.val(),
             eRsvDt: this.eRsvDt.val(),
             sArrDt: this.sArrDt.val(),
@@ -149,8 +156,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
             columns: [
-                { key: 'id', label: 'id', width: 100, align: 'center' },
-                { key: 'sno', label: 'sno', width: 100, align: 'center' },
                 { key: 'rsvNum', label: '예약 번호', width: 100, align: 'center' },
                 { key: 'rsvDt', label: '예약일', width: 100, align: 'center' },
                 { key: 'guestId', label: '투숙객ID', width: 100, align: 'center' },

@@ -27,7 +27,7 @@ public class ChkController extends BaseController {
     @GetMapping("/api/v1/rsv")
     public Responses.ListResponse list(@RequestParam(value = "rsvNum", required = false) String rsvNum,
                                        @RequestParam(value = "roomTypCd", required = false) String roomTypCd,
-                                       @RequestParam(value = "sttusCd", required = false) String sttusCd,
+                                       @RequestParam(value = "sttusCd", required = false) List<String> sttusCds,
                                        @RequestParam(value = "sRsvDt", required = false) String sRsvDt,
                                        @RequestParam(value = "sDeptDt", required = false) String sDeptDt,
                                        @RequestParam(value = "sArrDt", required = false) String sArrDt,
@@ -35,7 +35,7 @@ public class ChkController extends BaseController {
                                        @RequestParam(value = "eDeptDt", required = false) String eDeptDt,
                                        @RequestParam(value = "eArrDt", required = false) String eArrDt,
                                        @RequestParam(value = "guestNm", required = false) String guestNm) {
-        List<RsvListResponseDto> list = rsvService.findBy(guestNm, roomTypCd, sttusCd, sRsvDt, sDeptDt, sArrDt, eRsvDt, eDeptDt, eArrDt, rsvNum);
+        List<RsvListResponseDto> list = rsvService.findBy(guestNm, roomTypCd, sttusCds, sRsvDt, sDeptDt, sArrDt, eRsvDt, eDeptDt, eArrDt, rsvNum);
         return Responses.ListResponse.of(list);
     }
 

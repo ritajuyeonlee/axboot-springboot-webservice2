@@ -59,7 +59,7 @@
                     </ax:tr>
                     <ax:tr>
                         <ax:td label='상태' width="1000px">
-                            <ax:common-code name="sttusCd" groupCd="PMS_STAY_STATUS" dataPath="sttusCd" type="checkbox" emptyText="전체" />
+                            <ax:common-code name="sttusCd" groupCd="PMS_STAY_STATUS"  type="checkbox"/>
                         </ax:td>
                     </ax:tr>
                 </ax:tbl>

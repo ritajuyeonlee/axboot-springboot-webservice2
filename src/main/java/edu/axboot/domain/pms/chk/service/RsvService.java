@@ -121,7 +121,7 @@ public class RsvService extends BaseService<Chk, Long> {
     }
 
     @Transactional(readOnly = true)
-    public List<RsvListResponseDto>findBy(String guestNm,String roomTypCd,String sttusCd,String sRsvDt,String sDeptDt
+    public List<RsvListResponseDto>findBy(String guestNm,String roomTypCd,List <String> sttusCds,String sRsvDt,String sDeptDt
             ,String sArrDt,String eRsvDt,String eDeptDt,String eArrDt,String rsvNum) {
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -136,8 +136,10 @@ public class RsvService extends BaseService<Chk, Long> {
         if (isNotEmpty(rsvNum)) {
             builder.and(qChk.rsvNum.like("%" + rsvNum +"%"));
         }
-        if (isNotEmpty(sttusCd)) {
-            builder.and(qChk.sttusCd.eq(sttusCd));
+        if (isNotEmpty(sttusCds)) {
+            for (String sttusCd : sttusCds) {
+                builder.and(qChk.sttusCd.eq(sttusCd));
+            }
         }
         if (isNotEmpty(sRsvDt)&&isNotEmpty(eRsvDt)) {
             builder.and(qChk.rsvDt.between(sRsvDt,eRsvDt));
