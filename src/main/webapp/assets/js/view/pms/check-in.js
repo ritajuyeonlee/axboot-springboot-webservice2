@@ -116,6 +116,7 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
         this.rsvNum = $('.js-rsvNum');
     },
     getData: function () {
+        sttusCds = ['RSV_02', 'RSV_03'];
         return {
             guestNm: this.guestNm.val(),
             rsvNum: this.rsvNum.val(),

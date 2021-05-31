@@ -69,24 +69,28 @@
                                 </div>
         
                             </div>
-                            <div data-ax-tr="">
-                                <div data-ax-td="" style="width:30%;">
-                                    <div data-ax-td-label="" style="width:150px;">객실타입</div>
-                                    <div data-ax-td-wrap="">       
-                                        <ax:common-code groupCd="PMS_ROOM_TYPE" dataPath="roomTypCd" emptyText="전체" />        
-                                    </div>                                  
+                           
+                            <div data-ax-tr>
+                               <div data-ax-td="" style="width:50%;">
+                                <div data-ax-td-label="" style="width:150px;">객실타입</div>
+                                <div data-ax-td-wrap="">
+                                    <ax:common-code groupCd="PMS_ROOM_TYPE" dataPath="roomTypCd" emptyText="전체" />
                                 </div>
-                                <div data-ax-td="" style="width:30%;">
-                                    <div data-ax-td-label="" style="width:150px;">객실번호</div>
+                                </div>
+                                <div data-ax-td="" style="width:50%;">
+                                    <div data-ax-td-label="" style="width:150px;">객실번호 &nbsp;
+                                    <button type="button" class="btn btn-default" data-form-view-01-btn="guestsearch">
+                                        <i class="cqc-circle-with-plus"></i> 검색 </button>
+                                    </div>
                                     <div data-ax-td-wrap="">
-                        <input type="text" class="form-control" data-ax-path="roomNum" title='객실번호' data-ax-validate="required">
+                                       <input type="text" data-ax-path="roomNum" title='객실번호' class="form-control" readonly='readonly' />
                                     </div>
                                 </div>
-                               
+                            
                             </div>
                             <div data-ax-tr="">
                              
-                                <div data-ax-td="" style="width:30%;">
+                                <div data-ax-td="" style="width:50%;">
                                     <div data-ax-td-label="" style="width:150px;">성인수</div>
                                     <div data-ax-td-wrap="">
                             
@@ -94,7 +98,7 @@
                             
                                     </div>
                                 </div>
-                                <div data-ax-td="" style="width:30%;">
+                                <div data-ax-td="" style="width:50%;">
                                     <div data-ax-td-label="" style="width:150px;">아동수</div>
                                     <div data-ax-td-wrap="">
                             
