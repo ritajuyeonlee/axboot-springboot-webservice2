@@ -41,6 +41,14 @@
                 <div data-ax-tbl="" class="ax-form-tbl">
                     <div data-ax-tr="">
                         <div data-ax-td="" style="width:30%;">
+                            <div data-ax-td-label="" style="width:150px;">투숙상태</div>
+                            <div data-ax-td-wrap="">
+                       <ax:common-code groupCd="PMS_STAY_STATUS" dataPath="sttusCd" emptyText="전체" />
+                            </div>
+                        </div>
+                    </div>
+                    <div data-ax-tr="">
+                        <div data-ax-td="" style="width:30%;">
                             <div data-ax-td-label="" style="width:150px;">도착일자</div>
                             <div data-ax-td-wrap="">
                                 <input type="date" data-ax-path="arrDt" class="form-control" title='도착일자'
@@ -70,9 +78,7 @@
                         <div data-ax-td="" style="width:30%;">
                             <div data-ax-td-label="" style="width:150px;">객실타입</div>
                             <div data-ax-td-wrap="">
-            
                                 <ax:common-code groupCd="PMS_ROOM_TYPE" dataPath="roomTypCd" emptyText="전체" />
-            
                             </div>
                         </div>
                         <div data-ax-td="" style="width:30%;">
