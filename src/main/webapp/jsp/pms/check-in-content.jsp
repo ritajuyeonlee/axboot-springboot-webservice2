@@ -139,7 +139,7 @@
                                                 <div data-ax-td style="width:50%">
                                                     <div data-ax-td-label style="width:100px;">연락처</div>
                                                     <div data-ax-td-wrap>
-                                                        <input type="text" data-ax-path="guestTel" class="form-control"data-ax-validate="required" />
+                                                        <input type="text" data-ax-path="guestTel" class="form-control" title ='연락처'data-ax-validate="required" />
                                                     </div>
                                                 </div>
                                                 <div data-ax-td style="width:50%">

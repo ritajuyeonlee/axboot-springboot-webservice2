@@ -31,7 +31,6 @@
 
         <ax:page-buttons>
             <button type="button" class="btn btn-default" data-page-btn="close"> 닫기 </button>
-            <button type="button" class="btn btn-info" data-page-btn="save"> 저장 </button>
         </ax:page-buttons>
 
         <div class="container-fluid">

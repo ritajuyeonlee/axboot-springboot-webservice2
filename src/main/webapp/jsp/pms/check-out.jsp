@@ -9,8 +9,7 @@
             <ax:layout name="base">
                 <jsp:attribute name="script">
 
-                    <script type="text/javascript"
-                        src="<c:url value='/assets/js/view/pms/check-out.js' />"></script>
+                    <script type="text/javascript" src="<c:url value='/assets/js/view/pms/check-out.js' />"></script>
 
                 </jsp:attribute>
                 <jsp:body>
@@ -25,13 +24,52 @@
                                     <ax:td label='예약자' width="300px">
                                         <input type="text" class="js-guestNm form-control" />
                                     </ax:td>
-                                    <ax:td label='예약번호' width="300px">
+                                    <ax:td label='예약번호' width="400px">
                                         <input type="text" class="js-rsvNum form-control" />
                                     </ax:td>
-                                    <ax:td label='예약일' width="300px">
-                                        <input type="text" class="js-rsvDate form-control" />
+                                    <ax:td label='예약일' width="400px">
+                                        <div class="input-group" data-ax5picker="date">
+                                            <input type="text" class="js-sRsvDt form-control" data-ax-path="sRsvDt"
+                                                placeholder="yyyy/mm/dd">
+                                            <span class="input-group-addon">~</span>
+                                            <input type="text" class="js-eRsvDt form-control" data-ax-path="eRsvDt"
+                                                placeholder="yyyy/mm/dd">
+                                            <span class="input-group-addon"><i class="cqc-calendar"></i></span>
+                                        </div>
                                     </ax:td>
                                 </ax:tr>
+                                <ax:tr>
+                                    <ax:td label='객실타입' width="300px">
+                                        <select name="roomTypCd" class="js-roomTypCd">
+                                            <option value="">전체</option>
+                                            <option value="SB">SB</option>
+                                            <option value="DB">DB</option>
+                                            <option value="DT">DT</option>
+                                        </select>
+                                    </ax:td>
+
+                                    <ax:td label='도착일' width="400px">
+                                        <div class="input-group" data-ax5picker="date">
+                                            <input type="text" class="js-sArrDt form-control" data-ax-path="sArrDt"
+                                                placeholder="yyyy/mm/dd">
+                                            <span class="input-group-addon">~</span>
+                                            <input type="text" class="js-eArrDt form-control" data-ax-path="eArrDt"
+                                                placeholder="yyyy/mm/dd">
+                                            <span class="input-group-addon"><i class="cqc-calendar"></i></span>
+                                        </div>
+                                    </ax:td>
+                                    <ax:td label='출발일' width="400px">
+                                        <div class="input-group" data-ax5picker="date">
+                                            <input type="text" class="js-sDeptDt form-control" data-ax-path="sDeptDt"
+                                                placeholder="yyyy/mm/dd">
+                                            <span class="input-group-addon">~</span>
+                                            <input type="text" class="js-eDeptDt form-control" data-ax-path="eDeptDt"
+                                                placeholder="yyyy/mm/dd">
+                                            <span class="input-group-addon"><i class="cqc-calendar"></i></span>
+                                        </div>
+                                    </ax:td>
+                                </ax:tr>
+
                             </ax:tbl>
                         </ax:form>
                         <div class="H10"></div>
@@ -44,14 +82,9 @@
                             <div class="ax-button-group" data-fit-height-aside="grid-view-01">
                                 <div class="left">
                                     <h2><i class="cqc-list"></i>
-                                        프로그램 목록 </h2>
+                                        투숙 목록 </h2>
                                 </div>
-                                <div class="right">
-                                    <button type="button" class="btn btn-default" data-grid-view-01-btn="add"><i
-                                            class="cqc-circle-with-plus"></i> 추가</button>
-                                    <button type="button" class="btn btn-default" data-grid-view-01-btn="delete"><i
-                                            class="cqc-circle-with-plus"></i> 삭제</button>
-                                </div>
+                                
                             </div>
                             <div data-ax5grid="grid-view-01" data-fit-height-content="grid-view-01"
                                 style="height: 300px;"></div>

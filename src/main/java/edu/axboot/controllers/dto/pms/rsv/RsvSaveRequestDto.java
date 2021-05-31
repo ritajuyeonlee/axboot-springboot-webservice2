@@ -1,11 +1,14 @@
 package edu.axboot.controllers.dto.pms.rsv;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.axboot.domain.pms.chk.Chk;
 import edu.axboot.domain.pms.chkMemo.ChkMemo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -43,6 +46,34 @@ public class RsvSaveRequestDto {
     private String advnYn;
 
     private List<ChkMemo> chkMemoList;
+    @Transient
+    @JsonProperty("__deleted__")
+    protected boolean __deleted__;
+    @Transient
+    @JsonProperty("__created__")
+    protected boolean __created__;
+    @Transient
+    @JsonProperty("__modified__")
+    protected boolean __modified__;
+
+    @Transient
+    @JsonIgnore
+    public boolean isDeleted() {
+        return this.__deleted__;
+    }
+
+    @Transient
+    @JsonIgnore
+    public boolean isCreated() {
+        return this.__created__;
+    }
+
+    @Transient
+    @JsonIgnore
+    public boolean isModified() {
+        return this.__modified__;
+    }
+
 
     @Builder
     public RsvSaveRequestDto(Long id, Integer sno, Long guestId, Integer nightCnt, Integer adultCnt, Integer chldCnt, BigDecimal salePrc, BigDecimal svcPrc, String rsvDt, String arrDt, String arrTime, String depDt, String depTime, String rsvNum, String guestNm, String guestNmEng, String guestTel, String email, String brth, String gender, String langCd, String roomTypCd, String roomNum, String saleTypCd, String sttusCd, String srcCd, String payCd, String advnYn) {
@@ -74,7 +105,6 @@ public class RsvSaveRequestDto {
         this.srcCd = srcCd;
         this.payCd = payCd;
         this.advnYn = advnYn;
-
     }
 
 

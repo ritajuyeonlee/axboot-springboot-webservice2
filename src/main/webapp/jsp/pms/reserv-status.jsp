@@ -77,10 +77,7 @@
                         <h2><i class="cqc-list"></i>
                             예약 목록 </h2>
                     </div>
-                    <div class="right">
-                        <button type="button" class="btn btn-default" data-grid-view-01-btn="add"><i class="cqc-circle-with-plus"></i> 추가</button>
-                        <button type="button" class="btn btn-default" data-grid-view-01-btn="delete"><i class="cqc-circle-with-plus"></i> 삭제</button>
-                    </div>
+                    
                 </div>
                 <div data-ax5grid="grid-view-01" data-fit-height-content="grid-view-01" style="height: 300px;"></div>
 

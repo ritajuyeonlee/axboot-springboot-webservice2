@@ -85,10 +85,6 @@ fnObj.pageResize = function () {};
 fnObj.pageButtonView = axboot.viewExtend({
     initView: function () {
         axboot.buttonClick(this, 'data-page-btn', {
-            save: function () {
-                ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
-            },
-
             close: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_CLOSE);
             },

@@ -84,6 +84,9 @@ fnObj.pageButtonView = axboot.viewExtend({
     },
 });
 
+/**
+ * 메모그리드
+ */
 fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
     initView: function () {
         var _this = this;
@@ -150,7 +153,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
  */
 fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     getDefaultData: function () {
-        return {};
+        return { srcCd: '02' };
     },
     getData: function () {
         var data = this.modelFormatter.getClearData(this.model.get()); // 모델의 값을 포멧팅 전 값으로 치환.

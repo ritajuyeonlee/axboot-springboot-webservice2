@@ -119,6 +119,9 @@ fnObj.searchView = axboot.viewExtend(axboot.searchView, {
         return {
             guestNm: this.guestNm.val(),
             rsvNum: this.rsvNum.val(),
+            sArrDt: this.sArrDt.val(),
+            eArrDt: this.eArrDt.val(),
+            sttusCd: 'RSV_01',
         };
     },
 });
@@ -136,8 +139,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             multipleSelect: true,
             target: $('[data-ax5grid="grid-view-01"]'),
             columns: [
-                { key: 'id', label: 'id', width: 100, align: 'center' },
-                { key: 'sno', label: 'sno', width: 100, align: 'center' },
                 { key: 'rsvNum', label: '예약 번호', width: 100, align: 'center' },
                 { key: 'rsvDt', label: '예약일', width: 100, align: 'center' },
                 { key: 'guestId', label: '투숙객ID', width: 100, align: 'center' },

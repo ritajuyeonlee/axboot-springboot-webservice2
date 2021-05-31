@@ -21,6 +21,24 @@ var ACTIONS = axboot.actionExtend(fnObj, {
     PAGE_SAVE: function (caller, act, data) {
         if (caller.formView01.validate()) {
             var item = caller.formView01.getData();
+
+            item.chkMemoList = [].concat(caller.gridView01.getData());
+
+            if (!item.id) item.__created__ = true;
+            axboot.ajax({
+                type: 'POST',
+                url: '/api/v1/rsv',
+                data: JSON.stringify(item),
+                callback: function (res) {
+                    axToast.push('저장 되었습니다');
+                },
+            });
+        }
+    },
+    PAGE_SAVE2: function (caller, act, data) {
+        if (caller.formView01.validate()) {
+            var item = caller.formView01.getData2();
+
             item.chkMemoList = [].concat(caller.gridView01.getData());
 
             if (!item.id) item.__created__ = true;
@@ -85,8 +103,11 @@ fnObj.pageResize = function () {};
 fnObj.pageButtonView = axboot.viewExtend({
     initView: function () {
         axboot.buttonClick(this, 'data-page-btn', {
-            save: function () {
+            chkout: function () {
                 ACTIONS.dispatch(ACTIONS.PAGE_SAVE);
+            },
+            chkincancel: function () {
+                ACTIONS.dispatch(ACTIONS.PAGE_SAVE2);
             },
 
             close: function () {
@@ -105,7 +126,11 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
     getData: function () {
         var data = this.modelFormatter.getClearData(this.model.get()); // 모델의 값을 포멧팅 전 값으로 치환.
-        return $.extend({}, data, { sttusCd: 'RSV_01' });
+        return $.extend({}, data, { sttusCd: 'CHK_02' });
+    },
+    getData2: function () {
+        var data = this.modelFormatter.getClearData(this.model.get()); // 모델의 값을 포멧팅 전 값으로 치환.
+        return $.extend({}, data, { sttusCd: 'CHK_03' });
     },
     setData: function (data) {
         if (typeof data === 'undefined') data = this.getDefaultData();

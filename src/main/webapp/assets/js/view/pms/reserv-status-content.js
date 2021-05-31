@@ -23,7 +23,8 @@ var ACTIONS = axboot.actionExtend(fnObj, {
             var item = caller.formView01.getData();
             item.chkMemoList = [].concat(caller.gridView01.getData());
 
-            if (!item.id) item.__created__ = true;
+            console.log(item);
+            if (item.id) item.__modified__ = true;
             axboot.ajax({
                 type: 'POST',
                 url: '/api/v1/rsv',
@@ -140,7 +141,7 @@ fnObj.formView01 = axboot.viewExtend(axboot.formView, {
     },
     getData: function () {
         var data = this.modelFormatter.getClearData(this.model.get()); // 모델의 값을 포멧팅 전 값으로 치환.
-        return $.extend({}, data, { sttusCd: 'RSV_01' });
+        return $.extend({}, data);
     },
     setData: function (data) {
         if (typeof data === 'undefined') data = this.getDefaultData();

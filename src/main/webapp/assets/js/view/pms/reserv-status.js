@@ -158,7 +158,6 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
             columns: [
                 { key: 'rsvNum', label: '예약 번호', width: 100, align: 'center' },
                 { key: 'rsvDt', label: '예약일', width: 100, align: 'center' },
-                { key: 'guestId', label: '투숙객ID', width: 100, align: 'center' },
                 { key: 'guestNm', label: '투숙객 명', width: 100, align: 'center' },
                 {
                     key: 'roomTypCd',
@@ -171,7 +170,7 @@ fnObj.gridView01 = axboot.viewExtend(axboot.gridView, {
                         return parent.COMMON_CODE['PMS_ROOM_TYPE'].map[this.value];
                     },
                 },
-                { key: 'roomNum', label: '객실번호', width: 100, align: 'center', editor: 'text' },
+                { key: 'roomNum', label: '객실번호', width: 100, align: 'center' },
                 {
                     key: 'arrDt',
                     label: '도착 일자',

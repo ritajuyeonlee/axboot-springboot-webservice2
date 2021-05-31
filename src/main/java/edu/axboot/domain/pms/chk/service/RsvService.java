@@ -5,6 +5,7 @@ import com.querydsl.core.types.Projections;
 import edu.axboot.controllers.dto.pms.rsv.RsvListResponseDto;
 import edu.axboot.controllers.dto.pms.rsv.RsvResponseDto;
 import edu.axboot.controllers.dto.pms.rsv.RsvSaveRequestDto;
+import edu.axboot.controllers.dto.pms.sales.SalesResponseDto;
 import edu.axboot.domain.BaseService;
 import edu.axboot.domain.pms.chk.Chk;
 import edu.axboot.domain.pms.chk.ChkRepository;
@@ -31,6 +32,7 @@ public class RsvService extends BaseService<Chk, Long> {
     private final ChkMemoRepository chkMemoRepository;
 
 
+
     @Transactional
     public long save(RsvSaveRequestDto saveDto) {
         long id = 0;
@@ -48,7 +50,8 @@ public class RsvService extends BaseService<Chk, Long> {
                     .guestTel(saveDto.getGuestTel())
                     .build();
             guestId = guestRepository.save(guest).getId();
-        } else if (saveDto.getGuestId() > 0 && saveDto.getGuestNm()!=null) {
+        }
+        else if (saveDto.getGuestId() > 0 && saveDto.getGuestNm()!=null) {
             guestId = saveDto.getGuestId();
             Guest guest = Guest.builder()
                     .id(guestId)
@@ -63,57 +66,123 @@ public class RsvService extends BaseService<Chk, Long> {
             guestRepository.save(guest);
         }
 
-        //SNO,RSVNUM 설정하기
-        String rsvDt = LocalDate.now().toString();
-        Chk todayLastChk = select().select(
-                Projections.fields(Chk.class, qChk.sno))
-                .from(qChk)
-                .where(qChk.rsvDt.eq(rsvDt))
-                .orderBy(qChk.sno.desc())
-                .fetchFirst();
-        int sno = 1;
-        if (todayLastChk != null) {
-            sno = todayLastChk.getSno() + 1;
-        }
+        if(saveDto.isCreated()) {
+            //SNO,RSVNUM 설정하기
+            String rsvDt = LocalDate.now().toString();
+            Chk todayLastChk = select().select(
+                    Projections.fields(Chk.class, qChk.sno))
+                    .from(qChk)
+                    .where(qChk.rsvDt.eq(rsvDt))
+                    .orderBy(qChk.sno.desc())
+                    .fetchFirst();
+            int sno = 1;
+            if (todayLastChk != null) {
+                sno = todayLastChk.getSno() + 1;
+            }
 
-        Chk chk = saveDto.toEntity();
-        chk.setGuestId(guestId);
-        chk.rsvNumGenerator(rsvDt, sno);
-        String rsvNum = chk.getRsvNum();
-        id = chkRepository.save(chk).getId();
+            Chk chk = saveDto.toEntity();
+            chk.setGuestId(guestId);
+            chk.rsvNumGenerator(rsvDt, sno);
+            String rsvNum = chk.getRsvNum();
+            id = chkRepository.save(chk).getId();
 
+            //투숙메모 처리
+            List<ChkMemo> chkMemoList =saveDto.getChkMemoList();
+            for (ChkMemo chkMemo : chkMemoList){
+                if (chkMemo.is__created__()) {
+                    ChkMemo lastChkMemo = select().select(
+                            Projections.fields(ChkMemo.class, qChkMemo.sno))
+                            .from(qChkMemo)
+                            .where(qChkMemo.rsvNum.eq(rsvNum))
+                            .orderBy(qChkMemo.sno.desc())
+                            .fetchFirst();
 
-        //투숙메모 처리
-        List<ChkMemo> chkMemoList =saveDto.getChkMemoList();
-        for (ChkMemo chkMemo : chkMemoList){
-            if (chkMemo.is__created__()) {
-                ChkMemo lastChkMemo = select().select(
-                        Projections.fields(ChkMemo.class, qChkMemo.sno))
-                        .from(qChkMemo)
-                        .where(qChkMemo.rsvNum.eq(rsvNum))
-                        .orderBy(qChkMemo.sno.desc())
-                        .fetchFirst();
+                    int snoMemo = 1;
+                    if (lastChkMemo != null) {
+                        snoMemo = lastChkMemo.getSno() + 1;
+                    }
 
-                int snoMemo = 1;
-                if (lastChkMemo != null) {
-                    snoMemo = lastChkMemo.getSno() + 1;
+                    ChkMemo memo = ChkMemo.builder()
+                            .rsvNum(rsvNum)
+                            .sno(snoMemo)
+                            .memoCn(chkMemo.getMemoCn())
+                            .memoDtti(Timestamp.valueOf(LocalDateTime.now()))
+                            .memoMan(SessionUtils.getCurrentLoginUserCd())
+                            .delYn("N")
+                            .build();
+                    chkMemoRepository.save(memo);
+                } else if (chkMemo.is__modified__()) {
+                    ChkMemo memo = chkMemoRepository.findOne(chkMemo.getId());
+                    memo.update(chkMemo.getMemoCn());
+                } else if (chkMemo.is__deleted__()) {
+                    ChkMemo memo = chkMemoRepository.findOne(chkMemo.getId());
+                    memo.delete();
                 }
+            }
 
-                ChkMemo memo = ChkMemo.builder()
-                        .rsvNum(rsvNum)
-                        .sno(snoMemo)
-                        .memoCn(chkMemo.getMemoCn())
-                        .memoDtti(Timestamp.valueOf(LocalDateTime.now()))
-                        .memoMan(SessionUtils.getCurrentLoginUserCd())
-                        .delYn("N")
-                        .build();
-                chkMemoRepository.save(memo);
-            } else if (chkMemo.is__modified__()) {
-                ChkMemo memo = chkMemoRepository.findOne(chkMemo.getId());
-                memo.update(chkMemo.getMemoCn());
-            } else if (chkMemo.is__deleted__()) {
-                ChkMemo memo = chkMemoRepository.findOne(chkMemo.getId());
-                memo.delete();
+        }
+        else{
+            //SNO,RSVNUM 설정안하고 id만 설정
+            id = update(qChk)
+                    .set(qChk.nightCnt, saveDto.getNightCnt())
+                    .set(qChk.adultCnt, saveDto.getAdultCnt())
+                    .set(qChk.chldCnt, saveDto.getChldCnt())
+                    .set(qChk.salePrc, saveDto.getSalePrc())
+                    .set(qChk.svcPrc, saveDto.getSvcPrc())
+                    .set(qChk.arrDt, saveDto.getArrDt())
+                    .set(qChk.depDt, saveDto.getDepDt())
+                    .set(qChk.guestId, saveDto.getGuestId())
+                    .set(qChk.guestNm, saveDto.getGuestNm())
+                    .set(qChk.guestNmEng, saveDto.getGuestNmEng())
+                    .set(qChk.guestTel, saveDto.getGuestTel())
+                    .set(qChk.email, saveDto.getEmail())
+                    .set(qChk.brth, saveDto.getBrth())
+                    .set(qChk.gender, saveDto.getGender())
+                    .set(qChk.langCd, saveDto.getLangCd())
+                    .set(qChk.roomTypCd, saveDto.getRoomTypCd())
+                    .set(qChk.roomNum, saveDto.getRoomNum())
+                    .set(qChk.saleTypCd, saveDto.getSaleTypCd())
+                    .set(qChk.sttusCd, saveDto.getSttusCd())
+                    .set(qChk.srcCd, saveDto.getSrcCd())
+                    .set(qChk.payCd, saveDto.getPayCd())
+                    .set(qChk.advnYn, saveDto.getAdvnYn())
+                    .where(qChk.id.eq(saveDto.getId()))
+                    .execute();
+
+
+
+            //투숙메모 처리
+            List<ChkMemo> chkMemoList =saveDto.getChkMemoList();
+            for (ChkMemo chkMemo : chkMemoList){
+                if (chkMemo.is__created__()) {
+                    ChkMemo lastChkMemo = select().select(
+                            Projections.fields(ChkMemo.class, qChkMemo.sno))
+                            .from(qChkMemo)
+                            .where(qChkMemo.rsvNum.eq(saveDto.getRsvNum()))
+                            .orderBy(qChkMemo.sno.desc())
+                            .fetchFirst();
+
+                    int snoMemo = 1;
+                    if (lastChkMemo != null) {
+                        snoMemo = lastChkMemo.getSno() + 1;
+                    }
+
+                    ChkMemo memo = ChkMemo.builder()
+                            .rsvNum(saveDto.getRsvNum())
+                            .sno(snoMemo)
+                            .memoCn(chkMemo.getMemoCn())
+                            .memoDtti(Timestamp.valueOf(LocalDateTime.now()))
+                            .memoMan(SessionUtils.getCurrentLoginUserCd())
+                            .delYn("N")
+                            .build();
+                    chkMemoRepository.save(memo);
+                } else if (chkMemo.is__modified__()) {
+                    ChkMemo memo = chkMemoRepository.findOne(chkMemo.getId());
+                    memo.update(chkMemo.getMemoCn());
+                } else if (chkMemo.is__deleted__()) {
+                    ChkMemo memo = chkMemoRepository.findOne(chkMemo.getId());
+                    memo.delete();
+                }
             }
         }
 
@@ -137,9 +206,7 @@ public class RsvService extends BaseService<Chk, Long> {
             builder.and(qChk.rsvNum.like("%" + rsvNum +"%"));
         }
         if (isNotEmpty(sttusCds)) {
-            for (String sttusCd : sttusCds) {
-                builder.and(qChk.sttusCd.eq(sttusCd));
-            }
+            builder.and(qChk.sttusCd.in(sttusCds));
         }
         if (isNotEmpty(sRsvDt)&&isNotEmpty(eRsvDt)) {
             builder.and(qChk.rsvDt.between(sRsvDt,eRsvDt));
@@ -164,6 +231,8 @@ public class RsvService extends BaseService<Chk, Long> {
                         qChk.arrDt,
                         qChk.depDt,
                         qChk.saleTypCd,
+                        qChk.salePrc,
+                        qChk.svcPrc,
                         qChk.sttusCd
 
                 ))
@@ -183,6 +252,30 @@ public class RsvService extends BaseService<Chk, Long> {
             throw new IllegalArgumentException("해당 고객이 없습니다. id=" + id);
         }
         return new RsvResponseDto(chk);
-
     }
+
+    public List<SalesResponseDto> salesStatus(String sRsvDt,String eRsvDt){
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if(isNotEmpty(sRsvDt)&&isNotEmpty(eRsvDt)){
+            builder.and(qChk.rsvDt.between(sRsvDt,eRsvDt));
+        }
+        List<SalesResponseDto> entities = select().select(
+                Projections.fields(SalesResponseDto.class,
+                        qChk.rsvDt,
+                        qChk.rsvDt.count().as("count"),
+                        qChk.salePrc.sum().as("salePrc"),
+                        qChk.svcPrc.sum().as("svcPrc")
+                ))
+                .from(qChk)
+                .where(builder)
+                .groupBy(qChk.rsvDt)
+                .orderBy(qChk.rsvDt.asc())
+                .fetch();
+
+        return entities.stream().collect(Collectors.toList());
+    }
+
+
+
 }

@@ -31,7 +31,8 @@
 
         <ax:page-buttons>
             <button type="button" class="btn btn-default" data-page-btn="close"> 닫기 </button>
-            <button type="button" class="btn btn-info" data-page-btn="save"> 저장 </button>
+            <button type="button" class="btn btn-info" data-page-btn="chkout"> 체크아웃 </button>
+            <button type="button" class="btn btn-info" data-page-btn="chkincancel"> 체크인 취소 </button>
         </ax:page-buttons>
 
 <div class="container-fluid">
@@ -74,9 +75,7 @@
                         <div data-ax-td="" style="width:30%;">
                             <div data-ax-td-label="" style="width:150px;">객실타입</div>
                             <div data-ax-td-wrap="">
-
                                 <ax:common-code groupCd="PMS_ROOM_TYPE" dataPath="roomTypCd" emptyText="전체" />
-
                             </div>
                         </div>
                         <div data-ax-td="" style="width:30%;">
@@ -160,7 +159,7 @@
                                                 <div class="input-group" data-ax5picker="brth"
                                                     style="display:inline-block;">
                                                     <input type="text" class="form-control  W150" data-ax-path="brth"
-                                                        data-ax-validate="required" placeholder="yyyy.mm.dd">
+                                                         placeholder="yyyy.mm.dd">
                                                     <span class="input-group-addon"><i class="cqc-calendar"></i></span>
                                                 </div>
                                                 <input type="radio" data-ax-path="gender" value="M"> 남
@@ -262,12 +261,7 @@
                                     style="height: 300px;"></div>
                             </div>
                         </div>
-
-
                     </div>
-
-
-
 
                 </div>
             </form>
