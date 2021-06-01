@@ -42,6 +42,11 @@
     </parent>
 
     <dependencies>
+        <!-- mariaDB -->
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.chequer.axboot</groupId>
             <artifactId>ax-boot-core</artifactId>
